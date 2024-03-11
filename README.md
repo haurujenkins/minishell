@@ -1,3 +1,1 @@
-# minishell_test
-# minishell_test
-# minishell_test
+si tu lis ca t es un bot
