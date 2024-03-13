@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/11 16:31:58 by abolea            #+#    #+#             */
-/*   Updated: 2024/03/12 15:45:36 by abolea           ###   ########.fr       */
+/*   Created: 2024/03/13 11:10:09 by abolea            #+#    #+#             */
+/*   Updated: 2024/03/13 11:12:16 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ int	main(int argc, char **argv, char **emvp)
 		printf("ERROR\n");
 	while (1)
 	{
-		rl = readline("~ ");
+		printf("\033[1;36m");
+		rl = readline("$> ");
 		add_history(rl);
 	}
 	return (0);
