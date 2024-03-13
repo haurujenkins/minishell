@@ -1,4 +1,4 @@
-NAME			=	pipex
+NAME			=	minishell
 
 SRCS			=	pipex.c \
 					pipex_utils.c \
@@ -23,10 +23,10 @@ $(NAME)			:	${OBJS}
 					@make -sC libft
 					@echo "\033[1;32mLIBFT_lib created\n"
 					@sleep 0.5
-					@echo "\033[0;33m\nCOMPILING PIPEX...\n"
+					@echo "\033[0;33m\nCOMPILING MINISHELL...\n"
 					@sleep 1
 					@${CC} ${CFLAGS} ${LD_FLAGS} ${OBJS} -o ${NAME} -lft
-					@echo "\033[1;32mPIPEX created\n"
+					@echo "\033[1;32mMINISHELL created\n"
 					
 
 all				:	${NAME}
