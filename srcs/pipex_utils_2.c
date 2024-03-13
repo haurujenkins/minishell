@@ -6,11 +6,11 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 14:16:52 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/02/28 14:39:02 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/03/13 15:34:33 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/pipex.h"
+#include "../includes/minishell.h"
 
 void	pid_path_1(t_data *da, char **envp)
 {

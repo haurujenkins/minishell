@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.h                                            :+:      :+:    :+:   */
+/*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 14:48:53 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/02/26 15:08:47 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/03/13 15:42:36 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,5 +45,6 @@ void	pid_path_1(t_data *da, char **envp);
 void	pid_path_2(t_data *da, char **envp);
 void	set_all(t_data *da);
 void	free_child(t_data *da);
+int		main_pipex(char **argv, char **envp);
 
 #endif

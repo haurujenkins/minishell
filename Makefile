@@ -1,8 +1,10 @@
 NAME			=	minishell
 
-SRCS			=	pipex.c \
+SRCS			=	main.c \
+					pipex.c \
 					pipex_utils.c \
 					pipex_utils_2.c
+
 
 OBJS			=	$(addprefix .build/, $(SRCS:.c=.o))
 
@@ -10,22 +12,20 @@ LD_FLAGS		=	-L libft
 
 HEAD			=	-I includes -I libft
 
-CC				=	clang
+CC				=	cc
 
 CFLAGS			=	-Wall -Werror -Wextra
 
 .build/%.o: srcs/%.c
 					@mkdir -p .build
-					@$(CC) $(CFLAGS) $(HEAD) -c $< -o $@
+					@$(CC) $(CFLAGS) -lreadline -lhistory $(HEAD) -c $< -o $@ 
 
 $(NAME)			:	${OBJS}
 					@echo "\033[0;33m\nCOMPILING LIBFT...\n"
 					@make -sC libft
 					@echo "\033[1;32mLIBFT_lib created\n"
-					@sleep 0.5
 					@echo "\033[0;33m\nCOMPILING MINISHELL...\n"
-					@sleep 1
-					@${CC} ${CFLAGS} ${LD_FLAGS} ${OBJS} -o ${NAME} -lft
+					@${CC} ${CFLAGS} ${LD_FLAGS} ${OBJS} -o ${NAME} -lreadline -lhistory -lft 
 					@echo "\033[1;32mMINISHELL created\n"
 					
 

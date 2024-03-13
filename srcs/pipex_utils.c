@@ -6,11 +6,11 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 11:01:59 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/03/11 16:09:21 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/03/13 16:31:02 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/pipex.h"
+#include "../includes/minishell.h"
 
 void	free_data(t_data *da, char **envp)
 {
@@ -108,10 +108,10 @@ void	pid_1(t_data *da, char **envp)
 
 int	check_errors(t_data *da, char **argv)
 {
-	da->fd_input = open(argv[1], O_RDONLY);
+	da->fd_input = open(argv[0], O_RDONLY);
 	if (da->fd_input < 0)
 		perror("Error opening input file");
-	da->fd_output = open(argv[4], O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	da->fd_output = open(argv[3], O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (da->fd_output < 0)
 	{
 		close(da->fd_input);

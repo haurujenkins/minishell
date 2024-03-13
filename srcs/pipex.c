@@ -6,11 +6,11 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 10:09:45 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/02/27 11:08:26 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/03/13 17:34:54 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/pipex.h"
+#include "../includes/minishell.h"
 
 void	exec_cmd_1(t_data *da, char **envp)
 {
@@ -59,16 +59,16 @@ int	pipex(t_data *da, char **argv, char **envp)
 
 void	get_args(t_data *da, char **argv, char **envp)
 {
+	if (argv[1][0] == '\0')
+		write(STDERR_FILENO, "permission denied:\n", 19);
+	else
+		da->cmd1 = ft_split(argv[1], ' ');
+	if (da->cmd1 == NULL)
+		exit(EXIT_FAILURE);
 	if (argv[2][0] == '\0')
 		write(STDERR_FILENO, "permission denied:\n", 19);
 	else
-		da->cmd1 = ft_split(argv[2], ' ');
-	if (da->cmd1 == NULL)
-		exit(EXIT_FAILURE);
-	if (argv[3][0] == '\0')
-		write(STDERR_FILENO, "permission denied:\n", 19);
-	else
-		da->cmd2 = ft_split(argv[3], ' ');
+		da->cmd2 = ft_split(argv[2], ' ');
 	if (da->cmd2 == NULL)
 		exit(EXIT_FAILURE);
 	if (!(envp[0] == NULL))
@@ -85,17 +85,10 @@ void	get_args(t_data *da, char **argv, char **envp)
 	}
 }
 
-int	main(int argc, char *argv[], char **envp)
+int	main_pipex(char **argv, char **envp)
 {
 	t_data	da;
-	int		i;
 
-	i = 0;
-	if (argc != 5)
-	{
-		ft_printf("Usage: %s file1 cmd1 cmd2 file2\n", argv[0]);
-		exit(EXIT_FAILURE);
-	}
 	set_all(&da);
 	get_args(&da, argv, envp);
 	pipex(&da, argv, envp);
