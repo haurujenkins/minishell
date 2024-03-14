@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 11:10:09 by abolea            #+#    #+#             */
-/*   Updated: 2024/03/13 17:34:30 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/03/14 16:26:08 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@ int	main(int argc, char **argv, char **envp)
 	{
 		printf("\033[1;36m");
 		rl = readline("$> ");
-		args = ft_split(rl, ' ');
-		main_pipex(args, envp);
+		args = ft_split(rl, '|');
+		main_exec(args, envp);
 		add_history(rl);
 	}
 	return (0);

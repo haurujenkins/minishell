@@ -1,9 +1,8 @@
 NAME			=	minishell
 
 SRCS			=	main.c \
-					pipex.c \
-					pipex_utils.c \
-					pipex_utils_2.c
+					main_exec.c \
+					exec_utils.c \
 
 
 OBJS			=	$(addprefix .build/, $(SRCS:.c=.o))

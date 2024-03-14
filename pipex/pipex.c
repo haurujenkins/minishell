@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 10:09:45 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/03/13 17:34:54 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/03/14 12:58:05 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,26 +71,12 @@ void	get_args(t_data *da, char **argv, char **envp)
 		da->cmd2 = ft_split(argv[2], ' ');
 	if (da->cmd2 == NULL)
 		exit(EXIT_FAILURE);
-	if (!(envp[0] == NULL))
-	{
-		while (!(ft_strchr(envp[da->i], "PATH=")))
-			da->i++;
-		da->point_path = envp[da->i] + 5;
-		da->my_path = ft_split(da->point_path, ':');
-		if (da->my_path == NULL)
-		{
-			free_data(da, envp);
-			exit(EXIT_FAILURE);
-		}
-	}
+	get_path(da, envp);
 }
 
-int	main_pipex(char **argv, char **envp)
+int	main_pipex(t_data *da, char **argv, char **envp)
 {
-	t_data	da;
-
-	set_all(&da);
-	get_args(&da, argv, envp);
-	pipex(&da, argv, envp);
+	get_args(da, argv, envp);
+	pipex(da, argv, envp);
 	return (0);
 }
