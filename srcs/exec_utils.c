@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 13:10:19 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/03/14 14:22:52 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/03/15 13:08:00 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ void	set_all(t_data *da)
 	da->fd_output = 0;
 	da->i = 0;
 	da->j = 0;
+	da->line = 0;
 	da->my_path = NULL;
 	da->pid1 = 0;
 	da->pid2 = 0;

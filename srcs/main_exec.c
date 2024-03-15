@@ -6,31 +6,29 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 11:49:04 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/03/14 16:27:53 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/03/15 16:41:54 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	exec_cmd(t_data *da, char **args, char **envp)
+int	exec_cmd(t_data *da, char ***args, char **envp)
 {
 	int	i;
 	int	token;
 
 	token = 0;
-	if (args == NULL)
-		return (0);
 	get_path(da, envp);
 	i = 0;
-	if (args[0][0] == '\0')
-		write(STDERR_FILENO, "permission denied:\n", 19);
-	else
-		da->cmd1 = ft_split(args[0], ' ');
-	if (!(ft_strchr(args[0], "/")) && !(envp[0] == NULL))
+	// if (args[0][0][0] == '\0')
+	// 	write(STDERR_FILENO, "permission denied:\n", 19);
+	// else
+	// 	da->cmd1 = ft_split(args[0][0], ' ');
+	if (!(ft_strchr(args[0][0], "/")) && !(envp[0] == NULL))
 	{
 		while (da->my_path[i])
 		{
-			da->cmd = ft_strjoin(da->my_path[i], da->cmd1[0]);
+			da->cmd = ft_strjoin(da->my_path[i], args[0][0]);
 			if (da->cmd == NULL)
 			{
 				free_data(da, envp);
@@ -49,7 +47,7 @@ int	exec_cmd(t_data *da, char **args, char **envp)
 				}
 				else if (da->pid1 == 0)
 				{
-					execve(da->cmd, da->cmd1, envp);
+					execve(da->cmd, args[0], envp);
 				}
 				else
 				{
@@ -65,19 +63,20 @@ int	exec_cmd(t_data *da, char **args, char **envp)
 	return (0);
 }
 
-int	main_exec(char **args, char **envp)
+int	main_exec(char ***args, char **envp, int pnum)
 {
 	t_data	da;
-	int		pNum;
 
-	pNum = 0;
-	while (args[pNum])
-		pNum++;
 	set_all(&da);
-	if (pNum == 1)
+	if (pnum == 1)
+	{
 		exec_cmd(&da, args, envp);
-	if (pNum > 2)
+	}
+	if (pnum > 1)
+	{
 		ft_printf("Pipexxxx\n");
+		//check_files(&da, args, pnum);
+	}
 	// if (caseNum > 1)
 	// 	main_pipex(&da, args, envp);
 	return (0);
