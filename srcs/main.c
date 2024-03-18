@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 11:10:09 by abolea            #+#    #+#             */
-/*   Updated: 2024/03/15 17:07:52 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/03/18 10:26:20 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ int	main(int argc, char **argv, char **envp)
 	char	**temp_args;
 	int		pnum;
 	int		i;
+	int		j;
+	int		k;
 
 	if (argc != 1 || argv[0][0] == '\0')
 		printf("ERROR\n");
@@ -41,18 +43,37 @@ int	main(int argc, char **argv, char **envp)
 		}
 		temp_args = ft_split(rl, '|');
 		i = 0;
+		args = malloc(sizeof(ft_strlen(rl)));
 		while (i < pnum)
 		{
-			args = malloc(sizeof(ft_strlen(temp_args[i])));
 			args[i] = ft_split(temp_args[i], ' ');
-			ft_printf("OK");
-			ft_printf("%i : %s\n", i, args[i][1]);
 			i++;
 		}
-		args = malloc(sizeof(ft_strlen(rl)));
-		args[0] = ft_split(rl, ' ');
-		//args[1] = ft_split(rl, ' ');
+		//args[0] = ft_split(rl, ' ');
+		k = 0;
+		while (k < pnum)
+		{
+			j = 0;
+			while (args[k][j])
+			{
+				ft_printf("%i : %s\n", j, args[k][j]);
+				j++;
+			}
+			ft_printf("\n");
+			k++;
+		}
 		main_exec(args, envp, pnum);
+		k = 0;
+		while (k < pnum)
+		{
+			j = 0;
+			while (args[k][j])
+			{
+				free(args[k][j]);
+				j++;
+			}
+			k++;
+		}
 		add_history(rl);
 	}
 	return (0);
