@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 11:10:09 by abolea            #+#    #+#             */
-/*   Updated: 2024/03/18 10:26:20 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/03/18 10:55:27 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,13 +43,18 @@ int	main(int argc, char **argv, char **envp)
 		}
 		temp_args = ft_split(rl, '|');
 		i = 0;
-		args = malloc(sizeof(ft_strlen(rl)));
+		args = malloc(sizeof(char ***));
+		while (temp_args[i])
+		{
+			args[i] = malloc(sizeof(ft_strlen(temp_args[i])));
+			i++;
+		}
+		i = 0;
 		while (i < pnum)
 		{
 			args[i] = ft_split(temp_args[i], ' ');
 			i++;
 		}
-		//args[0] = ft_split(rl, ' ');
 		k = 0;
 		while (k < pnum)
 		{
@@ -63,7 +68,7 @@ int	main(int argc, char **argv, char **envp)
 			k++;
 		}
 		main_exec(args, envp, pnum);
-		k = 0;
+		k = 1;
 		while (k < pnum)
 		{
 			j = 0;
