@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 14:48:53 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/03/15 16:38:45 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/03/19 16:56:32 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ typedef struct data_s
 	pid_t	pid1;
 	pid_t	pid2;
 }				t_data;
+
 
 int		main_exec(char ***args, char **envp, int pnum);
 //int		check_files(t_data *da, char **args, int pnum);

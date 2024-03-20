@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 14:19:28 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/02/20 11:06:43 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/03/19 11:17:10 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,29 +14,23 @@
 
 char	*ft_strjoin(char *s1, char *s2)
 {
-	char	*str;
-	size_t	i;
-	size_t	c;
+	char		*s3;
+	size_t		i;
+	size_t		j;
 
-	if (!s1)
+	i = 0;
+	j = 0;
+	if (!s2)
+		return (ft_strdup(""));
+	s3 = ft_calloc(ft_strlen(s1) + ft_strlen(s2) + 1, sizeof(char));
+	if (!s3)
+		return (NULL);
+	while (i < ft_strlen(s1))
 	{
-		s1 = malloc(sizeof(char) + 1);
-		if (!s1)
-			return (0);
-		s1[0] = 0;
+		s3[i] = s1[i];
+		i++;
 	}
-	str = malloc(sizeof(char) * ft_strlen(s1) + ft_strlen(s2) + 2);
-	if (!str)
-		return (ft_free(&s1));
-	i = -1;
-	while (s1[++i])
-		str[i] = s1[i];
-	c = -1;
-	str[i] = '/';
-	i += 1;
-	while (s2[++c])
-		str[i + c] = s2[c];
-	str[i + c] = '\0';
-	free(s1);
-	return (str);
+	while (j < ft_strlen(s2))
+		s3[i++] = s2[j++];
+	return (s3);
 }
