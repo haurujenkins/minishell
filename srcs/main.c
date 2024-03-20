@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 11:10:09 by abolea            #+#    #+#             */
-/*   Updated: 2024/03/20 14:13:08 by abolea           ###   ########.fr       */
+/*   Updated: 2024/03/20 16:35:42 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,10 +53,35 @@ int	nb_pipe(char *rl)
 	return (pnum);
 }
 
+char	*cpy_until_char(char *s, char c)
+{
+	int		len;
+	int		i;
+	char	*tmp;
+	
+	i = 0;
+	len = 0;
+	while (s[len])
+	{
+		if (s[len] == c)
+			break;
+		else
+			len++;
+	}
+	tmp = malloc(len * sizeof(char));
+	while (i < len)
+	{
+		tmp[i] = s[i];
+		i++;
+	}
+	tmp[i] = '\0';
+	return (tmp);
+}
 
 char	*fill_input(char **temp_args, char **words, int i)
 {
 	char	*args;
+	char	*tmp;
 	int		num_words;
 	int		j;
 
@@ -64,6 +89,7 @@ char	*fill_input(char **temp_args, char **words, int i)
 		{
 			num_words = 0;
 			args = ft_strdup("");
+			tmp = args;
 			words = ft_split(temp_args[i], '<');
 			while (words[num_words] != NULL)
 				num_words++;
@@ -72,7 +98,8 @@ char	*fill_input(char **temp_args, char **words, int i)
 				j = 1;
 				while (j < num_words)
 				{
-					args = ft_strjoin(args, words[j]);
+					tmp = cpy_until_char(words[j], '>');
+					args = ft_strjoin(args, tmp);
 					j++;
 				}
 			}
@@ -85,6 +112,7 @@ char	*fill_input(char **temp_args, char **words, int i)
 char	*fill_output(char **temp_args, char **words, int i)
 {
 	char	*args;
+	char	*tmp;
 	int		num_words;
 	int		j;
 
@@ -92,6 +120,7 @@ char	*fill_output(char **temp_args, char **words, int i)
 		{
 			num_words = 0;
 			args = ft_strdup("");
+			tmp = args;
 			words = ft_split(temp_args[i], '>');
 			while (words[num_words] != NULL)
 				num_words++;
@@ -100,7 +129,8 @@ char	*fill_output(char **temp_args, char **words, int i)
 				j = 1;
 				while (j < num_words)
 				{
-					args = ft_strjoin(args, words[j]);
+					tmp = cpy_until_char(words[j], '<');
+					args = ft_strjoin(args, tmp);
 					j++;
 				}
 			}
