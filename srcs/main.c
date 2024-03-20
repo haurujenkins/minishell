@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 11:10:09 by abolea            #+#    #+#             */
-/*   Updated: 2024/03/20 16:35:42 by abolea           ###   ########.fr       */
+/*   Updated: 2024/03/20 16:43:43 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ char	*fill_input(char **temp_args, char **words, int i)
 			num_words = 0;
 			args = ft_strdup("");
 			tmp = args;
-			words = ft_split(temp_args[i], '<');
+			words = ft_split_file(temp_args[i], '<');
 			while (words[num_words] != NULL)
 				num_words++;
 			if (num_words > 1)
@@ -121,7 +121,7 @@ char	*fill_output(char **temp_args, char **words, int i)
 			num_words = 0;
 			args = ft_strdup("");
 			tmp = args;
-			words = ft_split(temp_args[i], '>');
+			words = ft_split_file(temp_args[i], '>');
 			while (words[num_words] != NULL)
 				num_words++;
 			if (num_words > 1)

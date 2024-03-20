@@ -1,14 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_split.c                                         :+:      :+:    :+:   */
+/*   ft_split_file.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/13 14:46:33 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/03/20 16:42:34 by abolea           ###   ########.fr       */
+/*   Created: 2024/03/20 16:44:53 by abolea            #+#    #+#             */
+/*   Updated: 2024/03/20 16:48:33 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+
 
 #include "libft.h"
 
@@ -49,7 +51,7 @@ static int	create_array(char **array, char const *s, char c, int line)
 				free (array);
 				return (0);
 			}
-			ft_strlcpy(array[line++], (s + start_w), (end_w - start_w + 2));
+			ft_strlcpy(array[line++], (s + start_w + 1), (end_w - start_w + 2));
 		}
 		end_w++;
 	}
@@ -57,7 +59,7 @@ static int	create_array(char **array, char const *s, char c, int line)
 	return (1);
 }
 
-char	**ft_split(char *s, char c)
+char	**ft_split_file(char *s, char c)
 {
 	char	**array;
 

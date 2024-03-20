@@ -44,7 +44,8 @@ SRC = ft_memset.c \
 		uint_print.c \
 		hex_lower_print.c \
 		my_strchr.c \
-		hex_upper_print.c
+		hex_upper_print.c \
+		ft_split_file.c
 SRC_BONUS = ft_lstnew_bonus.c \
 			ft_lstadd_front_bonus.c \
 			ft_lstlast_bonus.c \
