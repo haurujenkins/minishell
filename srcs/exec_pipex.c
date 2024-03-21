@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 13:01:33 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/03/21 13:55:42 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/03/21 14:44:24 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,7 @@
 void	get_args(t_data *da, char **envp)
 {
 	char	*temp_cmd;
-	int		i;
 
-	i = 0;
 	temp_cmd = NULL;
 	temp_cmd = ft_strjoin(da->args[da->line][0], da->args[da->line][1]);
 	if (temp_cmd[0] == '\0')
@@ -25,11 +23,6 @@ void	get_args(t_data *da, char **envp)
 	else
 	{
 		da->cmd1 = ft_split(temp_cmd, ' ');
-		while (da->cmd1[i])
-		{
-			printf("\nda->cmd1 = %s\n", da->cmd1[i]);
-			i++;
-		}
 		free(temp_cmd);
 	}
 	get_path(da, envp);
@@ -37,21 +30,41 @@ void	get_args(t_data *da, char **envp)
 
 int	check_files(t_data *da)
 {
+	char	**temp_files;
+	int		i;
+
+	i = 0;
+	temp_files = NULL;
 	if (da->args[da->line][2] != NULL)
 	{
-		da->fd_input = open(da->args[da->line][2], O_RDONLY);
-		if (da->fd_input < 0)
-			perror("Error opening input file");
+		temp_files = ft_split(da->args[da->line][2], ' ');
+		while (temp_files[i] != NULL)
+		{
+			da->fd_input = open(temp_files[i], O_RDONLY);
+			if (da->fd_input < 0)
+				perror("Error opening input file");
+			free (temp_files[i]);
+			i++;
+		}
+		free (temp_files);
 	}
 	if (da->args[da->line][3] != NULL)
 	{
-		da->fd_output = \
-		open(da->args[da->line][3], O_WRONLY | O_CREAT | O_TRUNC, 0644);
-		if (da->fd_output < 0)
+		i = 0;
+		temp_files = ft_split(da->args[da->line][3], ' ');
+		while (temp_files[i] != NULL)
 		{
-			close(da->fd_input);
-			perror("Error opening output file");
+			da->fd_output = \
+			open(temp_files[i], O_WRONLY | O_CREAT | O_TRUNC, 0644);
+			if (da->fd_output < 0)
+			{
+				close(da->fd_input);
+				perror("Error opening output file");
+			}
+			free (temp_files[i]);
+			i++;
 		}
+		free (temp_files);
 	}
 	// if (da->pnum > 1)
 	// {

@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 11:49:04 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/03/21 13:53:20 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/03/21 14:41:28 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ int	exec_cmd(t_data *da, char **envp)
 	{
 		while (da->my_path[i])
 		{
-			printf("BOUCLE\n");
 			da->cmd = ft_strjoin_slash(da->my_path[i], da->cmd1[0]);
 			if (da->cmd == NULL)
 			{

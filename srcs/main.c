@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 11:10:09 by abolea            #+#    #+#             */
-/*   Updated: 2024/03/21 14:33:57 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/03/21 14:35:37 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -228,7 +228,7 @@ int	main(int argc, char **argv, char **envp)
 			free(rl);
 		}
 		else
-			continue;
+			continue ;
 	}
 	return (0);
 }
