@@ -6,13 +6,13 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 11:49:04 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/03/15 16:41:54 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/03/21 13:53:20 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	exec_cmd(t_data *da, char ***args, char **envp)
+int	exec_cmd(t_data *da, char **envp)
 {
 	int	i;
 	int	token;
@@ -20,15 +20,12 @@ int	exec_cmd(t_data *da, char ***args, char **envp)
 	token = 0;
 	get_path(da, envp);
 	i = 0;
-	// if (args[0][0][0] == '\0')
-	// 	write(STDERR_FILENO, "permission denied:\n", 19);
-	// else
-	// 	da->cmd1 = ft_split(args[0][0], ' ');
-	if (!(ft_strchr(args[0][0], "/")) && !(envp[0] == NULL))
+	if (!(ft_strchr(da->args[0][0], "/")) && !(envp[0] == NULL))
 	{
 		while (da->my_path[i])
 		{
-			da->cmd = ft_strjoin(da->my_path[i], args[0][0]);
+			printf("BOUCLE\n");
+			da->cmd = ft_strjoin_slash(da->my_path[i], da->cmd1[0]);
 			if (da->cmd == NULL)
 			{
 				free_data(da, envp);
@@ -38,7 +35,12 @@ int	exec_cmd(t_data *da, char ***args, char **envp)
 			if (access(da->cmd, X_OK) == 0)
 			{
 				token = 1;
-				da->pid1 = fork();
+				if (da->fd_input != -1)
+					dup2(da->fd_input, STDIN_FILENO);
+				if (da->fd_output != -1)
+					dup2(da->fd_output, STDOUT_FILENO);
+				close(da->fd_input);
+				close(da->fd_output);
 				if (da->pid1 == -1)
 				{
 					free_data(da, envp);
@@ -47,11 +49,7 @@ int	exec_cmd(t_data *da, char ***args, char **envp)
 				}
 				else if (da->pid1 == 0)
 				{
-					execve(da->cmd, args[0], envp);
-				}
-				else
-				{
-					wait(NULL);
+					execve(da->cmd, da->cmd1, envp);
 				}
 			}
 			free(da->cmd);
@@ -63,21 +61,35 @@ int	exec_cmd(t_data *da, char ***args, char **envp)
 	return (0);
 }
 
-int	main_exec(char ***args, char **envp, int pnum)
+int	main_exec(t_data *da, char **envp)
 {
-	t_data	da;
-
-	set_all(&da);
-	if (pnum == 1)
+	da->line = 0;
+	while (da->line < da->pnum)
 	{
-		exec_cmd(&da, args, envp);
-	}
-	if (pnum > 1)
-	{
-		ft_printf("Pipexxxx\n");
-		//check_files(&da, args, pnum);
+		set_all(da);
+		get_args(da, envp);
+		check_files(da);
+		if (da->pnum == 1)
+		{
+			da->pid1 = fork();
+			if (da->pid1 == -1)
+			{
+				//close_all(da);
+				free_data(da, envp);
+				write(2, "Error Forking\n", 14);
+				exit(EXIT_FAILURE);
+			}
+			if (da->pid1 == 0)
+				exec_cmd(da, envp);
+		}
+		if (da->pnum > 1)
+		{
+			ft_printf("Pipexxxx\n");
+		}
+		waitpid(da->pid1, NULL, 0);
+		da->line++;
 	}
 	// if (caseNum > 1)
-	// 	main_pipex(&da, args, envp);
+	// 	main_pipex(da, envp);
 	return (0);
 }

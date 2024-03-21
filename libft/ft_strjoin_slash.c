@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strjoin.c                                       :+:      :+:    :+:   */
+/*   ft_strjoin_slash.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 14:19:28 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/03/21 14:22:12 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/03/21 11:23:14 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strjoin(char *s1, char *s2)
+char	*ft_strjoin_slash(char *s1, char *s2)
 {
 	char	*str;
 	size_t	i;
@@ -32,7 +32,7 @@ char	*ft_strjoin(char *s1, char *s2)
 	while (s1[++i])
 		str[i] = s1[i];
 	c = -1;
-	str[i] = ' ';
+	str[i] = '/';
 	i += 1;
 	while (s2[++c])
 		str[i + c] = s2[c];

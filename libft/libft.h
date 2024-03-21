@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 13:57:49 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/03/20 16:45:06 by abolea           ###   ########.fr       */
+/*   Updated: 2024/03/21 14:00:28 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@
 # endif
 
 int		char_print(char c);
+char	*ft_strjoin_ori(char *s1, char *s2);
+char	*ft_strjoin_slash(char *s1, char *s2);
 char	*mystrchr(const char *s, int c);
 int		str_print(char *s);
 int		int_print(int n);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 11:10:09 by abolea            #+#    #+#             */
-/*   Updated: 2024/03/21 10:59:02 by abolea           ###   ########.fr       */
+/*   Updated: 2024/03/21 14:33:57 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,8 +98,11 @@ char	*fill_input(char **temp_args, char **words, int i)
 				j = 1;
 				while (j < num_words)
 				{
-					tmp = cpy_until_char(words[j], '>');
-					args = ft_strjoin(args, tmp);
+					tmp = cpy_until_char(words[j], ' ');
+					if (j == 1)
+						args = ft_strjoin_ori(args, tmp);
+					else
+						args = ft_strjoin(args, tmp);
 					j++;
 				}
 			}
@@ -129,8 +132,11 @@ char	*fill_output(char **temp_args, char **words, int i)
 				j = 1;
 				while (j < num_words)
 				{
-					tmp = cpy_until_char(words[j], '<');
-					args = ft_strjoin(args, tmp);
+					tmp = cpy_until_char(words[j], ' ');
+					if (j == 1)
+						args = ft_strjoin_ori(args, tmp);
+					else
+						args = ft_strjoin(args, tmp);
 					j++;
 				}
 			}
@@ -157,7 +163,10 @@ char *fill_args(char **words)
 		{
 			if (ft_strnstr(words[j], "<", 1) || ft_strnstr(words[j], ">", 1))
 				return (args);
-			args = ft_strjoin(args, words[j]);
+			if (j == 1)
+				args = ft_strjoin_ori(args, words[j]);
+			else
+				args = ft_strjoin(args, words[j]);
 			j++;
 			if (j < num_words)
 				args = ft_strjoin(args, " ");
@@ -214,7 +223,7 @@ int	main(int argc, char **argv, char **envp)
 		if (rl[0])
 		{
 			parsing(rl, &da);
-			// main_exec(args, envp, pnum);
+			main_exec(&da, envp);
 			add_history(rl);
 			free(rl);
 		}

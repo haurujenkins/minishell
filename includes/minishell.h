@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 14:48:53 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/03/21 10:56:37 by abolea           ###   ########.fr       */
+/*   Updated: 2024/03/21 11:46:50 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,10 @@ typedef struct data_s
 	char	***args;
 }				t_data;
 
-
-int		main_exec(char ***args, char **envp, int pnum);
-//int		check_files(t_data *da, char **args, int pnum);
-int		exec_cmd(t_data *da, char ***args, char **envp);
+void	get_args(t_data *da, char **envp);
+int		main_exec(t_data *da, char **envp);
+int		check_files(t_data *da);
+int		exec_cmd(t_data *da, char **envp);
 void	set_all(t_data *da);
 void	free_data(t_data *da, char **envp);
 void	get_path(t_data *da, char **envp);
