@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 16:44:53 by abolea            #+#    #+#             */
-/*   Updated: 2024/03/20 16:48:33 by abolea           ###   ########.fr       */
+/*   Updated: 2024/03/21 11:02:15 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static int	create_array(char **array, char const *s, char c, int line)
 	while (s[end_w])
 	{
 		if (s[end_w] == c || s[end_w] == 0)
-			start_w = end_w + 1;
+			start_w = end_w + 2;
 		if (s[end_w] != c && (s[end_w + 1] == c || s[end_w + 1] == 0))
 		{
 			array[line] = malloc(sizeof(char) * (end_w - start_w + 2));
@@ -51,7 +51,7 @@ static int	create_array(char **array, char const *s, char c, int line)
 				free (array);
 				return (0);
 			}
-			ft_strlcpy(array[line++], (s + start_w + 1), (end_w - start_w + 2));
+			ft_strlcpy(array[line++], (s + start_w), (end_w - start_w + 2));
 		}
 		end_w++;
 	}

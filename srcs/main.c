@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 11:10:09 by abolea            #+#    #+#             */
-/*   Updated: 2024/03/20 16:43:43 by abolea           ###   ########.fr       */
+/*   Updated: 2024/03/21 10:59:02 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,42 +169,41 @@ char *fill_args(char **words)
 }
 
 
-void	parsing(char *rl)
+void	parsing(char *rl, t_data *da)
 {
-	char	***args;
 	char	**temp_args;
 	char	**words;
-	int		pnum;
 	int		i;
-	int		num_words;
+	int		num_words;	
 		
 	i = 0;
-	pnum = nb_pipe(rl);
+	da->pnum = nb_pipe(rl);
 	num_words = 0;
 	temp_args = ft_split(rl, '|');
-	args = malloc(pnum * sizeof(char **));
-	while (i < pnum) 
+	da->args = malloc(da->pnum * sizeof(char **));
+	while (i < da->pnum) 
 	{
 		words = ft_split(temp_args[i], ' ');
 		while (words[num_words] != NULL)
 			num_words++;
-		args[i] = malloc((num_words + 1) * sizeof(char *));
-		args[i][0] = ft_strdup(words[0]);
+		da->args[i] = malloc((num_words + 1) * sizeof(char *));
+		da->args[i][0] = ft_strdup(words[0]);
 		num_words = 0;
-		args[i][1] = fill_args(words);
-		args[i][2] = NULL;
-		args[i][3] = NULL;
-		args[i][2] = fill_input(temp_args, words, i);
-		args[i][3] = fill_output(temp_args, words, i);
+		da->args[i][1] = fill_args(words);
+		da->args[i][2] = NULL;
+		da->args[i][3] = NULL;
+		da->args[i][2] = fill_input(temp_args, words, i);
+		da->args[i][3] = fill_output(temp_args, words, i);
 		i++;
 	}
-	print_args(i, pnum, args);
+	print_args(i, da->pnum, da->args);
 }
 
 
 int	main(int argc, char **argv, char **envp)
 {
 	char	*rl;
+	t_data	da;
 
 	(void)envp;
 	if (argc != 1 || argv[0][0] == '\0')
@@ -214,7 +213,7 @@ int	main(int argc, char **argv, char **envp)
 		rl = readline("\033[1;36m<3 \033[0;37m");
 		if (rl[0])
 		{
-			parsing(rl);
+			parsing(rl, &da);
 			// main_exec(args, envp, pnum);
 			add_history(rl);
 			free(rl);

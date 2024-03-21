@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 14:48:53 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/03/19 16:56:32 by abolea           ###   ########.fr       */
+/*   Updated: 2024/03/21 10:56:37 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ typedef struct data_s
 	int		pipefd[2];
 	pid_t	pid1;
 	pid_t	pid2;
+	int		pnum;
+	char	***args;
 }				t_data;
 
 
