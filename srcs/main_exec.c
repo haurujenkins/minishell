@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 11:49:04 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/03/21 14:41:28 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/03/21 14:49:16 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,15 @@ int	exec_cmd(t_data *da, char **envp)
 			{
 				token = 1;
 				if (da->fd_input != -1)
+				{
+					printf("OUT DUP");
 					dup2(da->fd_input, STDIN_FILENO);
+				}
 				if (da->fd_output != -1)
+				{
+					printf("OUT DUP");
 					dup2(da->fd_output, STDOUT_FILENO);
+				}
 				close(da->fd_input);
 				close(da->fd_output);
 				if (da->pid1 == -1)
