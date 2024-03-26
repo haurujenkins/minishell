@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 13:10:19 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/03/26 10:42:18 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/03/26 13:03:40 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,21 +54,5 @@ void	free_data(t_data *da, char **envp)
 		while (da->my_path[++da->i])
 			free(da->my_path[da->i]);
 		free(da->my_path);
-	}
-}
-
-void	get_path(t_data *da, char **envp)
-{
-	if (!(envp[0] == NULL))
-	{
-		while (!(ft_strchr(envp[da->i], "PATH=")))
-			da->i++;
-		da->point_path = envp[da->i] + 5;
-		da->my_path = ft_split(da->point_path, ':');
-		if (da->my_path == NULL)
-		{
-			free_data(da, envp);
-			exit(EXIT_FAILURE);
-		}
 	}
 }

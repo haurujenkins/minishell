@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 11:49:04 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/03/26 11:38:45 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/03/26 14:42:40 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ void	exec_cmd(t_data *da, char **envp, int index)
 
 	i = 0;
 	get_args(da, envp, index);
+	check_files(da, index);
 	while (da->my_path[i])
 	{
 		da->cmd = ft_strjoin_slash(da->my_path[i], da->cmd1[0]);

@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 14:19:28 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/03/26 11:09:16 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/03/26 14:46:11 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ char	*ft_strjoin(char *s1, char *s2)
 	}
 	str = malloc(sizeof(char) * ft_strlen(s1) + ft_strlen(s2) + 2);
 	if (!str)
-		return (ft_free(&s1));
+		return (NULL);
 	i = -1;
 	while (s1[++i])
 		str[i] = s1[i];

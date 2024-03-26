@@ -5,6 +5,7 @@ SRCS			=	main.c \
 					exec_utils.c \
 					exec_pipex.c \
 					pipe.c \
+					files.c \
 
 
 OBJS			=	$(addprefix .build/, $(SRCS:.c=.o))
