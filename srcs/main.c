@@ -6,11 +6,64 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 11:10:09 by abolea            #+#    #+#             */
-/*   Updated: 2024/03/26 13:00:53 by abolea           ###   ########.fr       */
+/*   Updated: 2024/03/26 14:58:08 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+int	simple_quote_close(char *temp_args)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	j = 0;
+	while (temp_args[i])
+	{
+		if (temp_args[i] == 39)
+		{
+			i++;
+			while (temp_args[i])
+			{
+				if (temp_args[i] == 39)
+					j++;
+				i++;
+			}
+		}
+		i++;
+	}
+	if (j == 0)
+		return (0);
+	return (1);
+}
+
+int	double_quotes_close(char *temp_args)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	j = 0;
+	while (temp_args[i])
+	{
+		if (temp_args[i] == 34)
+		{
+			i++;
+			while (temp_args[i])
+			{
+				if (temp_args[i] == 34)
+					j++;
+				i++;
+			}
+		}
+		i++;
+	}
+	if (j == 0)
+		return (0);
+	return (1);
+}
+
 
 void	print_args(int i, int pnum, char ***args)
 {
@@ -229,6 +282,16 @@ char	*fill_args(char **words)
 	return (args);
 }
 
+void	if_quotes(char **temp_args, int i)
+{
+	if (simple_quote_close(temp_args[i]) == 0)
+		exit(printf("Error : simple quote not close\n"));
+	else if (double_quotes_close(temp_args[i]) == 0)
+		exit(printf("Error : double quotes not close\n"));
+	else
+		return ;
+}
+
 void	parsing(char *rl, t_data *da)
 {
 	char	**temp_args;
@@ -243,6 +306,7 @@ void	parsing(char *rl, t_data *da)
 	da->args = malloc(da->pnum * sizeof(char **));
 	while (i < da->pnum)
 	{
+		if_quotes(temp_args, i);
 		words = ft_split(temp_args[i], ' ');
 		while (words[num_words] != NULL)
 			num_words++;
