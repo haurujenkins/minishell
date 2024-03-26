@@ -1,4 +1,4 @@
-CC = cc
+CC = gcc
 NAME = libft.a
 SRC = ft_memset.c \
 		ft_bzero.c \

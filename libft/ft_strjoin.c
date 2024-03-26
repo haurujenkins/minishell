@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 14:19:28 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/03/21 14:22:12 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/03/26 11:09:16 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,6 @@ char	*ft_strjoin(char *s1, char *s2)
 	while (s2[++c])
 		str[i + c] = s2[c];
 	str[i + c] = '\0';
-	free(s1);
+	//free(s1);
 	return (str);
 }

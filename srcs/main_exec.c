@@ -6,94 +6,104 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 11:49:04 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/03/21 14:49:16 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/03/26 11:38:45 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	exec_cmd(t_data *da, char **envp)
+int	exec_recur(t_data *da, char **envp, int index)
 {
-	int	i;
-	int	token;
-
-	token = 0;
-	get_path(da, envp);
-	i = 0;
-	if (!(ft_strchr(da->args[0][0], "/")) && !(envp[0] == NULL))
+	//Condition d'arrêt de la récursion
+	if (index == da->pnum)
 	{
-		while (da->my_path[i])
+	// Exécution de la dernière commande
+		//exec_cmd(da, envp, index);
+		return (0);
+	}
+	da->pid1 = fork();
+	if (da->pid1 == -1)
+	{
+		perror("fork");
+		exit(EXIT_FAILURE);
+	}
+	else if (da->pid1 == 0) //processus enfant
+	{
+		if (index != 0) //si ce n'est pas la premiere commande
 		{
-			da->cmd = ft_strjoin_slash(da->my_path[i], da->cmd1[0]);
-			if (da->cmd == NULL)
+			if (dup2(da->pipefd[index - 1][0], STDIN_FILENO) == -1)
 			{
-				free_data(da, envp);
-				write(2, "Malloc Error", 12);
+				perror("dup2");
 				exit(EXIT_FAILURE);
 			}
-			if (access(da->cmd, X_OK) == 0)
-			{
-				token = 1;
-				if (da->fd_input != -1)
-				{
-					printf("OUT DUP");
-					dup2(da->fd_input, STDIN_FILENO);
-				}
-				if (da->fd_output != -1)
-				{
-					printf("OUT DUP");
-					dup2(da->fd_output, STDOUT_FILENO);
-				}
-				close(da->fd_input);
-				close(da->fd_output);
-				if (da->pid1 == -1)
-				{
-					free_data(da, envp);
-					write(2, "Error Forking\n", 14);
-					exit(EXIT_FAILURE);
-				}
-				else if (da->pid1 == 0)
-				{
-					execve(da->cmd, da->cmd1, envp);
-				}
-			}
-			free(da->cmd);
-			if (token == 1)
-				break ;
-			i++;
 		}
+		if (index != da->pnum - 1)
+		{
+			if (dup2(da->pipefd[index][1], STDOUT_FILENO) == -1)
+			{
+				perror("dup2");
+				exit(EXIT_FAILURE);
+			}
+		}
+		// fermeture des fd non utilises
+		da->i = 0;
+		while (da->i < da->pnum - 1)
+		{
+			if (da->i != index - 1 && da->i != index)
+			{
+				close(da->pipefd[da->i][0]);
+				close(da->pipefd[da->i][1]);
+			}
+			da->i++;
+		}
+		// execution de la commande
+		exec_cmd(da, envp, index);
+		perror("execve");
+		exit(EXIT_FAILURE);
 	}
+	else //processus parent
+	{
+		if (index != da->pnum - 1)
+			close(da->pipefd[index][1]);
+		//appel recursif
+		exec_recur(da, envp, index + 1);
+	}
+	waitpid(da->pid1, NULL, 0);
 	return (0);
+}
+
+void	exec_cmd(t_data *da, char **envp, int index)
+{
+	int	i;
+
+	i = 0;
+	get_args(da, envp, index);
+	while (da->my_path[i])
+	{
+		da->cmd = ft_strjoin_slash(da->my_path[i], da->cmd1[0]);
+		if (da->cmd == NULL)
+		{
+			free_data(da, envp);
+			write(2, "Malloc Error", 12);
+			exit(EXIT_FAILURE);
+		}
+		if (access(da->cmd, X_OK) == 0)
+		{
+			execve(da->cmd, da->cmd1, envp);
+			perror("execve");
+			exit(EXIT_FAILURE);
+		}
+		free(da->cmd);
+		i++;
+	}
 }
 
 int	main_exec(t_data *da, char **envp)
 {
-	da->line = 0;
-	while (da->line < da->pnum)
-	{
-		set_all(da);
-		get_args(da, envp);
-		check_files(da);
-		if (da->pnum == 1)
-		{
-			da->pid1 = fork();
-			if (da->pid1 == -1)
-			{
-				//close_all(da);
-				free_data(da, envp);
-				write(2, "Error Forking\n", 14);
-				exit(EXIT_FAILURE);
-			}
-			if (da->pid1 == 0)
-				exec_cmd(da, envp);
-		}
-		if (da->pnum > 1)
-		{
-			ft_printf("Pipexxxx\n");
-		}
-		waitpid(da->pid1, NULL, 0);
-		da->line++;
-	}
+	set_pipe(da);
+	set_all(da);
+	//check_files(da);
+	exec_recur(da, envp, 0);
 	// if (caseNum > 1)
 	// 	main_pipex(da, envp);
 	return (0);

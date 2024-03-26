@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 11:10:09 by abolea            #+#    #+#             */
-/*   Updated: 2024/03/21 14:35:37 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/03/26 10:50:39 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,26 +16,6 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 #include "../includes/minishell.h"
-
-
-void	print_args(int	i, int pnum, char ***args)
-{
-	int	j;
-
-	i = 0;
-	while (i < pnum)
-	{
-		printf("\nCommande %d:\n\n", i + 1);
-		j = 0;
-		while (j < 4)
-		{
-			printf("args[%d][%d] = %s\n", i, j, args[i][j]);
-			j++;
-		}
-		i++;
-	}
-}
-
 
 int	nb_pipe(char *rl)
 {
@@ -205,7 +185,6 @@ void	parsing(char *rl, t_data *da)
 		da->args[i][3] = fill_output(temp_args, words, i);
 		i++;
 	}
-	print_args(i, da->pnum, da->args);
 }
 
 

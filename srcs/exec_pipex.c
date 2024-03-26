@@ -6,18 +6,18 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 13:01:33 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/03/21 14:44:24 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/03/26 11:10:25 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	get_args(t_data *da, char **envp)
+void	get_args(t_data *da, char **envp, int index)
 {
 	char	*temp_cmd;
 
 	temp_cmd = NULL;
-	temp_cmd = ft_strjoin(da->args[da->line][0], da->args[da->line][1]);
+	temp_cmd = ft_strjoin(da->args[index][0], da->args[index][1]);
 	if (temp_cmd[0] == '\0')
 		write(STDERR_FILENO, "permission denied:\n", 19);
 	else
@@ -66,15 +66,11 @@ int	check_files(t_data *da)
 		}
 		free (temp_files);
 	}
-	// if (da->pnum > 1)
+	// else if (da->line != (da->pnum - 1))
 	// {
-	// 	if (pipe(da->pipefd) == -1)
-	// 	{
-	// 		close(da->fd_input);
-	// 		close(da->fd_output);
-	// 		da->fail_pipe = -1;
-	// 		perror("Error creating pipe");
-	// 	}
+	// 	close(da->pipefd[0]);
+	// 	dup2(da->pipefd[1], STDOUT_FILENO);
+	// 	close(da->pipefd[1]);
 	// }
 	return (1);
 }

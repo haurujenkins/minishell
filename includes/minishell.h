@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 14:48:53 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/03/21 11:46:50 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/03/26 10:41:43 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,17 +32,18 @@ typedef struct data_s
 	int		fd_input;
 	int		fd_output;
 	int		fail_pipe;
-	int		pipefd[2];
+	int		**pipefd;
 	pid_t	pid1;
 	pid_t	pid2;
 	int		pnum;
 	char	***args;
 }				t_data;
 
-void	get_args(t_data *da, char **envp);
+void	get_args(t_data *da, char **envp, int index);
+void	set_pipe(t_data *da);
 int		main_exec(t_data *da, char **envp);
 int		check_files(t_data *da);
-int		exec_cmd(t_data *da, char **envp);
+void	exec_cmd(t_data *da, char **envp, int index);
 void	set_all(t_data *da);
 void	free_data(t_data *da, char **envp);
 void	get_path(t_data *da, char **envp);
