@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 11:05:08 by abolea            #+#    #+#             */
-/*   Updated: 2024/03/25 11:05:37 by abolea           ###   ########.fr       */
+/*   Updated: 2024/03/26 15:08:51 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ char	*ft_strjoin(char *s1, char *s2)
 	}
 	str = malloc(sizeof(char) * ft_strlen(s1) + ft_strlen(s2) + 2);
 	if (!str)
-		return (ft_free(&s1));
+		return (NULL);
 	i = -1;
 	while (s1[++i])
 		str[i] = s1[i];
@@ -37,6 +37,6 @@ char	*ft_strjoin(char *s1, char *s2)
 	while (s2[++c])
 		str[i + c] = s2[c];
 	str[i + c] = '\0';
-	free(s1);
+	//free(s1);
 	return (str);
 }

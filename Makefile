@@ -3,6 +3,9 @@ NAME			=	minishell
 SRCS			=	main.c \
 					main_exec.c \
 					exec_utils.c \
+					exec_pipex.c \
+					pipe.c \
+					files.c \
 
 
 OBJS			=	$(addprefix .build/, $(SRCS:.c=.o))
@@ -11,7 +14,7 @@ LD_FLAGS		=	-L libft
 
 HEAD			=	-I includes -I libft
 
-CC				=	cc
+CC				=cc
 
 CFLAGS			=	-Wall -Werror -Wextra
 

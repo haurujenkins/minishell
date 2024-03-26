@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 11:10:09 by abolea            #+#    #+#             */
-/*   Updated: 2024/03/26 14:58:08 by abolea           ###   ########.fr       */
+/*   Updated: 2024/03/26 15:08:32 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -344,7 +344,6 @@ void	parsing(char *rl, t_data *da)
 		}
 		i++;
 	}
-	print_args(i, da->pnum, da->args);
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -361,7 +360,7 @@ int	main(int argc, char **argv, char **envp)
 		if (rl[0])
 		{
 			parsing(rl, &da);
-			// main_exec(args, envp, pnum);
+			main_exec(&da, envp);
 			add_history(rl);
 		}
 		else

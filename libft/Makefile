@@ -26,6 +26,8 @@ SRC = ft_memset.c \
 		ft_strdup.c \
 		ft_substr.c \
 		ft_strjoin.c \
+		ft_strjoin_slash.c \
+		ft_strjoin_ori.c \
 		ft_charrchr.c \
 		ft_split.c \
 		ft_itoa.c \

@@ -6,39 +6,44 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 13:01:33 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/03/15 14:24:47 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/03/26 14:50:24 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	check_files(t_data *da, char **args, int pnum)
+void	get_path(t_data *da, char **envp)
 {
-	if (args[da->line][2] != NULL)
+	if (!(envp[0] == NULL))
 	{
-		da->fd_input = open(args[da->line][2], O_RDONLY);
-		if (da->fd_input < 0)
-			perror("Error opening input file");
-	}
-	if (args[da->line][3] != NULL)
-	{
-		da->fd_output = \
-		open(args[da->line][3], O_WRONLY | O_CREAT | O_TRUNC, 0644);
-		if (da->fd_output < 0)
+		while (!(ft_strchr(envp[da->i], "PATH=")))
+			da->i++;
+		da->point_path = envp[da->i] + 5;
+		da->my_path = ft_split(da->point_path, ':');
+		if (da->my_path == NULL)
 		{
-			close(da->fd_input);
-			perror("Error opening output file");
+			free_data(da, envp);
+			exit(EXIT_FAILURE);
 		}
 	}
-	if (pnum > 1)
+}
+
+void	get_args(t_data *da, char **envp, int index)
+{
+	char	*temp_cmd;
+
+	temp_cmd = NULL;
+	if (da->args[index][1] == NULL)
+		temp_cmd = da->args[index][0];
+	else
+		temp_cmd = ft_strjoin(da->args[index][0], da->args[index][1]);
+	if (temp_cmd[0] == '\0')
+		write(STDERR_FILENO, "permission denied:\n", 19);
+	else
 	{
-		if (pipe(da->pipefd) == -1)
-		{
-			close(da->fd_input);
-			close(da->fd_output);
-			da->fail_pipe = -1;
-			perror("Error creating pipe");
-		}
+		da->cmd1 = ft_split(temp_cmd, ' ');
+		if (da->args[index][1] != NULL)
+			free(temp_cmd);
 	}
-	return (1);
+	get_path(da, envp);
 }

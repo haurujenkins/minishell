@@ -1,0 +1,80 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   files.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/03/26 13:03:01 by lle-pier          #+#    #+#             */
+/*   Updated: 2024/03/26 13:43:25 by lle-pier         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../includes/minishell.h"
+
+int	check_files(t_data *da, int index)
+{
+	char	**temp_files;
+	int		i;
+
+	i = 0;
+	da->fd_input = -1;
+	da->fd_output = -1;
+	temp_files = NULL;
+	if (da->args[index][2] != NULL)
+	{
+		temp_files = ft_split(da->args[index][2], ' ');
+		while (temp_files[i] != NULL)
+		{
+			da->fd_input = open(temp_files[i], O_RDONLY);
+			if (da->fd_input < 0)
+				perror("Error opening input file");
+			free (temp_files[i]);
+			i++;
+		}
+		free (temp_files);
+	}
+	if (da->fd_input != -1)
+	{
+		if (dup2(da->fd_input, STDIN_FILENO) == -1)
+		{
+			perror("dup2");
+			exit(EXIT_FAILURE);
+		}
+	}
+	close(da->fd_input);
+	if (da->args[index][3] != NULL)
+	{
+		i = 0;
+		temp_files = ft_split(da->args[index][3], ' ');
+		while (temp_files[i] != NULL)
+		{
+			da->fd_output = \
+			open(temp_files[i], O_WRONLY | O_CREAT | O_TRUNC, 0644);
+			if (da->fd_output < 0)
+			{
+				close(da->fd_input);
+				perror("Error opening output file");
+			}
+			free (temp_files[i]);
+			i++;
+		}
+		free (temp_files);
+	}
+	if (da->fd_output != -1)
+	{
+		if (dup2(da->fd_output, STDOUT_FILENO) == -1)
+		{
+			perror("dup2");
+			exit(EXIT_FAILURE);
+		}
+	}
+	close(da->fd_output);
+	// else if (index != (da->pnum - 1))
+	// {
+	// 	close(da->pipefd[0]);
+	// 	dup2(da->pipefd[1], STDOUT_FILENO);
+	// 	close(da->pipefd[1]);
+	// }
+	return (1);
+}
