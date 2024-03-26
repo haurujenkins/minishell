@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 11:10:09 by abolea            #+#    #+#             */
-/*   Updated: 2024/03/26 15:08:32 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/03/26 15:31:15 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -306,7 +306,7 @@ void	parsing(char *rl, t_data *da)
 	da->args = malloc(da->pnum * sizeof(char **));
 	while (i < da->pnum)
 	{
-		if_quotes(temp_args, i);
+		//if_quotes(temp_args, i);
 		words = ft_split(temp_args[i], ' ');
 		while (words[num_words] != NULL)
 			num_words++;
