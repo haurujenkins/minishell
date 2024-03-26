@@ -17,14 +17,14 @@ CFLAGS			=	-Wall -Werror -Wextra
 
 .build/%.o: srcs/%.c
 					@mkdir -p .build
-					@$(CC) $(CFLAGS) -lreadline -lhistory $(HEAD) -c $< -o $@ 
+					@$(CC) $(CFLAGS) $(HEAD) -c $< -o $@ 
 
 $(NAME)			:	${OBJS}
 					@echo "\033[0;33m\nCOMPILING LIBFT...\n"
 					@make -sC libft
 					@echo "\033[1;32mLIBFT_lib created\n"
 					@echo "\033[0;33m\nCOMPILING MINISHELL...\n"
-					@${CC} ${CFLAGS} ${LD_FLAGS} ${OBJS} -o ${NAME} -lreadline -lhistory -lft 
+					@${CC} ${CFLAGS} ${LD_FLAGS} ${OBJS} -o ${NAME} -lreadline -lft 
 					@echo "\033[1;32mMINISHELL created\n"
 					
 

@@ -1,4 +1,4 @@
-CC = cc
+CC = gcc
 NAME = libft.a
 SRC = ft_memset.c \
 		ft_bzero.c \
@@ -45,7 +45,9 @@ SRC = ft_memset.c \
 		hex_lower_print.c \
 		my_strchr.c \
 		hex_upper_print.c \
-		ft_split_file.c
+		ft_split_file.c \
+		ft_strjoin_slash.c \
+		ft_strjoin_ori.c
 SRC_BONUS = ft_lstnew_bonus.c \
 			ft_lstadd_front_bonus.c \
 			ft_lstlast_bonus.c \

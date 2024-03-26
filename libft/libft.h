@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 13:57:49 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/03/20 16:45:06 by abolea           ###   ########.fr       */
+/*   Updated: 2024/03/25 11:07:32 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,8 @@ void	ft_putendl_fd(char *s, int fd);
 void	ft_putnbr_fd(int n, int fd);
 char	*get_next_line(int fd);
 char	**ft_split_file(char *s, char c);
+char	*ft_strjoin_ori(char *s1, char *s2);
+char	*ft_strjoin_slash(char *s1, char *s2);
 
 typedef struct s_list
 {

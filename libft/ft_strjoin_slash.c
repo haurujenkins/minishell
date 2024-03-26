@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strjoin.c                                       :+:      :+:    :+:   */
+/*   ft_strjoin_slash.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/25 11:05:08 by abolea            #+#    #+#             */
-/*   Updated: 2024/03/25 11:05:37 by abolea           ###   ########.fr       */
+/*   Created: 2024/03/25 11:06:14 by abolea            #+#    #+#             */
+/*   Updated: 2024/03/25 11:06:18 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strjoin(char *s1, char *s2)
+char	*ft_strjoin_slash(char *s1, char *s2)
 {
 	char	*str;
 	size_t	i;
@@ -32,7 +32,7 @@ char	*ft_strjoin(char *s1, char *s2)
 	while (s1[++i])
 		str[i] = s1[i];
 	c = -1;
-	str[i] = ' ';
+	str[i] = '/';
 	i += 1;
 	while (s2[++c])
 		str[i + c] = s2[c];
