@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 13:01:33 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/03/26 15:18:32 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/03/27 18:05:19 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,9 @@
 
 void	get_path(t_data *da, char **envp)
 {
+	int	i;
+
+	i = 0;
 	if (!(envp[0] == NULL))
 	{
 		while (!(ft_strchr(envp[da->i], "PATH=")))
@@ -26,6 +29,25 @@ void	get_path(t_data *da, char **envp)
 			exit(EXIT_FAILURE);
 		}
 	}
+}
+
+char	*get_home(char **envp)
+{
+	char	*home;
+	int		i;
+
+	home = NULL;
+	i = 0;
+	while (envp[i] != NULL)
+	{
+		if (ft_strncmp(envp[i], "HOME=", 5) == 0)
+		{
+			home = ft_strdup(envp[i] + 5);
+			break ;
+		}
+		i++;
+	}
+	return (home);
 }
 
 void	get_args(t_data *da, char **envp, int index)

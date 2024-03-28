@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 14:48:53 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/03/26 15:22:10 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/03/27 18:09:25 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <stdlib.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <stdbool.h>
 # include "../libft/libft.h"
 
 typedef struct data_s
@@ -29,6 +30,7 @@ typedef struct data_s
 	int		j;
 	int		line;
 	int		out;
+	char	**my_env;
 	char	**cmd1;
 	char	**cmd2;
 	char	**my_path;
@@ -49,7 +51,10 @@ void	set_pipe(t_data *da);
 int		main_exec(t_data *da, char **envp);
 int		check_files(t_data *da, int index);
 void	exec_cmd(t_data *da, char **envp, int index);
-void	set_all(t_data *da);
+void	set_all(t_data *da, char **envp);
 void	free_data(t_data *da, char **envp);
+int		check_builtins(t_data *da);
+int		check_extern_builtins(t_data *da, char **env, int index);
+char	*get_home(char **envp);
 
 #endif

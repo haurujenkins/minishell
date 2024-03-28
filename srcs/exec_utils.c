@@ -6,26 +6,43 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 13:10:19 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/03/26 13:03:40 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/03/27 18:11:59 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	set_all(t_data *da)
+int	ft_tablen(char **tab)
 {
+	int	i;
+
+	i = 0;
+	while (tab[i] != NULL)
+		i++;
+	return (i);
+}
+
+void	set_all(t_data *da, char **envp)
+{
+	int	i;
+	
+	i = 0;
 	da->cmd1 = NULL;
-	da->cmd2 = NULL;
 	da->cmd = NULL;
-	da->fail_pipe = 0;
 	da->fd_input = -1;
 	da->fd_output = -1;
 	da->i = 0;
 	da->j = 0;
 	da->my_path = NULL;
 	da->pid1 = 0;
-	da->pid2 = 0;
 	da->point_path = NULL;
+	da->my_env = malloc(sizeof(char *) * (ft_tablen(envp) + 1));
+	while (envp[i] != NULL)
+	{
+		da->my_env[i] = malloc(sizeof(char) * (ft_strlen(envp[i]) + 1));
+		ft_strlcpy(da->my_env[i], envp[i], ft_strlen(envp[i]));
+		i++;
+	}
 }
 
 void	free_data(t_data *da, char **envp)
@@ -40,13 +57,6 @@ void	free_data(t_data *da, char **envp)
 		while (da->cmd1[++da->i])
 			free(da->cmd1[da->i]);
 		free (da->cmd1);
-	}
-	da->i = -1;
-	if (!(da->cmd2 == NULL))
-	{
-		while (da->cmd2[++da->i])
-			free(da->cmd2[da->i]);
-		free (da->cmd2);
 	}
 	da->i = -1;
 	if (!(envp[0] == NULL))

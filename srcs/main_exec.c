@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 11:49:04 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/03/26 14:42:40 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/03/27 18:05:01 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ int	exec_recur(t_data *da, char **envp, int index)
 	{
 	// Exécution de la dernière commande
 		//exec_cmd(da, envp, index);
+		close(da->pipefd[index - 1][0]);
+		close(da->pipefd[index - 1][1]);
 		return (0);
 	}
 	da->pid1 = fork();
@@ -58,8 +60,8 @@ int	exec_recur(t_data *da, char **envp, int index)
 		}
 		// execution de la commande
 		exec_cmd(da, envp, index);
-		perror("execve");
-		exit(EXIT_FAILURE);
+		// perror("execve");
+		// exit(EXIT_FAILURE);
 	}
 	else //processus parent
 	{
@@ -79,6 +81,8 @@ void	exec_cmd(t_data *da, char **envp, int index)
 	i = 0;
 	get_args(da, envp, index);
 	check_files(da, index);
+	if (check_builtins(da) == 1)
+		exit(EXIT_SUCCESS);
 	while (da->my_path[i])
 	{
 		da->cmd = ft_strjoin_slash(da->my_path[i], da->cmd1[0]);
@@ -102,9 +106,10 @@ void	exec_cmd(t_data *da, char **envp, int index)
 int	main_exec(t_data *da, char **envp)
 {
 	set_pipe(da);
-	set_all(da);
+	set_all(da, envp);
 	//check_files(da);
-	exec_recur(da, envp, 0);
+	if (check_extern_builtins(da, envp, 0) == 0)
+		exec_recur(da, envp, 0);
 	// if (caseNum > 1)
 	// 	main_pipex(da, envp);
 	return (0);
