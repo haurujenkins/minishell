@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 14:48:53 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/03/26 15:22:10 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/03/27 16:18:05 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <stdio.h>
 # include <unistd.h>
 # include <stdlib.h>
+# include <signal.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include "../libft/libft.h"

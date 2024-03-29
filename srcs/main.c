@@ -6,11 +6,31 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 11:10:09 by abolea            #+#    #+#             */
-/*   Updated: 2024/03/27 15:26:09 by abolea           ###   ########.fr       */
+/*   Updated: 2024/03/29 15:30:30 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+int	check_error(char *rl)
+{
+	int	i;
+
+	i = 0;
+	while (rl[i])
+	{
+		if (rl[i] == '<' && rl[i + 1] == '>')
+			return (-1);
+		else if (rl[i] == '>' && rl[i + 1] == '<')
+			return (-1);
+		else if (rl[i] == '>' && rl[i + 2] == '>')
+			return (-1);
+		else if (rl[i] == '<' && rl[i + 2] == '<')
+			return (-1);
+		i++;
+	}
+	return (0);
+}
 
 int	simple_quote_close(char *temp_args)
 {
@@ -203,7 +223,7 @@ void	if_quotes(char **temp_args, int i)
 	if (simple_quote_close(temp_args[i]) == 0)
 		exit(printf("Error : simple quote not close\n"));
 	else if (double_quotes_close(temp_args[i]) == 0)
-		exit(printf("Error : double quotes not close\n"));
+		exit(printf("Error : do uble quotes not close\n"));
 	else
 		return ;
 }
@@ -234,7 +254,7 @@ int	pos_args(char **words)
 		return (-1);
 	while (words[j])
 	{
-		if ((words[j - 1][0] != '<' && words[j - 1][0] != '>') && \
+		if ((words[j - 1][0] !=  '<' && words[j - 1][0] != '>') && \
 		(words[j][0] != '>' && words[j][0] != '<'))
 			return (j);
 		j++;
@@ -276,6 +296,19 @@ char	*fill_args(char **words)
 			args = ft_strjoin_ori(args, " ");
 			j++;
 		}
+		while (j < num_words)
+		{
+			if (words[j - 2][0] == '<' || words[j - 2][0] == '>')
+			{
+				while (j < num_words && (words[j][0] != '<' && words[j][0] != '>'))
+				{
+					args = ft_strjoin_ori(args, words[j]);
+					args = ft_strjoin_ori(args, " ");
+					j++;
+				}
+			}
+			j++;
+		}
 	}
 	return (args);
 }
@@ -314,24 +347,30 @@ void	parsing(char *rl, t_data *da)
 		}
 		i++;
 	}
-	print_args(i, da->pnum, da->args);
+	// print_args(i, da->pnum, da->args);
 }
+
 
 int	main(int argc, char **argv, char **envp)
 {
 	char	*rl;
 	t_data	da;
-
+	
 	(void)envp;
 	if (argc != 1 || argv[0][0] == '\0')
 		printf("ERROR\n");
 	while (1)
 	{
 		rl = readline("\033[1;36m<3 \033[0;37m");
+		if (check_error(rl))
+		{
+			printf("parse error\n");
+			continue;
+		}
 		if (rl[0])
 		{
 			parsing(rl, &da);
-			// main_exec(&da, envp);
+			main_exec(&da, envp);
 			add_history(rl);
 		}
 		else
