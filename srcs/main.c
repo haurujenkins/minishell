@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 11:10:09 by abolea            #+#    #+#             */
-/*   Updated: 2024/04/02 13:20:51 by abolea           ###   ########.fr       */
+/*   Updated: 2024/04/02 14:48:02 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,6 @@ int	double_quotes_close(char *temp_args)
 		return (0);
 	return (1);
 }
-
 
 void	print_args(int i, int pnum, char ***args)
 {
@@ -176,7 +175,9 @@ char	*fill_input(char ** words, char **temp_args, int i)
 	int		l;
 	char	*tmp;
 	char	*args;
-
+	char	sep;
+	
+	sep = 3;
 	j = 1;
 	tmp = ft_strdup("");
 	if (ft_strnstr(temp_args[i], "<", ft_strlen(temp_args[i])))
@@ -187,7 +188,7 @@ char	*fill_input(char ** words, char **temp_args, int i)
 			if (words[j - 1][0] == '<' && !words[j - 1][1])
 			{
 				args = ft_strjoin_ori(args, words[j]);
-				args = ft_strjoin_ori(args, " ");
+				args = ft_strjoin_ori(args, &sep);
 			}
 			else if (words[j][0] == '<' && words[j][1])
 			{
@@ -201,7 +202,7 @@ char	*fill_input(char ** words, char **temp_args, int i)
 				}
 				tmp[l] = '\0';
 				args = ft_strjoin_ori(args, tmp);
-				args = ft_strjoin_ori(args, " ");
+				args = ft_strjoin_ori(args, &sep);
 			}
 			j++;
 		}
@@ -211,7 +212,6 @@ char	*fill_input(char ** words, char **temp_args, int i)
 	return (args);
 }
 
-
 char	*fill_output(char ** words, char **temp_args, int i)
 {
 	int		j;
@@ -219,7 +219,9 @@ char	*fill_output(char ** words, char **temp_args, int i)
 	int		l;
 	char	*tmp;
 	char	*args;
-
+	char	sep;
+	
+	sep = 3;
 	j = 1;
 	tmp = ft_strdup("");
 	if (ft_strnstr(temp_args[i], ">", ft_strlen(temp_args[i])))
@@ -230,7 +232,7 @@ char	*fill_output(char ** words, char **temp_args, int i)
 			if (words[j - 1][0] == '>' && !words[j - 1][1])
 			{
 				args = ft_strjoin_ori(args, words[j]);
-				args = ft_strjoin_ori(args, " ");
+				args = ft_strjoin_ori(args, &sep);
 			}
 			else if (words[j][0] == '>' && words[j][1])
 			{
@@ -244,7 +246,7 @@ char	*fill_output(char ** words, char **temp_args, int i)
 				}
 				tmp[l] = '\0';
 				args = ft_strjoin_ori(args, tmp);
-				args = ft_strjoin_ori(args, " ");
+				args = ft_strjoin_ori(args, &sep);
 			}
 			j++;
 		}
@@ -397,7 +399,6 @@ void	parsing(char *rl, t_data *da)
 	}
 	print_args(i, da->pnum, da->args);
 }
-
 
 int	main(int argc, char **argv, char **envp)
 {
