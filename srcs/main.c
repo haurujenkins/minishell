@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 11:10:09 by abolea            #+#    #+#             */
-/*   Updated: 2024/03/29 15:30:30 by abolea           ###   ########.fr       */
+/*   Updated: 2024/04/02 13:20:51 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,17 +172,35 @@ char	*cpy_until_char(char *s, char c)
 char	*fill_input(char ** words, char **temp_args, int i)
 {
 	int		j;
+	int		k;
+	int		l;
+	char	*tmp;
 	char	*args;
 
 	j = 1;
+	tmp = ft_strdup("");
 	if (ft_strnstr(temp_args[i], "<", ft_strlen(temp_args[i])))
 	{
 		args = ft_strdup("");
 		while (words[j])
 		{
-			if (words[j - 1][0] == '<')
+			if (words[j - 1][0] == '<' && !words[j - 1][1])
 			{
 				args = ft_strjoin_ori(args, words[j]);
+				args = ft_strjoin_ori(args, " ");
+			}
+			else if (words[j][0] == '<' && words[j][1])
+			{
+				k = 1;
+				l = 0;
+				while (words[j][k])
+				{
+					tmp[l] = words[j][k];
+					l++;
+					k++;
+				}
+				tmp[l] = '\0';
+				args = ft_strjoin_ori(args, tmp);
 				args = ft_strjoin_ori(args, " ");
 			}
 			j++;
@@ -197,17 +215,35 @@ char	*fill_input(char ** words, char **temp_args, int i)
 char	*fill_output(char ** words, char **temp_args, int i)
 {
 	int		j;
+	int		k;
+	int		l;
+	char	*tmp;
 	char	*args;
 
 	j = 1;
+	tmp = ft_strdup("");
 	if (ft_strnstr(temp_args[i], ">", ft_strlen(temp_args[i])))
 	{
 		args = ft_strdup("");
 		while (words[j])
 		{
-			if (words[j - 1][0] == '>')
+			if (words[j - 1][0] == '>' && !words[j - 1][1])
 			{
 				args = ft_strjoin_ori(args, words[j]);
+				args = ft_strjoin_ori(args, " ");
+			}
+			else if (words[j][0] == '>' && words[j][1])
+			{
+				k = 1;
+				l = 0;
+				while (words[j][k])
+				{
+					tmp[l] = words[j][k];
+					l++;
+					k++;
+				}
+				tmp[l] = '\0';
+				args = ft_strjoin_ori(args, tmp);
 				args = ft_strjoin_ori(args, " ");
 			}
 			j++;
@@ -223,7 +259,7 @@ void	if_quotes(char **temp_args, int i)
 	if (simple_quote_close(temp_args[i]) == 0)
 		exit(printf("Error : simple quote not close\n"));
 	else if (double_quotes_close(temp_args[i]) == 0)
-		exit(printf("Error : do uble quotes not close\n"));
+		exit(printf("Error : double quotes not close\n"));
 	else
 		return ;
 }
@@ -255,6 +291,9 @@ int	pos_args(char **words)
 	while (words[j])
 	{
 		if ((words[j - 1][0] !=  '<' && words[j - 1][0] != '>') && \
+		(words[j][0] != '>' && words[j][0] != '<'))
+			return (j);
+		else if (((words[j - 1][0] == '<' && words[j - 1][0] == '>') || words[j - 1][1]) && \
 		(words[j][0] != '>' && words[j][0] != '<'))
 			return (j);
 		j++;
@@ -298,7 +337,16 @@ char	*fill_args(char **words)
 		}
 		while (j < num_words)
 		{
-			if (words[j - 2][0] == '<' || words[j - 2][0] == '>')
+			if ((words[j - 2][0] == '<' || words[j - 2][0] == '>') && !words[j - 2][1])
+			{
+				while (j < num_words && (words[j][0] != '<' && words[j][0] != '>'))
+				{
+					args = ft_strjoin_ori(args, words[j]);
+					args = ft_strjoin_ori(args, " ");
+					j++;
+				}
+			}
+			else if ((words[j - 1][0] == '<' || words[j - 1][0] == '>') && words[j - 1][1])
 			{
 				while (j < num_words && (words[j][0] != '<' && words[j][0] != '>'))
 				{
@@ -347,7 +395,7 @@ void	parsing(char *rl, t_data *da)
 		}
 		i++;
 	}
-	// print_args(i, da->pnum, da->args);
+	print_args(i, da->pnum, da->args);
 }
 
 
@@ -370,7 +418,7 @@ int	main(int argc, char **argv, char **envp)
 		if (rl[0])
 		{
 			parsing(rl, &da);
-			main_exec(&da, envp);
+			// main_exec(&da, envp);
 			add_history(rl);
 		}
 		else
