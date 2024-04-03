@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 11:10:09 by abolea            #+#    #+#             */
-/*   Updated: 2024/03/26 17:13:55 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/04/03 12:56:50 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -354,6 +354,7 @@ int	main(int argc, char **argv, char **envp)
 	(void)envp;
 	if (argc != 1 || argv[0][0] == '\0')
 		printf("ERROR\n");
+	set_all(&da, envp);
 	while (1)
 	{
 		rl = readline("\033[1;36m<3 \033[0;37m");

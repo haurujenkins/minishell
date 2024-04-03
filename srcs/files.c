@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 13:03:01 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/03/26 17:19:48 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/04/02 13:45:48 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,4 +77,18 @@ int	check_files(t_data *da, int index)
 	// 	close(da->pipefd[1]);
 	// }
 	return (1);
+}
+
+void	close_fd(t_data *da, int index)
+{
+	da->i = 0;
+	while (da->i < da->pnum - 1)
+	{
+		if (da->i != index - 1 && da->i != index)
+		{
+			close(da->pipefd[da->i][0]);
+			close(da->pipefd[da->i][1]);
+		}
+		da->i++;
+	}
 }

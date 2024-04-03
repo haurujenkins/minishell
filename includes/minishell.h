@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 14:48:53 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/03/27 18:09:25 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/04/03 15:23:04 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,5 +56,8 @@ void	free_data(t_data *da, char **envp);
 int		check_builtins(t_data *da);
 int		check_extern_builtins(t_data *da, char **env, int index);
 char	*get_home(char **envp);
+void	close_fd(t_data *da, int index);
+int		ft_tablen(char **tab);
+void	get_args_builtins(t_data *da, int index);
 
 #endif
