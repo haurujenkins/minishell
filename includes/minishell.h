@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 14:48:53 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/03/27 16:18:05 by abolea           ###   ########.fr       */
+/*   Updated: 2024/04/04 16:43:06 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,12 @@ typedef struct data_s
 	pid_t	pid2;
 	int		pnum;
 	char	***args;
+	char	***in_tab;
+	char	***out_tab;
+	int		nb_redir_in;
+	int		nb_redir_out;
+	int		p_in;
+	int		p_out;
 }				t_data;
 
 void	get_args(t_data *da, char **envp, int index);
