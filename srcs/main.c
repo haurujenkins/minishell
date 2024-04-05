@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 11:10:09 by abolea            #+#    #+#             */
-/*   Updated: 2024/04/05 13:18:01 by abolea           ###   ########.fr       */
+/*   Updated: 2024/04/05 14:59:28 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,29 +99,32 @@ void	print_args(int i, int pnum, t_data *da)
 	i = 0;
 	while (i < pnum)
 	{
-		printf("\nCommande %d:\n\n", i + 1);
+		printf("\033[1;34m\nCommande %d:\033[0;37m\n\n", i + 1);
 		j = 0;
-		while (j < 2)
+		while (da->args[i][j])
 		{
-			printf("args[%d][%d] = %s\n", i, j, da->args[i][j]);
+			printf("\033[0;33margs[%d][%d]\033[0;37m = %s\n", i, j, da->args[i][j]);
 			j++;
 		}
-		printf("\n");
 		k = 0;
-		while (k < da->nb_redir_in)
+		if (da->in_tab[i][k])
+			printf("\n");
+		while (da->in_tab[i][k])
 		{
-			printf("in_tab[%d][%d] = %s\n", i, k, da->in_tab[i][k]);
+			printf("\033[0;32min_tab[%d][%d]\033[0;37m = %s\n", i, k, da->in_tab[i][k]);
 			k++;
 		}
-		printf("\n");
 		l = 0;
-		while (l < da->nb_redir_out)
+		if (da->out_tab[i][l])
+			printf("\n");
+		while (da->out_tab[i][l])
 		{
-			printf("out_tab[%d][%d] = %s\n", i, l, da->out_tab[i][l]);
+			printf("\033[0;35mout_tab[%d][%d]\033[0;37m = %s\n", i, l, da->out_tab[i][l]);
 			l++;
 		}
 		i++;
 	}
+	printf("\n");
 }
 
 int	nb_pipe(char *rl)
@@ -343,7 +346,8 @@ char	*fill_args(char **words)
 			j++;
 		}
 	}
-	args = cpy_args_without_quotes(args);
+	if (args != NULL)
+		args = cpy_args_without_quotes(args);
 	return (args);
 }
 
@@ -428,6 +432,7 @@ void	fill_intab(t_data *da, char **temp_args)
 				da->in_tab[i][j] = fill_input(temp_args[i], da);
 				j++;
 			}
+			da->in_tab[i][j] = NULL;
 		}
 		i++;
 	}
@@ -499,6 +504,7 @@ void	fill_outab(t_data *da, char **temp_args)
 				da->out_tab[i][j] = fill_output(temp_args[i], da);
 				j++;
 			}
+			da->out_tab[i][j] = NULL;
 		}
 		i++;
 	}
