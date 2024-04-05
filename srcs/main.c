@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 11:10:09 by abolea            #+#    #+#             */
-/*   Updated: 2024/04/04 17:27:27 by abolea           ###   ########.fr       */
+/*   Updated: 2024/04/05 13:18:01 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -252,6 +252,43 @@ int	if_finish_quotes(char *s)
 	return (0);
 }
 
+int	nb_quotes(char *s)
+{
+	int	i;
+	int	res;
+
+	i = 0;
+	res = 0;
+	while (s[i])
+	{
+		if (s[i] == 34)
+			res++;
+		i++;
+	}
+	return (res);
+}
+
+char	*cpy_args_without_quotes(char *s)
+{
+	int		i;
+	int		j;
+	char	*tmp;
+	
+	i = 0;
+	j = 0;
+	tmp = malloc((ft_strlen(s) - nb_quotes(s) + 1) * sizeof(char));
+	while (s[i])
+	{
+		if (s[i] == 34)
+			i++;
+		tmp[j] = s[i];
+		i++;
+		j++;
+	}
+	tmp[j] = '\0';
+	return (tmp);
+}
+
 char	*fill_args(char **words)
 {
 	char	*args;
@@ -269,8 +306,6 @@ char	*fill_args(char **words)
 		args = ft_strdup("");
 		while (j < num_words && words[j][0] != '<' && words[j][0] != '>')
 		{
-			// if (if_finish_quotes(words[j]) == 1)
-			// 	break;
 			args = ft_strjoin_ori(args, words[j]);
 			args = ft_strjoin_ori(args, " ");
 			j++;
@@ -279,10 +314,13 @@ char	*fill_args(char **words)
 		{
 			if ((words[j - 2][0] == '<' || words[j - 2][0] == '>') && !words[j - 2][1])
 			{
+				if (words[j - 1][0] == 34)
+				{
+					while (if_finish_quotes(words[j - 1]) != 1)
+						j++;
+				}
 				while (j < num_words && (words[j][0] != '<' && words[j][0] != '>'))
 				{
-					// if (if_finish_quotes(words[j]) == 1)
-					// 	break;
 					args = ft_strjoin_ori(args, words[j]);
 					args = ft_strjoin_ori(args, " ");
 					j++;
@@ -290,10 +328,13 @@ char	*fill_args(char **words)
 			}
 			else if ((words[j - 1][0] == '<' || words[j - 1][0] == '>') && words[j - 1][1])
 			{
+				if (words[j][0] == 34)
+				{
+					while (if_finish_quotes(words[j]) != 1)
+						j++;
+				}
 				while (j < num_words && (words[j][0] != '<' && words[j][0] != '>'))
 				{
-					// if (if_finish_quotes(words[j]) == 1)
-					// 	break;
 					args = ft_strjoin_ori(args, words[j]);
 					args = ft_strjoin_ori(args, " ");
 					j++;
@@ -302,6 +343,7 @@ char	*fill_args(char **words)
 			j++;
 		}
 	}
+	args = cpy_args_without_quotes(args);
 	return (args);
 }
 
@@ -483,7 +525,10 @@ void	parsing(char *rl, t_data *da)
 		da->args[i] = malloc((num_words + 1) * sizeof(char *));
 		da->args[i][0] = fill_cmd(words);
 		if (num_words > 1)
+		{
 			da->args[i][1] = fill_args(words);
+			da->args[i][2] = NULL;
+		}
 		else
 			da->args[i][1] = NULL;
 		da->p_in = 0;
