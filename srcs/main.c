@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 11:10:09 by abolea            #+#    #+#             */
-/*   Updated: 2024/04/05 14:59:28 by abolea           ###   ########.fr       */
+/*   Updated: 2024/04/08 11:20:19 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,10 @@ void	print_args(int i, int pnum, t_data *da)
 	{
 		printf("\033[1;34m\nCommande %d:\033[0;37m\n\n", i + 1);
 		j = 0;
+		printf("\033[0;31mcmd[%d][%d]\033[0;37m = %s\n", i, j, da->args[i][0]);
+		j++;
+		if (da->args[i][j])
+			printf("\n");
 		while (da->args[i][j])
 		{
 			printf("\033[0;33margs[%d][%d]\033[0;37m = %s\n", i, j, da->args[i][j]);
@@ -111,7 +115,7 @@ void	print_args(int i, int pnum, t_data *da)
 			printf("\n");
 		while (da->in_tab[i][k])
 		{
-			printf("\033[0;32min_tab[%d][%d]\033[0;37m = %s\n", i, k, da->in_tab[i][k]);
+			printf("\033[0;32minput[%d][%d]\033[0;37m = %s\n", i, k, da->in_tab[i][k]);
 			k++;
 		}
 		l = 0;
@@ -119,7 +123,7 @@ void	print_args(int i, int pnum, t_data *da)
 			printf("\n");
 		while (da->out_tab[i][l])
 		{
-			printf("\033[0;35mout_tab[%d][%d]\033[0;37m = %s\n", i, l, da->out_tab[i][l]);
+			printf("\033[0;35moutput[%d][%d]\033[0;37m = %s\n", i, l, da->out_tab[i][l]);
 			l++;
 		}
 		i++;
@@ -309,15 +313,33 @@ char	*fill_args(char **words)
 		args = ft_strdup("");
 		while (j < num_words && words[j][0] != '<' && words[j][0] != '>')
 		{
-			args = ft_strjoin_ori(args, words[j]);
-			args = ft_strjoin_ori(args, " ");
-			j++;
+			if (words[j - 1][0] == 34 || words[j - 1][1] == 34)
+			{
+				while (if_finish_quotes(words[j - 1]) != 1)
+					j++;
+			}
+			else if (words[j][0] == '<' && words[j][0] == '>')
+			{
+				if (words[j - 1][0] == 34 || words[j - 1][1] == 34)
+				{
+					while (if_finish_quotes(words[j - 1]) != 1)
+						j++;
+				}
+				else
+					j++;
+			}
+			else
+			{
+				args = ft_strjoin_ori(args, words[j]);
+				args = ft_strjoin_ori(args, " ");
+				j++;
+			}
 		}
 		while (j < num_words)
 		{
 			if ((words[j - 2][0] == '<' || words[j - 2][0] == '>') && !words[j - 2][1])
 			{
-				if (words[j - 1][0] == 34)
+				if (words[j - 1][0] == 34 || words[j - 2][1] == 34)
 				{
 					while (if_finish_quotes(words[j - 1]) != 1)
 						j++;
@@ -331,9 +353,9 @@ char	*fill_args(char **words)
 			}
 			else if ((words[j - 1][0] == '<' || words[j - 1][0] == '>') && words[j - 1][1])
 			{
-				if (words[j][0] == 34)
+				if (words[j - 1][1] == 34)
 				{
-					while (if_finish_quotes(words[j]) != 1)
+					while (if_finish_quotes(words[j - 1]) != 1)
 						j++;
 				}
 				while (j < num_words && (words[j][0] != '<' && words[j][0] != '>'))
