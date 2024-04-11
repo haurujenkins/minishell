@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 14:48:53 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/04/04 16:43:06 by abolea           ###   ########.fr       */
+/*   Updated: 2024/04/10 16:27:50 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,10 +45,17 @@ typedef struct data_s
 	char	***args;
 	char	***in_tab;
 	char	***out_tab;
+	char	***delim_tab;
+	char	***append_tab;
 	int		nb_redir_in;
 	int		nb_redir_out;
-	int		p_in;
-	int		p_out;
+	int		io_nb;
+	int		i_in_quotes;
+	int		o_in_quotes;
+	int		nb_delim;
+	int		in_delim;
+	int		o_append;
+	int		nb_append;
 }				t_data;
 
 void	get_args(t_data *da, char **envp, int index);
