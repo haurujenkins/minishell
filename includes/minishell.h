@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 14:48:53 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/04/10 16:07:11 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/04/11 11:43:13 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <stdio.h>
 # include <unistd.h>
 # include <stdlib.h>
+# include <signal.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <stdbool.h>
@@ -52,6 +53,17 @@ typedef struct data_s
 	int		p_out;
 	int		check_export;
 	int		exit_status;
+	char	***delim_tab;
+	char	***append_tab;
+	int		nb_redir_in;
+	int		nb_redir_out;
+	int		io_nb;
+	int		i_in_quotes;
+	int		o_in_quotes;
+	int		nb_delim;
+	int		in_delim;
+	int		o_append;
+	int		nb_append;
 }				t_data;
 
 void	get_args(t_data *da, char **envp, int index);

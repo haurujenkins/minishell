@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 11:10:09 by abolea            #+#    #+#             */
-/*   Updated: 2024/04/08 13:59:24 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/04/11 11:42:33 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,15 @@ int	check_error(char *rl)
 	i = 0;
 	while (rl[i])
 	{
+		if (rl[i] == 34)
+		{
+			i++;
+			while (rl[i] != 34)
+				i++;
+		}
 		if (rl[i] == '<' && rl[i + 1] == '>')
 			return (-1);
 		else if (rl[i] == '>' && rl[i + 1] == '<')
-			return (-1);
-		else if (rl[i] == '>' && rl[i + 2] == '>')
-			return (-1);
-		else if (rl[i] == '<' && rl[i + 2] == '<')
 			return (-1);
 		i++;
 	}
@@ -95,6 +97,8 @@ void	print_args(int i, int pnum, t_data *da)
 	int	j;
 	int	k;
 	int	l;
+	int	m;
+	int	n;
 
 	i = 0;
 	while (i < pnum)
@@ -125,6 +129,22 @@ void	print_args(int i, int pnum, t_data *da)
 		{
 			printf("\033[0;35moutput[%d][%d]\033[0;37m = %s\n", i, l, da->out_tab[i][l]);
 			l++;
+		}
+		m = 0;
+		if (da->delim_tab[i][m])
+			printf("\n");
+		while (da->delim_tab[i][m])
+		{
+			printf("delimiteur[%d][%d]\033[0;37m = %s\n", i, m, da->delim_tab[i][m]);
+			m++;
+		}
+		n = 0;
+		if (da->append_tab[i][n])
+			printf("\n");
+		while (da->append_tab[i][n])
+		{
+			printf("append_out[%d][%d]\033[0;37m = %s\n", i, n, da->append_tab[i][n]);
+			n++;
 		}
 		i++;
 	}
@@ -187,7 +207,7 @@ char	*cpy_until_char(char *s, char c, int start)
 	return (tmp);
 }
 
-void	if_quotes(char **temp_args, int i)
+void	if_quotes_not_close(char **temp_args, int i)
 {
 	if (simple_quote_close(temp_args[i]) == 0)
 		exit(printf("Error : simple quote not close\n"));
@@ -313,7 +333,7 @@ char	*fill_args(char **words)
 		args = ft_strdup("");
 		while (j < num_words && words[j][0] != '<' && words[j][0] != '>')
 		{
-			if (words[j - 1][0] == 34 || words[j - 1][1] == 34)
+			if ((words[j - 1][0] == '>' || words[j - 1][0] == '<') && (words[j][0] == 34 || words[j - 1][1] == 34))
 			{
 				while (if_finish_quotes(words[j - 1]) != 1)
 					j++;
@@ -339,7 +359,7 @@ char	*fill_args(char **words)
 		{
 			if ((words[j - 2][0] == '<' || words[j - 2][0] == '>') && !words[j - 2][1])
 			{
-				if (words[j - 1][0] == 34 || words[j - 2][1] == 34)
+				if (words[j - 1][0] == 34)
 				{
 					while (if_finish_quotes(words[j - 1]) != 1)
 						j++;
@@ -382,6 +402,12 @@ int		ft_nb_redir(char *temp_args, char c)
 	nb = 0;
 	while (temp_args[i])
 	{
+		if (temp_args[i] == 34)
+		{
+			i++;
+			while (temp_args[i] != 34)
+				i++;
+		}
 		if (temp_args[i] == c)
 			nb++;
 		i++;
@@ -389,45 +415,79 @@ int		ft_nb_redir(char *temp_args, char c)
 	return (nb);
 }
 
+int	if_quotes(char *s, int start)
+{
+	while (s[start] != ' ')
+	{
+		if (s[start] == 34)
+			return (1);
+		start++;
+	}
+	return (0);
+}
+
+int	if_io_before_last_quotes(char *s, char c, int start)
+{
+	while(s[start])
+	{
+		if (s[start] == 34)
+		{
+			start++;
+			while (s[start] != 34)
+				start++;
+			if (s[start] == 34 && s[start - 1] == c)
+				return (1);
+		}
+		start++;
+	}
+	return (0);
+}
+
 char	*fill_input(char *temp_args, t_data *da)
 {
 	char	*args;
 
-	while (temp_args[da->p_in])
+	while (temp_args[da->io_nb])
 	{
-		if (temp_args[da->p_in] == '<')
+		if (temp_args[da->io_nb] == '<')
 		{
-			da->p_in++;
-			if (temp_args[da->p_in] == ' ')
+			da->io_nb++;
+			if (temp_args[da->io_nb] == ' ')
 			{
-				da->p_in++;
-				while (temp_args[da->p_in] == ' ')
-					da->p_in++;
-				if (temp_args[da->p_in] == 34)
+				da->io_nb++;
+				while (temp_args[da->io_nb] == ' ')
+					da->io_nb++;
+				if (temp_args[da->io_nb] == 34)
 				{
-					da->p_in++;
-					args = cpy_until_char(temp_args, 34, da->p_in);
+					da->io_nb++;
+					args = cpy_until_char(temp_args, 34, da->io_nb);
+					while (temp_args[da->io_nb] != 34)
+						da->io_nb++;
 					return (args);
 				}
 				else
 				{
-					args = cpy_until_char(temp_args, ' ', da->p_in);
+					args = cpy_until_char(temp_args, ' ', da->io_nb);
 					return (args);
 				}
 			}
-			else if (temp_args[da->p_in] == 34)
+			else if (temp_args[da->io_nb] == 34)
 			{
-				da->p_in++;
-				args = cpy_until_char(temp_args, 34, da->p_in);
+				da->io_nb++;
+				args = cpy_until_char(temp_args, 34, da->io_nb);
+				while (temp_args[da->io_nb] != 34)
+					da->io_nb++;
 				return (args);
 			}
-			else if (ft_isprint(temp_args[da->p_in]) == 1)
+			else if (ft_isprint(temp_args[da->io_nb]) == 1)
 			{
-				args = cpy_until_char(temp_args, ' ', da->p_in);
+				args = cpy_until_char(temp_args, ' ', da->io_nb);
+				if (if_finish_quotes(args) == 1)
+					return (NULL);
 				return (args);
 			}
 		}
-		da->p_in++;
+		da->io_nb++;
 	}
 	return (NULL);
 }
@@ -442,7 +502,6 @@ void	fill_intab(t_data *da, char **temp_args)
 	while (i < da->pnum)
 	{
 		j = 0;
-		da->p_in = 0;
 		da->nb_redir_in = ft_nb_redir(temp_args[i], '<');
 		da->in_tab[i] = malloc((da->nb_redir_in + 1) * sizeof(char *));
 		if (da->nb_redir_in == 0)
@@ -452,7 +511,8 @@ void	fill_intab(t_data *da, char **temp_args)
 			while (j < da->nb_redir_in)
 			{
 				da->in_tab[i][j] = fill_input(temp_args[i], da);
-				j++;
+				if (da->in_tab[i][j])
+					j++;
 			}
 			da->in_tab[i][j] = NULL;
 		}
@@ -464,41 +524,47 @@ char	*fill_output(char *temp_args, t_data *da)
 {
 	char	*args;
 
-	while (temp_args[da->p_out])
+	while (temp_args[da->io_nb])
 	{
-		if (temp_args[da->p_out] == '>')
+		if (temp_args[da->io_nb] == '>')
 		{
-			da->p_out++;
-			if (temp_args[da->p_out] == ' ')
+			da->io_nb++;
+			if (temp_args[da->io_nb] == ' ')
 			{
-				da->p_out++;
-				while (temp_args[da->p_out] == ' ')
-					da->p_out++;
-				if (temp_args[da->p_out] == 34)
+				da->io_nb++;
+				while (temp_args[da->io_nb] == ' ')
+					da->io_nb++;
+				if (temp_args[da->io_nb] == 34)
 				{
-					da->p_out++;
-					args = cpy_until_char(temp_args, 34, da->p_out);
+					da->io_nb++;
+					args = cpy_until_char(temp_args, 34, da->io_nb);
+					while (temp_args[da->io_nb] != 34)
+						da->io_nb++;
 					return (args);
 				}
 				else
 				{
-					args = cpy_until_char(temp_args, ' ', da->p_out);
+					args = cpy_until_char(temp_args, ' ', da->io_nb);
 					return (args);
 				}
 			}
-			else if (temp_args[da->p_out] == 34)
+			else if (temp_args[da->io_nb] == 34)
 			{
-				da->p_out++;
-				args = cpy_until_char(temp_args, 34, da->p_out);
+				da->io_nb++;
+				args = cpy_until_char(temp_args, 34, da->io_nb);
+				while (temp_args[da->io_nb] != 34)
+					da->io_nb++;
 				return (args);
 			}
-			else if (ft_isprint(temp_args[da->p_out]) == 1)
+			else if (ft_isprint(temp_args[da->io_nb]) == 1)
 			{
-				args = cpy_until_char(temp_args, ' ', da->p_out);
+				args = cpy_until_char(temp_args, ' ', da->io_nb);
+				if (if_finish_quotes(args) == 1)
+					return (NULL);
 				return (args);
 			}
 		}
-		da->p_out++;
+		da->io_nb++;
 	}
 	return (NULL);
 }
@@ -514,7 +580,6 @@ void	fill_outab(t_data *da, char **temp_args)
 	while (i < da->pnum)
 	{
 		j = 0;
-		da->p_out = 0;
 		da->nb_redir_out = ft_nb_redir(temp_args[i], '>');
 		da->out_tab[i] = malloc((da->nb_redir_out + 1) * sizeof(char *));
 		if (da->nb_redir_out == 0)
@@ -524,12 +589,301 @@ void	fill_outab(t_data *da, char **temp_args)
 			while (j < da->nb_redir_out)
 			{
 				da->out_tab[i][j] = fill_output(temp_args[i], da);
-				j++;
+				if (da->out_tab[i][j])
+					j++;
 			}
 			da->out_tab[i][j] = NULL;
 		}
 		i++;
 	}
+}
+
+int	ft_nb_delim(char *s)
+{
+	int		i;
+	int		j;
+
+	i = 0;
+	j = 0;
+	while (s[i])
+	{
+		if (s[i] == 34)
+		{
+			i++;
+			while (s[i] != 34)
+				i++;
+		}
+		if (s[i] == '<' && s[i + 1] == '<')
+			j++;
+		i++;
+	}
+	return (j);
+}
+
+char	*fill_delimiter(char *temp_args, t_data *da)
+{
+	char	*args;
+
+	while (temp_args[da->in_delim])
+	{
+		if (temp_args[da->in_delim] == '<' && temp_args[da->in_delim + 1] == '<')
+		{
+			da->in_delim += 2;
+			if (temp_args[da->in_delim] == ' ')
+			{
+				da->in_delim++;
+				while (temp_args[da->in_delim] == ' ')
+					da->in_delim++;
+				if (temp_args[da->in_delim] == 34)
+				{
+					da->in_delim++;
+					args = cpy_until_char(temp_args, 34, da->in_delim);
+					while (temp_args[da->in_delim] != 34)
+						da->in_delim++;
+					return (args);
+				}
+				else
+				{
+					args = cpy_until_char(temp_args, ' ', da->in_delim);
+					return (args);
+				}
+			}
+			else if (temp_args[da->in_delim] == 34)
+			{
+				da->in_delim++;
+				args = cpy_until_char(temp_args, 34, da->in_delim);
+				while (temp_args[da->in_delim] != 34)
+					da->in_delim++;
+				return (args);
+			}
+			else if (ft_isprint(temp_args[da->in_delim]) == 1)
+			{
+				args = cpy_until_char(temp_args, ' ', da->in_delim);
+				if (if_finish_quotes(args) == 1)
+					return (NULL);
+				return (args);
+			}
+		}
+		da->in_delim++;
+	}
+	return (NULL);
+}
+
+void	fill_delim_tab(t_data *da, char **temp_args)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	da->in_delim = 0;
+	da->delim_tab = malloc(da->pnum * sizeof(char **));
+	while (i < da->pnum)
+	{
+		j = 0;
+		da->nb_delim = ft_nb_delim(temp_args[i]);
+		da->delim_tab[i] = malloc((da->nb_delim + 1) * sizeof(char *));
+		if (da->nb_delim == 0)
+			da->delim_tab[i][j] = NULL;
+		else
+		{
+			while (j < da->nb_delim)
+			{
+				da->delim_tab[i][j] = fill_delimiter(temp_args[i], da);
+				if (da->delim_tab[i][j])
+					j++;
+			}
+			da->delim_tab[i][j] = NULL;
+		}
+		i++;
+	}
+}
+
+char	*sup_delim(char *s)
+{
+	int		i;
+	int		j;
+	char	*tmp;
+
+	i = 0;
+	j = 0;
+	tmp = ft_strdup("");
+	while (s[i])
+	{
+		if (s[i] == '<' && s[i + 1] == '<')
+		{
+			i += 3;
+			while (s[i] != ' ' && s[i])
+				i++;
+			while (s[i] == ' ')
+				i++;
+		}
+		else if (s[i])
+		{
+			tmp[j] = s[i];
+			i++;
+			j++;
+		}
+	}
+	return (tmp);
+}
+
+int	ft_nb_append(char *s)
+{
+	int		i;
+	int		j;
+
+	i = 0;
+	j = 0;
+	while (s[i])
+	{
+		if (s[i] == 34)
+		{
+			i++;
+			while (s[i] != 34)
+				i++;
+		}
+		if (s[i] == '>' && s[i + 1] == '>')
+			j++;
+		i++;
+	}
+	return (j);
+}
+
+char	*fill_append(char *temp_args, t_data *da)
+{
+	char	*args;
+
+	while (temp_args[da->o_append])
+	{
+		if (temp_args[da->o_append] == '>' && temp_args[da->o_append + 1] == '>')
+		{
+			da->o_append += 2;
+			if (temp_args[da->o_append] == ' ')
+			{
+				da->o_append++;
+				while (temp_args[da->o_append] == ' ')
+					da->o_append++;
+				if (temp_args[da->o_append] == 34)
+				{
+					da->o_append++;
+					args = cpy_until_char(temp_args, 34, da->o_append);
+					while (temp_args[da->o_append] != 34)
+						da->o_append++;
+					return (args);
+				}
+				else
+				{
+					args = cpy_until_char(temp_args, ' ', da->o_append);
+					return (args);
+				}
+			}
+			else if (temp_args[da->o_append] == 34)
+			{
+				da->o_append++;
+				args = cpy_until_char(temp_args, 34, da->o_append);
+				while (temp_args[da->o_append] != 34)
+					da->o_append++;
+				return (args);
+			}
+			else if (ft_isprint(temp_args[da->o_append]) == 1)
+			{
+				args = cpy_until_char(temp_args, ' ', da->o_append);
+				if (if_finish_quotes(args) == 1)
+					return (NULL);
+				return (args);
+			}
+		}
+		da->o_append++;
+	}
+	return (NULL);
+}
+
+void	fill_append_tab(t_data *da, char **temp_args)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	da->o_append = 0;
+	da->append_tab = malloc(da->pnum * sizeof(char **));
+	while (i < da->pnum)
+	{
+		j = 0;
+		da->nb_append = ft_nb_append(temp_args[i]);
+		da->append_tab[i] = malloc((da->nb_append + 1) * sizeof(char *));
+		if (da->nb_append == 0)
+			da->append_tab[i][j] = NULL;
+		else
+		{
+			while (j < da->nb_append)
+			{
+				da->append_tab[i][j] = fill_append(temp_args[i], da);
+				if (da->append_tab[i][j])
+					j++;
+			}
+			da->append_tab[i][j] = NULL;
+		}
+		i++;
+	}
+}
+
+char	*sup_append(char *s)
+{
+	int		i;
+	int		j;
+	char	*tmp;
+
+	i = 0;
+	j = 0;
+	tmp = ft_strdup("");
+	while (s[i])
+	{
+		if (s[i] == '>' && s[i + 1] == '>')
+		{
+			i += 3;
+			while (s[i] != ' ' && s[i])
+				i++;
+			while (s[i] == ' ')
+				i++;
+		}
+		else if (s[i])
+		{
+			tmp[j] = s[i];
+			i++;
+			j++;
+		}
+	}
+	return (tmp);
+}
+
+int	nb_io(char *s)
+{
+	int		i;
+	int		j;
+
+	i = 0;
+	j = 0;
+	while (s[i])
+	{
+		if ((s[i] == '<' || s[i] == '>') && (s[i + 1] == '<' || s[i + 1] == '>'))
+			j++;
+		i++;
+	}
+	return (j);
+}
+
+char	**new_temp_args(t_data *da, char **temp_args)
+{
+	int	i;
+
+	i = 0;
+	while (i < da->pnum)
+	{
+		temp_args[i] = sup_delim(temp_args[i]);
+		temp_args[i] = sup_append(temp_args[i]);
+		i++;
+	}
+	return (temp_args);
 }
 
 void	parsing(char *rl, t_data *da)
@@ -546,7 +900,10 @@ void	parsing(char *rl, t_data *da)
 	da->args = malloc(da->pnum * sizeof(char **));
 	while (i < da->pnum)
 	{
-		if_quotes(temp_args, i);
+		if_quotes_not_close(temp_args, i);
+		fill_delim_tab(da, temp_args);
+		fill_append_tab(da, temp_args);
+		temp_args = new_temp_args(da, temp_args);
 		words = ft_split(temp_args[i], ' ');
 		while (words[num_words] != NULL)
 			num_words++;
@@ -559,20 +916,19 @@ void	parsing(char *rl, t_data *da)
 		}
 		else
 			da->args[i][1] = NULL;
-		da->p_in = 0;
-		da->p_out = 0;
+		da->io_nb = 0;
 		fill_intab(da, temp_args);
 		fill_outab(da, temp_args);
 		i++;
 	}
-	//print_args(i, da->pnum, da);
+	print_args(i, da->pnum, da);
 }
 
 int	main(int argc, char **argv, char **envp)
 {
 	char	*rl;
 	t_data	da;
-
+	
 	(void)envp;
 	if (argc != 1 || argv[0][0] == '\0')
 		printf("ERROR\n");
@@ -583,12 +939,12 @@ int	main(int argc, char **argv, char **envp)
 		if (check_error(rl))
 		{
 			printf("parse error\n");
-			continue ;
+			continue;
 		}
 		if (rl[0])
 		{
 			parsing(rl, &da);
-			main_exec(&da, envp);
+			// main_exec(&da, envp);
 			add_history(rl);
 		}
 		else
