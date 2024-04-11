@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 11:10:09 by abolea            #+#    #+#             */
-/*   Updated: 2024/04/11 11:42:33 by abolea           ###   ########.fr       */
+/*   Updated: 2024/04/11 14:03:08 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -698,15 +698,43 @@ void	fill_delim_tab(t_data *da, char **temp_args)
 	}
 }
 
+int	len_without_delim(char *s)
+{
+	int		i;
+	int		j;
+
+	i = 0;
+	j = 0;
+	while (s[i])
+	{
+		if (s[i] == '<' && s[i + 1] == '<')
+		{
+			i += 3;
+			while (s[i] != ' ' && s[i])
+				i++;
+			while (s[i] == ' ')
+				i++;
+		}
+		else if (s[i])
+		{
+			i++;
+			j++;
+		}
+	}
+	return (j);
+}
+
 char	*sup_delim(char *s)
 {
 	int		i;
 	int		j;
+	int		len;
 	char	*tmp;
 
 	i = 0;
 	j = 0;
-	tmp = ft_strdup("");
+	len = len_without_delim(s);
+	tmp = malloc((len + 1) * sizeof(char));
 	while (s[i])
 	{
 		if (s[i] == '<' && s[i + 1] == '<')
@@ -724,6 +752,7 @@ char	*sup_delim(char *s)
 			j++;
 		}
 	}
+	tmp[j] = '\0';
 	return (tmp);
 }
 
@@ -827,15 +856,43 @@ void	fill_append_tab(t_data *da, char **temp_args)
 	}
 }
 
+int	len_without_append(char *s)
+{
+	int		i;
+	int		j;
+
+	i = 0;
+	j = 0;
+	while (s[i])
+	{
+		if (s[i] == '>' && s[i + 1] == '>')
+		{
+			i += 3;
+			while (s[i] != ' ' && s[i])
+				i++;
+			while (s[i] == ' ')
+				i++;
+		}
+		else if (s[i])
+		{
+			i++;
+			j++;
+		}
+	}
+	return (j);
+}
+
 char	*sup_append(char *s)
 {
 	int		i;
 	int		j;
+	int		len;
 	char	*tmp;
 
 	i = 0;
 	j = 0;
-	tmp = ft_strdup("");
+	len = len_without_append(s);
+	tmp = malloc((len + 1) * sizeof(char));
 	while (s[i])
 	{
 		if (s[i] == '>' && s[i + 1] == '>')
@@ -853,6 +910,7 @@ char	*sup_append(char *s)
 			j++;
 		}
 	}
+	tmp[j] = '\0';
 	return (tmp);
 }
 
@@ -921,7 +979,7 @@ void	parsing(char *rl, t_data *da)
 		fill_outab(da, temp_args);
 		i++;
 	}
-	print_args(i, da->pnum, da);
+	// print_args(i, da->pnum, da);
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -929,10 +987,12 @@ int	main(int argc, char **argv, char **envp)
 	char	*rl;
 	t_data	da;
 	
+	
 	(void)envp;
 	if (argc != 1 || argv[0][0] == '\0')
 		printf("ERROR\n");
 	set_all(&da, envp);
+	// print_all();
 	while (1)
 	{
 		rl = readline("\033[1;36m<3 \033[0;37m");
@@ -944,7 +1004,7 @@ int	main(int argc, char **argv, char **envp)
 		if (rl[0])
 		{
 			parsing(rl, &da);
-			// main_exec(&da, envp);
+			main_exec(&da, envp);
 			add_history(rl);
 		}
 		else
