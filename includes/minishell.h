@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 14:48:53 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/04/03 15:23:04 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/04/10 16:07:11 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,13 +44,21 @@ typedef struct data_s
 	pid_t	pid2;
 	int		pnum;
 	char	***args;
+	char	***in_tab;
+	char	***out_tab;
+	int		nb_redir_in;
+	int		nb_redir_out;
+	int		p_in;
+	int		p_out;
+	int		check_export;
+	int		exit_status;
 }				t_data;
 
 void	get_args(t_data *da, char **envp, int index);
 void	set_pipe(t_data *da);
 int		main_exec(t_data *da, char **envp);
 int		check_files(t_data *da, int index);
-void	exec_cmd(t_data *da, char **envp, int index);
+void	exec_cmd(t_data *da, char **envp, int i);
 void	set_all(t_data *da, char **envp);
 void	free_data(t_data *da, char **envp);
 int		check_builtins(t_data *da);
@@ -58,6 +66,17 @@ int		check_extern_builtins(t_data *da, char **env, int index);
 char	*get_home(char **envp);
 void	close_fd(t_data *da, int index);
 int		ft_tablen(char **tab);
+char	**ft_realloc(char **tab, int size);
 void	get_args_builtins(t_data *da, int index);
+void	my_env(char **env, int num);
+void	my_cd(char **cmd, char **envp, t_data *da);
+void	my_pwd(void);
+void	my_echo(char **cmd, t_data *da);
+void	my_env(char **env, int num);
+void	my_export(t_data *da);
+void	my_unset(t_data *da);
+void	sort_env(t_data *da);
+void	free_pipe(t_data *da);
+void	print_args(int i, int pnum, t_data *da);
 
 #endif

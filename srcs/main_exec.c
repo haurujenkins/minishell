@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 11:49:04 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/04/03 12:56:22 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/04/11 11:32:40 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,15 @@ void	exec_child(t_data *da, int index, char **envp)
 		}
 	}
 	close_fd(da, index);
-	exec_cmd(da, envp, index);
+	get_args(da, envp, index);
+	check_files(da, index);
+	exec_cmd(da, envp, 0);
 }
 
 int	exec_recur(t_data *da, char **envp, int index)
 {
+	int	child_status;
+
 	if (index == da->pnum)
 	{
 		close(da->pipefd[index - 1][0]);
@@ -58,40 +62,50 @@ int	exec_recur(t_data *da, char **envp, int index)
 			close(da->pipefd[index][1]);
 		exec_recur(da, envp, index + 1);
 	}
-	waitpid(da->pid1, NULL, 0);
+	waitpid(da->pid1, &child_status, 0);
+	if (index == da->pnum - 1)
+		da->exit_status = WEXITSTATUS(child_status);
 	return (0);
 }
 
-void	exec_cmd(t_data *da, char **envp, int index)
+void	exec_cmd(t_data *da, char **envp, int i)
 {
-	int	i;
-
-	i = 0;
-	get_args(da, envp, index);
-	check_files(da, index);
 	if (check_builtins(da) == 1)
 		exit(EXIT_SUCCESS);
-	while (da->my_path[i])
+	if (ft_strchr(da->cmd1[0], "$?") == 1)
 	{
-		if (da->cmd1[0][0] != '/' && da->cmd1[0][0] != '.')
-			da->cmd = ft_strjoin_slash(da->my_path[i], da->cmd1[0]);
-		else
-			da->cmd = ft_strdup(da->cmd1[0]);
-		if (da->cmd == NULL)
-		{
-			free_data(da, envp);
-			write(2, "Malloc Error", 12);
-			exit(EXIT_FAILURE);
-		}
-		if (access(da->cmd, X_OK) == 0)
-		{
-			execve(da->cmd, da->cmd1, envp);
-			perror("execve");
-			exit(EXIT_FAILURE);
-		}
-		free(da->cmd);
-		i++;
+		da->cmd = ft_strdup(ft_itoa(da->exit_status));
+		if (ft_strlen(da->args[0][0]) > 2)
+			da->cmd = ft_strjoin_ori(da->cmd, da->args[0][0] + 2);
+		printf("%s: command not found\n", da->cmd);
+		exit(127);
 	}
+	else
+	{
+		while (da->my_path[i])
+		{
+			if (da->cmd1[0][0] != '/' && da->cmd1[0][0] != '.')
+				da->cmd = ft_strjoin_slash(da->my_path[i], da->cmd1[0]);
+			else
+				da->cmd = ft_strdup(da->cmd1[0]);
+			if (da->cmd == NULL)
+			{
+				free_data(da, envp);
+				write(2, "Malloc Error", 12);
+				exit(EXIT_FAILURE);
+			}
+			if (access(da->cmd, X_OK) == 0)
+			{
+				execve(da->cmd, da->cmd1, envp);
+				perror("execve");
+				exit(EXIT_FAILURE);
+			}
+			free(da->cmd);
+			i++;
+		}
+	}
+	printf("%s: command not found\n", da->cmd1[0]);
+	exit(127);
 }
 
 int	main_exec(t_data *da, char **envp)

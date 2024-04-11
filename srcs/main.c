@@ -6,24 +6,47 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 11:10:09 by abolea            #+#    #+#             */
-/*   Updated: 2024/04/03 12:56:50 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/04/08 13:59:24 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
+int	check_error(char *rl)
+{
+	int	i;
+
+	i = 0;
+	while (rl[i])
+	{
+		if (rl[i] == '<' && rl[i + 1] == '>')
+			return (-1);
+		else if (rl[i] == '>' && rl[i + 1] == '<')
+			return (-1);
+		else if (rl[i] == '>' && rl[i + 2] == '>')
+			return (-1);
+		else if (rl[i] == '<' && rl[i + 2] == '<')
+			return (-1);
+		i++;
+	}
+	return (0);
+}
+
 int	simple_quote_close(char *temp_args)
 {
 	int	i;
 	int	j;
+	int	k;
 
 	i = 0;
 	j = 0;
+	k = 0;
 	while (temp_args[i])
 	{
 		if (temp_args[i] == 39)
 		{
 			i++;
+			k++;
 			while (temp_args[i])
 			{
 				if (temp_args[i] == 39)
@@ -33,7 +56,7 @@ int	simple_quote_close(char *temp_args)
 		}
 		i++;
 	}
-	if (j == 0)
+	if (j == 0 && k != 0)
 		return (0);
 	return (1);
 }
@@ -42,14 +65,17 @@ int	double_quotes_close(char *temp_args)
 {
 	int	i;
 	int	j;
+	int	k;
 
 	i = 0;
 	j = 0;
+	k = 0;
 	while (temp_args[i])
 	{
 		if (temp_args[i] == 34)
 		{
 			i++;
+			k++;
 			while (temp_args[i])
 			{
 				if (temp_args[i] == 34)
@@ -59,28 +85,50 @@ int	double_quotes_close(char *temp_args)
 		}
 		i++;
 	}
-	if (j == 0)
+	if (j == 0 && k != 0)
 		return (0);
 	return (1);
 }
 
-
-void	print_args(int i, int pnum, char ***args)
+void	print_args(int i, int pnum, t_data *da)
 {
 	int	j;
+	int	k;
+	int	l;
 
 	i = 0;
 	while (i < pnum)
 	{
-		printf("\nCommande %d:\n\n", i + 1);
+		printf("\033[1;34m\nCommande %d:\033[0;37m\n\n", i + 1);
 		j = 0;
-		while (j < 4)
+		printf("\033[0;31mcmd[%d][%d]\033[0;37m = %s\n", i, j, da->args[i][0]);
+		j++;
+		if (da->args[i][j])
+			printf("\n");
+		while (da->args[i][j])
 		{
-			printf("args[%d][%d] = %s\n", i, j, args[i][j]);
+			printf("\033[0;33margs[%d][%d]\033[0;37m = %s\n", i, j, da->args[i][j]);
 			j++;
+		}
+		k = 0;
+		if (da->in_tab[i][k])
+			printf("\n");
+		while (da->in_tab[i][k])
+		{
+			printf("\033[0;32minput[%d][%d]\033[0;37m = %s\n", i, k, da->in_tab[i][k]);
+			k++;
+		}
+		l = 0;
+		if (da->out_tab[i][l])
+			printf("\n");
+		while (da->out_tab[i][l])
+		{
+			printf("\033[0;35moutput[%d][%d]\033[0;37m = %s\n", i, l, da->out_tab[i][l]);
+			l++;
 		}
 		i++;
 	}
+	printf("\n");
 }
 
 int	nb_pipe(char *rl)
@@ -118,168 +166,25 @@ int	ft_strlen_char(char *s, char c)
 	return (len);
 }
 
-char	*cpy_until_char(char *s, char c)
+char	*cpy_until_char(char *s, char c, int start)
 {
-	int		len;
-	int		i;
 	char	*tmp;
 	int		j;
+	int		len;
 
-	i = 0;
 	j = 0;
-	len = ft_strlen_char(s, c);
-	tmp = malloc((len + 1) * sizeof(char));
+	len = ft_strlen(s);
+	tmp = malloc((len - start + 1) * sizeof(char));
 	if (!tmp)
 		return (NULL);
-	while (s[i] == ' ')
-		i++;
-	while (i < len + 1)
+	while (s[start] != c && start < len)
 	{
-		tmp[j] = s[i];
-		i++;
+		tmp[j] = s[start];
+		start++;
 		j++;
 	}
-	tmp[i] = '\0';
+	tmp[j] = '\0';
 	return (tmp);
-}
-
-char	*fill_input(char **temp_args, char **words, int i)
-{
-	char	*args;
-	char	*tmp;
-	int		num_words;
-	int		j;
-
-	if (ft_strnstr(temp_args[i], "<", ft_strlen(temp_args[i])))
-	{
-		num_words = 0;
-		args = ft_strdup("");
-		tmp = args;
-		words = ft_split(temp_args[i], '<');
-		while (words[num_words] != NULL)
-			num_words++;
-		if (num_words > 1)
-		{
-			j = 1;
-			while (j < num_words)
-			{
-				tmp = cpy_until_char(words[j], ' ');
-				args = ft_strjoin_ori(args, tmp);
-				args = ft_strjoin_ori(args, " ");
-				j++;
-			}
-		}
-	}
-	else
-		args = NULL;
-	return (args);
-}
-
-char	*replace_char(char *s, char c1, char c2)
-{
-	int	i;
-
-	i = 0;
-	while (s[i])
-	{
-		if (s[i] == c1)
-			s[i] = c2;
-		i++;
-	}
-	return (s);
-}
-
-char	*fill_input_begin(char **temp_args, char **words, int i)
-{
-	char	*args;
-	char	*tmp;
-	int		num_words;
-	int		j;
-
-	num_words = 0;
-	args = ft_strdup("");
-	tmp = args;
-	words = ft_split(temp_args[i], ' ');
-	while (words[num_words] != NULL)
-		num_words++;
-	if (num_words > 1)
-	{
-		j = 1;
-		while (j < num_words - 1)
-		{
-			tmp = cpy_until_char(words[j], ' ');
-			args = ft_strjoin_ori(args, tmp);
-			j++;
-		}
-	}
-	else
-		args = NULL;
-	replace_char(args, '<', ' ');
-	j = 0;
-	while (args[j])
-		j++;
-	if (j == 0)
-		return (NULL);
-	return (args);
-}
-
-char	*fill_output(char **temp_args, char **words, int i)
-{
-	char	*args;
-	char	*tmp;
-	int		num_words;
-	int		j;
-
-	if (ft_strnstr(temp_args[i], ">", ft_strlen(temp_args[i])))
-	{
-		num_words = 0;
-		args = ft_strdup("");
-		tmp = args;
-		words = ft_split(temp_args[i], '>');
-		while (words[num_words] != NULL)
-			num_words++;
-		if (num_words > 1)
-		{
-			j = 1;
-			while (j < num_words)
-			{
-				tmp = cpy_until_char(words[j], ' ');
-				args = ft_strjoin_ori(args, tmp);
-				args = ft_strjoin_ori(args, " ");
-				j++;
-			}
-		}
-	}
-	else
-		args = NULL;
-	return (args);
-}
-
-char	*fill_args(char **words)
-{
-	char	*args;
-	int		num_words;
-	int		j;
-
-	num_words = 0;
-	while (words[num_words] != NULL)
-		num_words++;
-	j = 1;
-	args = ft_strdup("");
-	if (num_words > 1)
-	{
-		while (j < num_words)
-		{
-			if (ft_strnstr(words[j], "<", 1) || ft_strnstr(words[j], ">", 1))
-				return (args);
-			args = ft_strjoin_ori(args, words[j]);
-			args = ft_strjoin_ori(args, " ");
-			j++;
-		}
-	}
-	else
-		args = NULL;
-	return (args);
 }
 
 void	if_quotes(char **temp_args, int i)
@@ -290,6 +195,341 @@ void	if_quotes(char **temp_args, int i)
 		exit(printf("Error : double quotes not close\n"));
 	else
 		return ;
+}
+
+int	pos_cmd(char **words)
+{
+	int	j;
+
+	j = 1;
+	if ((words[0][0] != '<' && words[0][0] != '>'))
+		return (0);
+	while (words[j])
+	{
+		if ((words[j - 1][0] != '<' && words[j - 1][0] != '>') && \
+		(words[j][0] != '>' && words[j][0] != '<'))
+			return (j);
+		j++;
+	}
+	return (-1);
+}
+
+int	pos_args(char **words)
+{
+	int	j;
+
+	j = pos_cmd(words) + 1;
+	if (j == 0)
+		return (-1);
+	while (words[j])
+	{
+		if ((words[j - 1][0] !=  '<' && words[j - 1][0] != '>') && \
+		(words[j][0] != '>' && words[j][0] != '<'))
+			return (j);
+		else if (((words[j - 1][0] == '<' && words[j - 1][0] == '>') || words[j - 1][1]) && \
+		(words[j][0] != '>' && words[j][0] != '<'))
+			return (j);
+		j++;
+	}
+	return (-1);
+}
+
+char	*fill_cmd(char **words)
+{
+	char	*args;
+	int		i;
+
+	i = pos_cmd(words);
+	if (i == -1)
+		args = NULL;
+	else
+		args = ft_strdup(words[i]);
+	return (args);
+}
+
+int	if_finish_quotes(char *s)
+{
+	int	i;
+
+	i = 0;
+	while (s[i])
+		i++;
+	if (s[i - 1] == 34)
+		return (1);
+	return (0);
+}
+
+int	nb_quotes(char *s)
+{
+	int	i;
+	int	res;
+
+	i = 0;
+	res = 0;
+	while (s[i])
+	{
+		if (s[i] == 34)
+			res++;
+		i++;
+	}
+	return (res);
+}
+
+char	*cpy_args_without_quotes(char *s)
+{
+	int		i;
+	int		j;
+	char	*tmp;
+	
+	i = 0;
+	j = 0;
+	tmp = malloc((ft_strlen(s) - nb_quotes(s) + 1) * sizeof(char));
+	while (s[i])
+	{
+		if (s[i] == 34)
+			i++;
+		tmp[j] = s[i];
+		i++;
+		j++;
+	}
+	tmp[j] = '\0';
+	return (tmp);
+}
+
+char	*fill_args(char **words)
+{
+	char	*args;
+	int		j;
+	int		num_words;
+
+	num_words = 0;
+	while (words[num_words])
+		num_words++;
+	j = pos_args(words);
+	if (j == -1)
+		args = NULL;
+	else
+	{
+		args = ft_strdup("");
+		while (j < num_words && words[j][0] != '<' && words[j][0] != '>')
+		{
+			if (words[j - 1][0] == 34 || words[j - 1][1] == 34)
+			{
+				while (if_finish_quotes(words[j - 1]) != 1)
+					j++;
+			}
+			else if (words[j][0] == '<' && words[j][0] == '>')
+			{
+				if (words[j - 1][0] == 34 || words[j - 1][1] == 34)
+				{
+					while (if_finish_quotes(words[j - 1]) != 1)
+						j++;
+				}
+				else
+					j++;
+			}
+			else
+			{
+				args = ft_strjoin_ori(args, words[j]);
+				args = ft_strjoin_ori(args, " ");
+				j++;
+			}
+		}
+		while (j < num_words)
+		{
+			if ((words[j - 2][0] == '<' || words[j - 2][0] == '>') && !words[j - 2][1])
+			{
+				if (words[j - 1][0] == 34 || words[j - 2][1] == 34)
+				{
+					while (if_finish_quotes(words[j - 1]) != 1)
+						j++;
+				}
+				while (j < num_words && (words[j][0] != '<' && words[j][0] != '>'))
+				{
+					args = ft_strjoin_ori(args, words[j]);
+					args = ft_strjoin_ori(args, " ");
+					j++;
+				}
+			}
+			else if ((words[j - 1][0] == '<' || words[j - 1][0] == '>') && words[j - 1][1])
+			{
+				if (words[j - 1][1] == 34)
+				{
+					while (if_finish_quotes(words[j - 1]) != 1)
+						j++;
+				}
+				while (j < num_words && (words[j][0] != '<' && words[j][0] != '>'))
+				{
+					args = ft_strjoin_ori(args, words[j]);
+					args = ft_strjoin_ori(args, " ");
+					j++;
+				}
+			}
+			j++;
+		}
+	}
+	if (args != NULL)
+		args = cpy_args_without_quotes(args);
+	return (args);
+}
+
+int		ft_nb_redir(char *temp_args, char c)
+{
+	int	i;
+	int	nb;
+	
+	i = 0;
+	nb = 0;
+	while (temp_args[i])
+	{
+		if (temp_args[i] == c)
+			nb++;
+		i++;
+	}
+	return (nb);
+}
+
+char	*fill_input(char *temp_args, t_data *da)
+{
+	char	*args;
+
+	while (temp_args[da->p_in])
+	{
+		if (temp_args[da->p_in] == '<')
+		{
+			da->p_in++;
+			if (temp_args[da->p_in] == ' ')
+			{
+				da->p_in++;
+				while (temp_args[da->p_in] == ' ')
+					da->p_in++;
+				if (temp_args[da->p_in] == 34)
+				{
+					da->p_in++;
+					args = cpy_until_char(temp_args, 34, da->p_in);
+					return (args);
+				}
+				else
+				{
+					args = cpy_until_char(temp_args, ' ', da->p_in);
+					return (args);
+				}
+			}
+			else if (temp_args[da->p_in] == 34)
+			{
+				da->p_in++;
+				args = cpy_until_char(temp_args, 34, da->p_in);
+				return (args);
+			}
+			else if (ft_isprint(temp_args[da->p_in]) == 1)
+			{
+				args = cpy_until_char(temp_args, ' ', da->p_in);
+				return (args);
+			}
+		}
+		da->p_in++;
+	}
+	return (NULL);
+}
+
+void	fill_intab(t_data *da, char **temp_args)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	da->in_tab = malloc(da->pnum * sizeof(char **));
+	while (i < da->pnum)
+	{
+		j = 0;
+		da->p_in = 0;
+		da->nb_redir_in = ft_nb_redir(temp_args[i], '<');
+		da->in_tab[i] = malloc((da->nb_redir_in + 1) * sizeof(char *));
+		if (da->nb_redir_in == 0)
+			da->in_tab[i][j] = NULL;
+		else
+		{
+			while (j < da->nb_redir_in)
+			{
+				da->in_tab[i][j] = fill_input(temp_args[i], da);
+				j++;
+			}
+			da->in_tab[i][j] = NULL;
+		}
+		i++;
+	}
+}
+
+char	*fill_output(char *temp_args, t_data *da)
+{
+	char	*args;
+
+	while (temp_args[da->p_out])
+	{
+		if (temp_args[da->p_out] == '>')
+		{
+			da->p_out++;
+			if (temp_args[da->p_out] == ' ')
+			{
+				da->p_out++;
+				while (temp_args[da->p_out] == ' ')
+					da->p_out++;
+				if (temp_args[da->p_out] == 34)
+				{
+					da->p_out++;
+					args = cpy_until_char(temp_args, 34, da->p_out);
+					return (args);
+				}
+				else
+				{
+					args = cpy_until_char(temp_args, ' ', da->p_out);
+					return (args);
+				}
+			}
+			else if (temp_args[da->p_out] == 34)
+			{
+				da->p_out++;
+				args = cpy_until_char(temp_args, 34, da->p_out);
+				return (args);
+			}
+			else if (ft_isprint(temp_args[da->p_out]) == 1)
+			{
+				args = cpy_until_char(temp_args, ' ', da->p_out);
+				return (args);
+			}
+		}
+		da->p_out++;
+	}
+	return (NULL);
+}
+
+void	fill_outab(t_data *da, char **temp_args)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	da->nb_redir_out = 0;
+	da->out_tab = malloc(da->pnum * sizeof(char **));
+	while (i < da->pnum)
+	{
+		j = 0;
+		da->p_out = 0;
+		da->nb_redir_out = ft_nb_redir(temp_args[i], '>');
+		da->out_tab[i] = malloc((da->nb_redir_out + 1) * sizeof(char *));
+		if (da->nb_redir_out == 0)
+			da->out_tab[i][j] = NULL;
+		else
+		{
+			while (j < da->nb_redir_out)
+			{
+				da->out_tab[i][j] = fill_output(temp_args[i], da);
+				j++;
+			}
+			da->out_tab[i][j] = NULL;
+		}
+		i++;
+	}
 }
 
 void	parsing(char *rl, t_data *da)
@@ -306,44 +546,26 @@ void	parsing(char *rl, t_data *da)
 	da->args = malloc(da->pnum * sizeof(char **));
 	while (i < da->pnum)
 	{
-		//if_quotes(temp_args, i);
+		if_quotes(temp_args, i);
 		words = ft_split(temp_args[i], ' ');
 		while (words[num_words] != NULL)
 			num_words++;
 		da->args[i] = malloc((num_words + 1) * sizeof(char *));
-		if (words[0][0] == '<' || words[0][0] == '>')
-		{
-			if (words[num_words - 2][0] != '<' && \
-			words[num_words - 2][0] != '>')
-				da->args[i][0] = ft_strdup(words[num_words - 1]);
-			else
-				da->args[i][0] = NULL;
-			da->args[i][1] = NULL;
-			da->args[i][2] = fill_input_begin(temp_args, words, i);
-			if (da->args[i][2] == NULL)
-				exit(printf("zsh: no such file or directory: %s\n", words[1]));
-			da->args[i][3] = NULL;
-		}
-		else
-			da->args[i][0] = ft_strdup(words[0]);
-		if (num_words > 1 && (words[0][0] != '<' && words[0][0] != '>'))
+		da->args[i][0] = fill_cmd(words);
+		if (num_words > 1)
 		{
 			da->args[i][1] = fill_args(words);
-			if (da->args[i][1][0] == '\0')
-				da->args[i][1] = NULL;
 			da->args[i][2] = NULL;
-			da->args[i][3] = NULL;
-			da->args[i][2] = fill_input(temp_args, words, i);
-			da->args[i][3] = fill_output(temp_args, words, i);
 		}
-		else if (words[0][0] != '<' && words[0][0] != '>')
-		{
+		else
 			da->args[i][1] = NULL;
-			da->args[i][2] = NULL;
-			da->args[i][3] = NULL;
-		}
+		da->p_in = 0;
+		da->p_out = 0;
+		fill_intab(da, temp_args);
+		fill_outab(da, temp_args);
 		i++;
 	}
+	//print_args(i, da->pnum, da);
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -358,6 +580,11 @@ int	main(int argc, char **argv, char **envp)
 	while (1)
 	{
 		rl = readline("\033[1;36m<3 \033[0;37m");
+		if (check_error(rl))
+		{
+			printf("parse error\n");
+			continue ;
+		}
 		if (rl[0])
 		{
 			parsing(rl, &da);

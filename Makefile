@@ -7,6 +7,8 @@ SRCS			=	main.c \
 					pipe.c \
 					files.c \
 					builtins.c \
+					check_builtins.c \
+					export.c \
 
 
 OBJS			=	$(addprefix .build/, $(SRCS:.c=.o))

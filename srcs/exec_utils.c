@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 13:10:19 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/04/03 15:18:04 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/04/04 17:30:09 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,29 @@ int	ft_tablen(char **tab)
 	while (tab[i] != NULL)
 		i++;
 	return (i);
+}
+
+char	**ft_realloc(char **tab, int size)
+{
+	char	**new_tab;
+	int		i;
+
+	i = 0;
+	new_tab = malloc(size);
+	while (tab[i] != NULL)
+	{
+		new_tab[i] = malloc(sizeof(char) * (ft_strlen(tab[i]) + 1));
+		ft_strlcpy(new_tab[i], tab[i], ft_strlen(tab[i]) + 1);
+		i++;
+	}
+	new_tab[i] = NULL;
+	while (tab[i] != NULL)
+	{
+		free(tab[i]);
+		i++;
+	}
+	free(tab);
+	return (new_tab);
 }
 
 void	set_all(t_data *da, char **envp)
