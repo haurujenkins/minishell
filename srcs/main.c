@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 11:10:09 by abolea            #+#    #+#             */
-/*   Updated: 2024/04/12 13:24:35 by abolea           ###   ########.fr       */
+/*   Updated: 2024/04/12 16:46:59 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -503,6 +503,7 @@ void	fill_intab(t_data *da, char **temp_args)
 	while (i < da->pnum)
 	{
 		j = 0;
+		da->io_nb = 0;
 		da->nb_redir_in = ft_nb_redir(temp_args[i], '<');
 		da->in_tab[i] = malloc((da->nb_redir_in + 1) * sizeof(char *));
 		if (da->nb_redir_in == 0)
@@ -535,7 +536,6 @@ char	*fill_output(char *temp_args, t_data *da)
 				da->io_nb++;
 				while (temp_args[da->io_nb] == ' ')
 					da->io_nb++;
-				printf("a = %c\n", temp_args[da->io_nb]);
 				if (temp_args[da->io_nb] == 34)
 				{
 					da->io_nb++;
@@ -547,7 +547,6 @@ char	*fill_output(char *temp_args, t_data *da)
 				else
 				{
 					args = cpy_until_char(temp_args, ' ', da->io_nb);
-					printf("args = %s\n", args);
 					return (args);
 				}
 			}
@@ -912,6 +911,151 @@ int	if_dollar(char *s)
 	return (0);
 }
 
+int	len_after_dollar(char *s)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	j = 0;
+	while (s[i] != '$')
+		i++;
+	while (ft_isalnum(s[i]) == 1)
+	{
+		i++;
+		j++;
+	}
+	return (j);
+}
+
+char	*after_dollar(char *s)
+{
+	int		i;
+	int		j;
+	int		len;
+	char	*tmp;
+
+	i = 0;
+	j = 0;
+	if (if_dollar(s) == 0)
+		return (NULL);
+	len = len_after_dollar(s);
+	tmp = malloc((len + 1) * sizeof(char));
+	while (s[i] != '$')
+		i++;
+	i++;
+	while (ft_isalnum(s[i]) == 1)
+	{
+		tmp[j] = s[i];
+		i++;
+		j++;
+	}
+	tmp[j] = '\0';
+	return (tmp);
+}
+
+int	len_env(t_data *da, char *s)
+{
+	int		i;
+	int		j;
+	int		l;
+
+	i = 0;
+	j = 0;
+	l = 0;
+	while (da->my_env[i] != NULL)
+	{
+		if (ft_strncmp(da->my_env[i], s, ft_strlen(s)) != 0)
+		{
+			while (da->my_env[i][j] != '=')
+				j++;
+			j++;
+			while (da->my_env[i][j])
+			{
+				j++;
+				l++;
+			}
+			if (l != 0)
+				return (l);
+		}
+		i++;
+	}
+	return (0);
+}
+
+char	*find_in_env(t_data *da, char *s)
+{
+	int		i;
+	int		j;
+	int		l;
+	int		len;
+	char	*res;
+
+	i = 0;
+	j = 0;
+	l = 0;
+	len = len_env(da, s);
+	res = malloc(sizeof(len + 1) * sizeof(char));
+	while (da->my_env[i] != NULL)
+	{
+		if (ft_strncmp(da->my_env[i], s, ft_strlen(s)) == 0)
+		{
+			while (da->my_env[i][j] != '=')
+				j++;
+			j++;
+			while (da->my_env[i][j])
+			{
+				res[l] = da->my_env[i][j];
+				j++;
+				l++;
+			}
+			if (res)
+			{
+				res[l] = '\0';
+				return (res);
+			}
+		}
+		i++;
+	}
+	return (NULL);
+}
+
+char	*temp_without_dollar(t_data *da, char *temp_args)
+{
+	int		i;
+	int		j;
+	int		k;
+	int		len;
+	char	*new_args;
+	char	*before_args;
+	char	*res;
+
+	i = 0;
+	j = 0;
+	k = 0;
+	before_args = after_dollar(temp_args);
+	if (before_args == NULL)
+		return (temp_args);
+	new_args = find_in_env(da, before_args);
+	len = (ft_strlen(temp_args) - len_after_dollar(temp_args) - 1) + len_env(da, before_args) + 2;
+	printf("len = %d\n", len);
+	res = malloc(len * sizeof(char));
+	while (temp_args[i] != '$')
+	{
+		res[j] = temp_args[i];
+		i++;
+		j++;
+	}
+	while (new_args[k])
+	{
+		res[j] = new_args[k];
+		j++;
+		k++;
+	}
+	res[j] = '\0';
+	return (res);
+}
+
 char	**new_temp_args(t_data *da, char **temp_args)
 {
 	int	i;
@@ -919,6 +1063,7 @@ char	**new_temp_args(t_data *da, char **temp_args)
 	i = 0;
 	while (i < da->pnum)
 	{
+		temp_args[i] = temp_without_dollar(da, temp_args[i]);
 		temp_args[i] = sup_delim(temp_args[i]);
 		temp_args[i] = sup_append(temp_args[i]);
 		i++;
@@ -941,6 +1086,7 @@ void	parsing(char *rl, t_data *da)
 	while (i < da->pnum)
 	{
 		if_quotes_not_close(temp_args, i);
+		after_dollar(temp_args[i]);
 		fill_delim_tab(da, temp_args);
 		fill_append_tab(da, temp_args);
 		temp_args = new_temp_args(da, temp_args);

@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 14:48:53 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/04/12 13:23:01 by abolea           ###   ########.fr       */
+/*   Updated: 2024/04/12 15:59:50 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,6 @@ void	my_env(char **env, int num);
 void	my_cd(char **cmd, char **envp, t_data *da);
 void	my_pwd(void);
 void	my_echo(char **cmd, t_data *da);
-void	my_env(char **env, int num);
 void	my_export(t_data *da);
 void	my_unset(t_data *da);
 void	sort_env(t_data *da);
