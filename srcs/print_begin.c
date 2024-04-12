@@ -6,11 +6,11 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 13:59:33 by abolea            #+#    #+#             */
-/*   Updated: 2024/04/11 13:59:50 by abolea           ###   ########.fr       */
+/*   Updated: 2024/04/12 11:08:55 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../includes/minishell.h"
 
 void	loading(int p)
 {	

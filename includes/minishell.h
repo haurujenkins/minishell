@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 14:48:53 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/04/11 11:43:13 by abolea           ###   ########.fr       */
+/*   Updated: 2024/04/12 11:07:57 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,6 @@ typedef struct data_s
 	int		exit_status;
 	char	***delim_tab;
 	char	***append_tab;
-	int		nb_redir_in;
-	int		nb_redir_out;
 	int		io_nb;
 	int		i_in_quotes;
 	int		o_in_quotes;
@@ -90,5 +88,9 @@ void	my_unset(t_data *da);
 void	sort_env(t_data *da);
 void	free_pipe(t_data *da);
 void	print_args(int i, int pnum, t_data *da);
+
+void	loading(int p);
+void	print_title();
+void	print_all();
 
 #endif

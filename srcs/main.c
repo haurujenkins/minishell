@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 11:10:09 by abolea            #+#    #+#             */
-/*   Updated: 2024/04/11 14:03:08 by abolea           ###   ########.fr       */
+/*   Updated: 2024/04/12 12:43:36 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -306,7 +306,7 @@ char	*cpy_args_without_quotes(char *s)
 	tmp = malloc((ft_strlen(s) - nb_quotes(s) + 1) * sizeof(char));
 	while (s[i])
 	{
-		if (s[i] == 34)
+		while (s[i] == 34)
 			i++;
 		tmp[j] = s[i];
 		i++;
@@ -784,43 +784,17 @@ char	*fill_append(char *temp_args, t_data *da)
 
 	while (temp_args[da->o_append])
 	{
-		if (temp_args[da->o_append] == '>' && temp_args[da->o_append + 1] == '>')
+		if (temp_args[da->o_append] == '>' && temp_args[da->o_append + 1] != '>')
 		{
+			args = ft_strdup("0");
+			da->o_append++;
+			return (args);
+		}
+		else if (temp_args[da->o_append] == '>' && temp_args[da->o_append + 1] == '>')
+		{
+			args = ft_strdup("1");
 			da->o_append += 2;
-			if (temp_args[da->o_append] == ' ')
-			{
-				da->o_append++;
-				while (temp_args[da->o_append] == ' ')
-					da->o_append++;
-				if (temp_args[da->o_append] == 34)
-				{
-					da->o_append++;
-					args = cpy_until_char(temp_args, 34, da->o_append);
-					while (temp_args[da->o_append] != 34)
-						da->o_append++;
-					return (args);
-				}
-				else
-				{
-					args = cpy_until_char(temp_args, ' ', da->o_append);
-					return (args);
-				}
-			}
-			else if (temp_args[da->o_append] == 34)
-			{
-				da->o_append++;
-				args = cpy_until_char(temp_args, 34, da->o_append);
-				while (temp_args[da->o_append] != 34)
-					da->o_append++;
-				return (args);
-			}
-			else if (ft_isprint(temp_args[da->o_append]) == 1)
-			{
-				args = cpy_until_char(temp_args, ' ', da->o_append);
-				if (if_finish_quotes(args) == 1)
-					return (NULL);
-				return (args);
-			}
+			return (args);
 		}
 		da->o_append++;
 	}
@@ -844,7 +818,7 @@ void	fill_append_tab(t_data *da, char **temp_args)
 			da->append_tab[i][j] = NULL;
 		else
 		{
-			while (j < da->nb_append)
+			while (j < ft_nb_redir(temp_args[i], '>') - da->nb_append)
 			{
 				da->append_tab[i][j] = fill_append(temp_args[i], da);
 				if (da->append_tab[i][j])
@@ -866,13 +840,7 @@ int	len_without_append(char *s)
 	while (s[i])
 	{
 		if (s[i] == '>' && s[i + 1] == '>')
-		{
-			i += 3;
-			while (s[i] != ' ' && s[i])
-				i++;
-			while (s[i] == ' ')
-				i++;
-		}
+			i++;
 		else if (s[i])
 		{
 			i++;
@@ -897,11 +865,7 @@ char	*sup_append(char *s)
 	{
 		if (s[i] == '>' && s[i + 1] == '>')
 		{
-			i += 3;
-			while (s[i] != ' ' && s[i])
-				i++;
-			while (s[i] == ' ')
-				i++;
+			i++;
 		}
 		else if (s[i])
 		{
@@ -979,7 +943,7 @@ void	parsing(char *rl, t_data *da)
 		fill_outab(da, temp_args);
 		i++;
 	}
-	// print_args(i, da->pnum, da);
+	print_args(i, da->pnum, da);
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -992,7 +956,7 @@ int	main(int argc, char **argv, char **envp)
 	if (argc != 1 || argv[0][0] == '\0')
 		printf("ERROR\n");
 	set_all(&da, envp);
-	// print_all();
+	print_all();
 	while (1)
 	{
 		rl = readline("\033[1;36m<3 \033[0;37m");
@@ -1004,7 +968,7 @@ int	main(int argc, char **argv, char **envp)
 		if (rl[0])
 		{
 			parsing(rl, &da);
-			main_exec(&da, envp);
+			// main_exec(&da, envp);
 			add_history(rl);
 		}
 		else

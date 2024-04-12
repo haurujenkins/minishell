@@ -9,6 +9,7 @@ SRCS			=	main.c \
 					builtins.c \
 					check_builtins.c \
 					export.c \
+					print_begin.c \
 
 
 OBJS			=	$(addprefix .build/, $(SRCS:.c=.o))
