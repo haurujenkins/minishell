@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 14:48:53 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/04/12 11:07:57 by abolea           ###   ########.fr       */
+/*   Updated: 2024/04/12 13:23:01 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ typedef struct data_s
 	int		exit_status;
 	char	***delim_tab;
 	char	***append_tab;
-	int		io_nb;
+	size_t	io_nb;
 	int		i_in_quotes;
 	int		o_in_quotes;
 	int		nb_delim;

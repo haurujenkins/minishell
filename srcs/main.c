@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 11:10:09 by abolea            #+#    #+#             */
-/*   Updated: 2024/04/12 12:43:36 by abolea           ###   ########.fr       */
+/*   Updated: 2024/04/12 13:24:35 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -498,6 +498,7 @@ void	fill_intab(t_data *da, char **temp_args)
 	int	j;
 
 	i = 0;
+	da->nb_redir_in = 0;
 	da->in_tab = malloc(da->pnum * sizeof(char **));
 	while (i < da->pnum)
 	{
@@ -523,7 +524,7 @@ void	fill_intab(t_data *da, char **temp_args)
 char	*fill_output(char *temp_args, t_data *da)
 {
 	char	*args;
-
+	
 	while (temp_args[da->io_nb])
 	{
 		if (temp_args[da->io_nb] == '>')
@@ -534,6 +535,7 @@ char	*fill_output(char *temp_args, t_data *da)
 				da->io_nb++;
 				while (temp_args[da->io_nb] == ' ')
 					da->io_nb++;
+				printf("a = %c\n", temp_args[da->io_nb]);
 				if (temp_args[da->io_nb] == 34)
 				{
 					da->io_nb++;
@@ -545,6 +547,7 @@ char	*fill_output(char *temp_args, t_data *da)
 				else
 				{
 					args = cpy_until_char(temp_args, ' ', da->io_nb);
+					printf("args = %s\n", args);
 					return (args);
 				}
 			}
@@ -580,6 +583,7 @@ void	fill_outab(t_data *da, char **temp_args)
 	while (i < da->pnum)
 	{
 		j = 0;
+		da->io_nb = 0;
 		da->nb_redir_out = ft_nb_redir(temp_args[i], '>');
 		da->out_tab[i] = malloc((da->nb_redir_out + 1) * sizeof(char *));
 		if (da->nb_redir_out == 0)
@@ -894,6 +898,20 @@ int	nb_io(char *s)
 	return (j);
 }
 
+int	if_dollar(char *s)
+{
+	int	i;
+
+	i = 0;
+	while(s[i])
+	{
+		if (s[i] == '$')
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
 char	**new_temp_args(t_data *da, char **temp_args)
 {
 	int	i;
@@ -956,7 +974,7 @@ int	main(int argc, char **argv, char **envp)
 	if (argc != 1 || argv[0][0] == '\0')
 		printf("ERROR\n");
 	set_all(&da, envp);
-	print_all();
+	// print_all();
 	while (1)
 	{
 		rl = readline("\033[1;36m<3 \033[0;37m");
