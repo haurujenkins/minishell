@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/13 14:46:33 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/03/26 17:16:54 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/04/17 10:42:06 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ static int	create_array(char **array, char const *s, char c, int line)
 		}
 		end_w++;
 	}
-	array[line] = 0;
+	array[line] = NULL;
 	return (1);
 }
 

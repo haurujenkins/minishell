@@ -1,0 +1,116 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parse_print.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/04/11 13:59:33 by abolea            #+#    #+#             */
+/*   Updated: 2024/04/16 16:11:15 by lle-pier         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../includes/minishell.h"
+
+void	print_args(int i, int pnum, t_data *da)
+{
+	int	j;
+	int	k;
+	int	l;
+	int	m;
+	int	n;
+
+	i = 0;
+	while (i < pnum)
+	{
+		printf("\033[1;34m\nCommande %d:\033[0;37m\n\n", i + 1);
+		j = 0;
+		printf("\033[0;31mcmd[%d][%d]\033[0;37m = %s\n", i, j, da->args[i][0]);
+		j++;
+		if (da->args[i][j])
+			printf("\n");
+		while (da->args[i][j])
+		{
+			printf("\033[0;33margs[%d][%d]\033[0;37m = %s\n", i, j, da->args[i][j]);
+			j++;
+		}
+		k = 0;
+		if (da->in_tab[i][k])
+			printf("\n");
+		while (da->in_tab[i][k])
+		{
+			printf("\033[0;32minput[%d][%d]\033[0;37m = %s\n", i, k, da->in_tab[i][k]);
+			k++;
+		}
+		l = 0;
+		if (da->out_tab[i][l])
+			printf("\n");
+		while (da->out_tab[i][l])
+		{
+			printf("\033[0;35moutput[%d][%d]\033[0;37m = %s\n", i, l, da->out_tab[i][l]);
+			l++;
+		}
+		m = 0;
+		if (da->delim_tab[i][m])
+			printf("\n");
+		while (da->delim_tab[i][m])
+		{
+			printf("delimiteur[%d][%d]\033[0;37m = %s\n", i, m, da->delim_tab[i][m]);
+			m++;
+		}
+		n = 0;
+		if (da->append_tab[i][n])
+			printf("\n");
+		while (da->append_tab[i][n])
+		{
+			printf("append_out[%d][%d]\033[0;37m = %s\n", i, n, da->append_tab[i][n]);
+			n++;
+		}
+		i++;
+	}
+	printf("\n");
+}
+
+void	loading(int p)
+{	
+	int i;
+
+	i = 0;
+	printf("[");
+	while (i < 50)
+	{
+		if (i < p / 2)
+			printf("=");
+		else
+            printf(" ");
+		i++;
+	}
+	printf("] %d%%\r", p);
+}
+
+void	print_title()
+{
+    printf("\033[1;31m\n ███    ███ ██ ███    ██ ██ ███████ ██   ██ ███████ ██      ██      \033[0m\n"); // Rouge
+    printf("\033[1;32m ████  ████ ██ ████   ██ ██ ██      ██   ██ ██      ██      ██      \033[0m\n"); // Vert
+    printf("\033[1;33m ██ ████ ██ ██ ██ ██  ██ ██ ███████ ███████ █████   ██      ██      \033[0m\n"); // Jaune
+    printf("\033[1;34m ██  ██  ██ ██ ██  ██ ██ ██      ██ ██   ██ ██      ██      ██      \033[0m\n"); // Bleu
+    printf("\033[1;35m ██      ██ ██ ██   ████ ██ ███████ ██   ██ ███████ ███████ ███████ \033[0m\n"); // Magenta
+    printf("\033[0m");
+	printf("                                                                    \n");
+	
+}
+
+void	print_all()
+{
+	int		p;
+	
+	p = 0;
+	while (p <= 100) 
+	{
+		loading(p);
+		usleep(10000);
+		p++;
+	}
+	printf("\n");
+	print_title();
+}
