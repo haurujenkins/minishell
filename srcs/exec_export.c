@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 13:37:46 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/04/22 11:49:29 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/04/22 18:47:34 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,12 +52,10 @@ void	sort_env(t_data *da)
 	dup_env[i] = NULL;
 	sort_tab(dup_env);
 	my_env(dup_env, 2);
-	i = 0;
-	while (dup_env[i] != NULL)
+	i = -1;
+	while (dup_env[++i])
 	{
-		i++;
 		free(dup_env[i]);
-		dup_env[i] = NULL;
 	}
 	free(dup_env);
 	dup_env = NULL;
@@ -82,6 +80,40 @@ void	export_var(t_data *da, char *temp_cmd, char *temp_value)
 	}
 }
 
+void	export_pwd(t_data *da, char *temp_value)
+{
+	int		i;
+	char	*temp;
+	char	*cmd;
+
+	i = 0;
+	while (da->my_env[i])
+	{
+		if (ft_strchr(da->my_env[i], "PWD") == 1)
+		{
+			cmd = ft_strdup("PWD=");
+			temp = ft_strdup(da->my_env[i] + 3);
+			free(da->my_env[i]);
+			da->my_env[i] = ft_strjoin_ori(cmd, temp_value);
+		}
+		i++;
+	}
+	i = 0;
+	while (da->my_env[i])
+	{
+		if (ft_strchr(da->my_env[i], "OLDPWD") == 1)
+		{
+			cmd = ft_strdup("OLDPWD");
+			free(da->my_env[i]);
+			da->my_env[i] = ft_strjoin_ori(cmd, temp);
+			free(temp);
+			da->check_export = 1;
+			return ;
+		}
+		i++;
+	}
+}
+
 void	my_export(t_data *da)
 {
 	char	*temp_cmd;
@@ -93,6 +125,7 @@ void	my_export(t_data *da)
 	while (da->cmd1[k] != NULL)
 	{
 		i = 0;
+		printf("da->cmd1[k] = %s\n", da->cmd1[k]);
 		da->check_export = 0;
 		if (da->cmd1[k][0] == '=' && ft_strlen(da->cmd1[k]) == 1)
 		{

@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 14:38:28 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/04/19 15:11:06 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/04/22 14:37:53 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,7 +142,7 @@ int	ft_nb_delim(char *s)
 	return (j);
 }
 
-void	fill_delim_tab(t_data *da, char **temp_args)
+int	fill_delim_tab(t_data *da, char **temp_args)
 {
 	int	i;
 	int	j;
@@ -150,18 +150,22 @@ void	fill_delim_tab(t_data *da, char **temp_args)
 	i = 0;
 	da->in_delim = 0;
 	da->delim_tab = malloc(da->pnum * sizeof(char **));
+	if (da->delim_tab == NULL)
+		return (printf("Error: malloc failed\n"), 1);
 	while (i < da->pnum)
 	{
 		j = 0;
 		da->nb_delim = ft_nb_delim(temp_args[i]);
 		da->delim_tab[i] = malloc((da->nb_delim + 1) * sizeof(char *));
-		if (da->nb_delim == 0)
-			da->delim_tab[i][j] = NULL;
+		if (da->delim_tab[i] == NULL)
+			return (printf("Error: malloc failed\n"), 1);
 		else
 		{
 			while (j < da->nb_delim)
 			{
 				da->delim_tab[i][j] = fill_delimiter(temp_args[i], da);
+				if (da->delim_tab[i][j] == NULL)
+					return (1);
 				if (da->delim_tab[i][j])
 					j++;
 			}
@@ -169,4 +173,5 @@ void	fill_delim_tab(t_data *da, char **temp_args)
 		}
 		i++;
 	}
+	return (0);
 }

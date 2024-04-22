@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 13:01:33 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/04/19 15:34:11 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/04/22 12:28:44 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ char	*get_home(char **envp)
 	return (home);
 }
 
-void	get_args_builtins(t_data *da, int index)
+int	get_args_builtins(t_data *da, int index)
 {
 	char	*temp_cmd;
 
@@ -56,13 +56,24 @@ void	get_args_builtins(t_data *da, int index)
 		temp_cmd = ft_strdup(da->args[index][0]);
 	else
 		temp_cmd = ft_strjoin(da->args[index][0], da->args[index][1]);
-	if (temp_cmd[0] == '\0')
-		write(STDERR_FILENO, "permission denied:\n", 19);
+	if (temp_cmd == NULL)
+	{
+		da->exit_status = 1;
+		printf("malloc error\n");
+		return (1);
+	}
 	else
 	{
 		da->cmd1 = ft_split(temp_cmd, ' ');
 		free(temp_cmd);
+		if (da->cmd1 == NULL)
+		{
+			da->exit_status = 1;
+			printf("malloc error\n");
+			return (1);
+		}
 	}
+	return (0);
 }
 
 void	get_args(t_data *da, char **envp, int index)

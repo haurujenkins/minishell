@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 14:55:13 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/04/18 17:47:04 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/04/22 18:54:50 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ char	*fill_input(char *temp_args, t_data *da)
 {
 	char	*args;
 
+	args = NULL;
 	while (temp_args[da->io_nb])
 	{
 		if (temp_args[da->io_nb] == '<')

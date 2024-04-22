@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 16:20:22 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/04/19 16:11:49 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/04/22 15:26:28 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@ char	*after_dollar(char *s)
 		return (NULL);
 	len = len_after_dollar(s);
 	tmp = malloc((len + 1) * sizeof(char));
+	if (tmp == NULL)
+		return (printf("Malloc failed\n"), NULL);
 	while (s[i] != '$')
 		i++;
 	i++;
@@ -87,6 +89,14 @@ char	*temp_without_dollar(t_data *da, char *temp_args)
 	}
 	len = (j + ft_strlen(new_args) + 1);
 	res = malloc(len * sizeof(char));
+	if (res == NULL)
+	{
+		printf("Malloc failed\n");
+		free(before_args);
+		free(temp_args);
+		free(new_args);
+		return (NULL);
+	}
 	i = 0;
 	j = 0;
 	while (temp_args[i] != '$')

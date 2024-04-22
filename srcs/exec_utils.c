@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 13:10:19 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/04/22 11:43:47 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/04/22 19:09:08 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,15 +33,10 @@ char	**ft_realloc(char **tab, int size)
 	{
 		new_tab[i] = malloc(sizeof(char) * (ft_strlen(tab[i]) + 1));
 		ft_strlcpy(new_tab[i], tab[i], ft_strlen(tab[i]) + 1);
-		i++;
-	}
-	new_tab[i] = NULL;
-	i = 0;
-	while (i < ft_tablen(tab) - 1)
-	{
 		free(tab[i]);
 		i++;
 	}
+	new_tab[i] = NULL;
 	free(tab);
 	return (new_tab);
 }
@@ -116,30 +111,31 @@ void free_struct(t_data *da)
 			i++;
 		}
 		free(da->args);
+		da->args = NULL;
 	}
 	if (da->in_tab != NULL)
 	{
-		i = 0;
-		while (i < da->pnum)
+		i = -1;
+		while (++i < da->pnum)
 		{
 			j = 0;
-			while (da->in_tab[i][j])
+			while (j < da->nb_redir_in)
 			{
 				free(da->in_tab[i][j]);
 				j++;
 			}
 			free(da->in_tab[i]);
-			i++;
 		}
 		free(da->in_tab);
+		da->in_tab = NULL;
 	}
 	if (da->out_tab != NULL)
 	{
 		i = 0;
-		while (i < da->pnum)
+		while (i != da->pnum)
 		{
 			j = 0;
-			while (da->out_tab[i][j])
+			while (da->out_tab[i][j] != NULL)
 			{
 				free(da->out_tab[i][j]);
 				j++;
@@ -148,6 +144,7 @@ void free_struct(t_data *da)
 			i++;
 		}
 		free(da->out_tab);
+		da->out_tab = NULL;
 	}
 	if (da->cmd1 != NULL)
 	{
@@ -158,9 +155,13 @@ void free_struct(t_data *da)
 			i++;
 		}
 		free(da->cmd1);
+		da->cmd1 = NULL;
 	}
 	if (da->cmd != NULL)
+	{
 		free(da->cmd);
+		da->cmd = NULL;
+	}
 	if (da->delim_tab != NULL)
 	{
 		i = 0;
@@ -176,6 +177,7 @@ void free_struct(t_data *da)
 			i++;
 		}
 		free(da->delim_tab);
+		da->delim_tab = NULL;
 	}
 	if (da->append_tab != NULL)
 	{
@@ -192,6 +194,7 @@ void free_struct(t_data *da)
 			i++;
 		}
 		free(da->append_tab);
+		da->append_tab = NULL;
 	}
 	if (da->my_path != NULL)
 	{
@@ -202,6 +205,7 @@ void free_struct(t_data *da)
 			i++;
 		}
 		free(da->my_path);
+		da->my_path = NULL;
 	}
 	if (da->pipefd != NULL)
 	{
@@ -212,5 +216,6 @@ void free_struct(t_data *da)
 			i++;
 		}
 		free(da->pipefd);
+		da->pipefd = NULL;
 	}
 }

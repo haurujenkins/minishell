@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 14:48:53 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/04/18 11:34:10 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/04/22 16:41:36 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ char	*get_home(char **envp);
 void	close_fd(t_data *da, int index);
 int		ft_tablen(char **tab);
 char	**ft_realloc(char **tab, int size);
-void	get_args_builtins(t_data *da, int index);
+int		get_args_builtins(t_data *da, int index);
 void	my_cd(char **cmd, char **envp, t_data *da);
 void	my_pwd(void);
 void	my_echo(char **cmd, t_data *da);
@@ -86,16 +86,17 @@ void	my_unset(t_data *da);
 void	sort_env(t_data *da);
 void	free_pipe(t_data *da);
 void	free_struct(t_data *da);
+void	export_pwd(t_data *da, char *temp_value);
 
 void	print_args(int i, int pnum, t_data *da);
 void	loading(int p);
 void	print_title();
 void	print_all();
 int		ft_nb_redir(char *temp_args, char c);
-void	fill_append_tab(t_data *da, char **temp_args);
+int		fill_append_tab(t_data *da, char **temp_args);
 char	*sup_append(char *s);
 int		len_without_append(char *s);
-void	fill_delim_tab(t_data *da, char **temp_args);
+int		fill_delim_tab(t_data *da, char **temp_args);
 char	*sup_delim(char *s);
 char	*cpy_until_char(char *s, char c, int start);
 int		if_finish_quotes(char *s);

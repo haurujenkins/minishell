@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 14:31:09 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/04/19 10:32:40 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/04/22 18:54:19 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ char	*cpy_until_char(char *s, char c, int start)
 	len = ft_strlen(s);
 	tmp = malloc((len - start + 1) * sizeof(char));
 	if (!tmp)
-		return (NULL);
+		return (printf("Malloc failed\n"), NULL);
 	while (s[start] != c && start < len)
 	{
 		tmp[j] = s[start];
@@ -76,6 +76,8 @@ int	if_finish_quotes(char *s)
 	size_t	i;
 
 	i = 0;
+	if (!s)
+		return (0);
 	while (s[i] != 34 || s[i] != '\0')
 		i++;
 	if (s[i] == 34)
