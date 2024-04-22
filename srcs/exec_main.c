@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 11:49:04 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/04/17 14:39:36 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/04/19 13:38:07 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,9 @@ int	exec_recur(t_data *da, char **envp, int index)
 void	exec_cmd(t_data *da, char **envp, int i)
 {
 	if (check_builtins(da) == 1)
+	{
 		exit(EXIT_SUCCESS);
+	}
 	if (ft_strchr(da->cmd1[0], "$?") == 1)
 	{
 		da->cmd = ft_strdup(ft_itoa(da->exit_status));

@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 14:58:08 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/04/18 17:41:50 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/04/19 16:17:14 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ char	*cpy_args_without_quotes(char *s)
 		}
 	}
 	tmp[j] = '\0';
+	free(s);
 	return (tmp);
 }
 

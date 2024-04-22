@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 13:37:46 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/04/18 16:28:57 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/04/22 11:49:29 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,5 +151,13 @@ void	my_export(t_data *da)
 		}
 		k++;
 	}
+	k = 0;
+	while (da->cmd1[k] != NULL)
+	{
+		free(da->cmd1[k]);
+		k++;
+	}
+	free(da->cmd1);
+	da->cmd1 = NULL;
 	da->exit_status = 0;
 }

@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 11:10:09 by abolea            #+#    #+#             */
-/*   Updated: 2024/04/18 17:57:22 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/04/22 11:42:36 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ void	parsing(char *rl, t_data *da)
 	int		num_words;	
 
 	i = 0;
+	temp_args = NULL;
+	words = NULL;
 	da->pnum = nb_pipe(rl);
 	num_words = 0;
 	temp_args = ft_split(rl, '|');
@@ -72,7 +74,15 @@ void	parsing(char *rl, t_data *da)
 		fill_outab(da, temp_args);
 		i++;
 	}
-	print_args(i, da->pnum, da);
+	i = -1;
+	num_words = -1;
+	while (temp_args[++i])
+		free(temp_args[i]);
+	free(temp_args);
+	while (words[++num_words])
+		free(words[num_words]);
+	free(words);
+	//print_args(i, da->pnum, da);
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -96,10 +106,10 @@ int	main(int argc, char **argv, char **envp)
 		if (rl[0])
 		{
 			parsing(rl, &da);
-			main_exec(&da, envp);
 			add_history(rl);
-			// free_struct(&da);
 			free(rl);
+			main_exec(&da, envp);
+			free_struct(&da);
 		}
 		else
 			continue ;

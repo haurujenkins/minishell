@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 13:10:19 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/04/18 15:07:58 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/04/22 11:43:47 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ void	set_all(t_data *da, char **envp)
 	int	i;
 
 	i = 0;
+	da->args = NULL;
 	da->cmd1 = NULL;
 	da->cmd = NULL;
 	da->fd_input = -1;
@@ -60,6 +61,9 @@ void	set_all(t_data *da, char **envp)
 	da->my_path = NULL;
 	da->pid1 = 0;
 	da->point_path = NULL;
+	da->exit_status = 0;
+	da->pnum = 0;
+	da->p_in = 0;
 	da->my_env = malloc(sizeof(char *) * (ft_tablen(envp) + 1));
 	while (envp[i] != NULL)
 	{

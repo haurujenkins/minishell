@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 14:31:09 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/04/18 13:06:28 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/04/19 10:32:40 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,9 +76,9 @@ int	if_finish_quotes(char *s)
 	size_t	i;
 
 	i = 0;
-	while (s[i])
+	while (s[i] != 34 || s[i] != '\0')
 		i++;
-	if (s[i - 1] == 34)
+	if (s[i] == 34)
 		return (1);
 	return (0);
 }

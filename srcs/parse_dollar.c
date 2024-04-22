@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 16:20:22 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/04/17 10:51:33 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/04/19 16:11:49 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ int	len_after_dollar(char *s)
 	j = 0;
 	while (s[i] != '$')
 		i++;
+	i++;
 	while (ft_isalnum(s[i]) == 1)
 	{
 		i++;
@@ -41,7 +42,7 @@ char	*after_dollar(char *s)
 	if (if_dollar(s) == 0)
 		return (NULL);
 	len = len_after_dollar(s);
-	tmp = malloc((len + 1) * sizeof(char) + 150);
+	tmp = malloc((len + 1) * sizeof(char));
 	while (s[i] != '$')
 		i++;
 	i++;
@@ -100,7 +101,7 @@ char	*temp_without_dollar(t_data *da, char *temp_args)
 		j++;
 		k++;
 	}
-	while (temp_args[i] != '\0')
+	while (temp_args[i])
 	{
 		if (temp_args[i] == '$' && temp_args[i + 1])
 		{
@@ -114,5 +115,8 @@ char	*temp_without_dollar(t_data *da, char *temp_args)
 		j++;
 	}
 	res[j] = '\0';
+	free(before_args);
+	free(temp_args);
+	free(new_args);
 	return (res);
 }

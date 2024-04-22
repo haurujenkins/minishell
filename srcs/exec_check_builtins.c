@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 13:33:51 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/04/18 17:36:32 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/04/19 15:46:45 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int	check_extern_builtins(t_data *da, char **envp, int index)
 	if (size == 4 && ft_strchr(da->args[0][0], "exit") && da->pnum == 1)
 	{
 		get_args_builtins(da, index);
-		if (da->cmd1[2] != NULL)
+		if (da->cmd1[1] && da->cmd1[2] != NULL)
 		{
 			da->exit_status = 1;
 			return (write(2, " too many arguments\n", 20), 1);
@@ -117,7 +117,9 @@ int	check_builtins(t_data *da)
 			return (1);
 	}
 	if (size == 4 && ft_strchr(da->cmd1[0], "echo"))
+	{
 		return (my_echo(da->cmd1, da), 1);
+	}
 	if (size == 3 && ft_strchr(da->cmd1[0], "pwd"))
 	{
 		return (my_pwd(), 1);

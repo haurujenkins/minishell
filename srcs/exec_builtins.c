@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 11:12:16 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/04/18 17:57:10 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/04/19 15:57:16 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,12 @@ void	my_echo(char **cmd, t_data *da)
 
 	i = 1;
 	j = 0;
+	newline = true;
+	if (!cmd[1])
+	{
+		printf("\n");
+		return ;
+	}
 	if (cmd[i][0] == '$' && !cmd[i][1])
 	{
 		printf("$\n");
@@ -104,7 +110,7 @@ void	my_pwd(void)
 void	my_cd(char **cmd, char **envp, t_data *da)
 {
 	char	*path;
-
+	
 	if (!cmd[1] || ft_strchr(cmd[1], "~") == 1)
 	{
 		path = get_home(envp);
@@ -112,7 +118,8 @@ void	my_cd(char **cmd, char **envp, t_data *da)
 			return ;
 	}
 	else
-		path = cmd[1];
+		path = ft_strdup(cmd[1]);
+
 	if (chdir(path) == -1)
 	{
 		write(2, " No such file or directory\n", 27);

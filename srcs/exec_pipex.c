@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 13:01:33 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/04/11 15:35:54 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/04/19 15:34:11 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	get_args_builtins(t_data *da, int index)
 
 	temp_cmd = NULL;
 	if (da->args[index][1] == NULL)
-		temp_cmd = da->args[index][0];
+		temp_cmd = ft_strdup(da->args[index][0]);
 	else
 		temp_cmd = ft_strjoin(da->args[index][0], da->args[index][1]);
 	if (temp_cmd[0] == '\0')
@@ -61,8 +61,7 @@ void	get_args_builtins(t_data *da, int index)
 	else
 	{
 		da->cmd1 = ft_split(temp_cmd, ' ');
-		if (da->args[index][1] != NULL)
-			free(temp_cmd);
+		free(temp_cmd);
 	}
 }
 
@@ -72,7 +71,7 @@ void	get_args(t_data *da, char **envp, int index)
 
 	temp_cmd = NULL;
 	if (da->args[index][1] == NULL)
-		temp_cmd = da->args[index][0];
+		temp_cmd = ft_strdup(da->args[index][0]);
 	else
 		temp_cmd = ft_strjoin(da->args[index][0], da->args[index][1]);
 	if (temp_cmd[0] == '\0')
@@ -80,8 +79,7 @@ void	get_args(t_data *da, char **envp, int index)
 	else
 	{
 		da->cmd1 = ft_split(temp_cmd, ' ');
-		if (da->args[index][1] != NULL)
-			free(temp_cmd);
+		free(temp_cmd);
 	}
 	get_path(da, envp);
 }
