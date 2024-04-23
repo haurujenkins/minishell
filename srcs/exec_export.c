@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 13:37:46 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/04/22 18:47:34 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/04/22 19:28:26 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,6 @@ void	my_export(t_data *da)
 	while (da->cmd1[k] != NULL)
 	{
 		i = 0;
-		printf("da->cmd1[k] = %s\n", da->cmd1[k]);
 		da->check_export = 0;
 		if (da->cmd1[k][0] == '=' && ft_strlen(da->cmd1[k]) == 1)
 		{
