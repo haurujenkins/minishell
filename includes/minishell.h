@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 14:48:53 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/04/22 16:41:36 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/04/23 17:38:43 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 # include <readline/history.h>
 # include <stdbool.h>
 # include "../libft/libft.h"
+# define MAX_INPUT_LENGTH 1024
 
 typedef struct data_s
 {

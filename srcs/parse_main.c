@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 11:10:09 by abolea            #+#    #+#             */
-/*   Updated: 2024/04/23 11:37:58 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/04/23 17:29:32 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ int	parsing(char *rl, t_data *da)
 	while (temp_args[++i] != NULL)
 		free(temp_args[i]);
 	free(temp_args);
-	//print_args(i, da->pnum, da);
+	print_args(i, da->pnum, da);
 	return (0);
 }
 

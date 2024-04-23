@@ -28,7 +28,7 @@ LD_FLAGS		=	-L libft
 
 HEAD			=	-I includes -I libft
 
-CC				=cc
+CC				=	cc
 
 CFLAGS			=	-Wall -Werror -Wextra
 
