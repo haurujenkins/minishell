@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_delim.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 14:38:28 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/04/22 14:37:53 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/04/24 13:13:04 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,7 @@ int	len_without_delim(char *s)
 	while (s[i])
 	{
 		if (s[i] == '<' && s[i + 1] == '<')
-		{
-			i += 3;
-			while (s[i] != ' ' && s[i])
-				i++;
-			while (s[i] == ' ')
-				i++;
-		}
+			i++;
 		else if (s[i])
 		{
 			i++;
@@ -53,11 +47,7 @@ char	*sup_delim(char *s)
 	{
 		if (s[i] == '<' && s[i + 1] == '<')
 		{
-			i += 3;
-			while (s[i] != ' ' && s[i])
-				i++;
-			while (s[i] == ' ')
-				i++;
+			i++;
 		}
 		else if (s[i])
 		{
@@ -67,53 +57,33 @@ char	*sup_delim(char *s)
 		}
 	}
 	tmp[j] = '\0';
-	free(s);
+	free (s);
 	return (tmp);
 }
 
-char	*fill_delimiter(char *temp_args, t_data *da)
+char	*fill_delim(char *temp_args, t_data *da)
 {
 	char	*args;
 
 	while (temp_args[da->in_delim])
 	{
-		if (temp_args[da->in_delim] == '<' && temp_args[da->in_delim + 1] == '<')
+		if (temp_args[da->in_delim] \
+		== '<' && temp_args[da->in_delim + 1] != '<')
 		{
+			args = ft_strdup("0");
+			if (args == NULL)
+				return (printf("Error: malloc failed\n"), NULL);
+			da->in_delim++;
+			return (args);
+		}
+		else if (temp_args[da->in_delim] \
+		== '<' && temp_args[da->in_delim + 1] == '<')
+		{
+			args = ft_strdup("1");
+			if (args == NULL)
+				return (printf("Error: malloc failed\n"), NULL);
 			da->in_delim += 2;
-			if (temp_args[da->in_delim] == ' ')
-			{
-				da->in_delim++;
-				while (temp_args[da->in_delim] == ' ')
-					da->in_delim++;
-				if (temp_args[da->in_delim] == 34)
-				{
-					da->in_delim++;
-					args = cpy_until_char(temp_args, 34, da->in_delim);
-					while (temp_args[da->in_delim] != 34 && temp_args[da->in_delim])
-						da->in_delim++;
-					return (args);
-				}
-				else
-				{
-					args = cpy_until_char(temp_args, ' ', da->in_delim);
-					return (args);
-				}
-			}
-			else if (temp_args[da->in_delim] == 34)
-			{
-				da->in_delim++;
-				args = cpy_until_char(temp_args, 34, da->in_delim);
-				while (temp_args[da->in_delim] != 34 && temp_args[da->in_delim])
-					da->in_delim++;
-				return (args);
-			}
-			else if (ft_isprint(temp_args[da->in_delim]) == 1)
-			{
-				args = cpy_until_char(temp_args, ' ', da->in_delim);
-				if (if_finish_quotes(args) == 1)
-					return (NULL);
-				return (args);
-			}
+			return (args);
 		}
 		da->in_delim++;
 	}
@@ -148,26 +118,27 @@ int	fill_delim_tab(t_data *da, char **temp_args)
 	int	j;
 
 	i = 0;
-	da->in_delim = 0;
 	da->delim_tab = malloc(da->pnum * sizeof(char **));
 	if (da->delim_tab == NULL)
 		return (printf("Error: malloc failed\n"), 1);
 	while (i < da->pnum)
 	{
 		j = 0;
+		da->in_delim = i;
 		da->nb_delim = ft_nb_delim(temp_args[i]);
 		da->delim_tab[i] = malloc((da->nb_delim + 1) * sizeof(char *));
 		if (da->delim_tab[i] == NULL)
 			return (printf("Error: malloc failed\n"), 1);
+		if (da->nb_delim == 0)
+			da->delim_tab[i][j] = NULL;
 		else
 		{
-			while (j < da->nb_delim)
+			while (j < ft_nb_redir(temp_args[i], '<') - da->nb_delim)
 			{
-				da->delim_tab[i][j] = fill_delimiter(temp_args[i], da);
+				da->delim_tab[i][j] = fill_delim(temp_args[i], da);
 				if (da->delim_tab[i][j] == NULL)
 					return (1);
-				if (da->delim_tab[i][j])
-					j++;
+				j++;
 			}
 			da->delim_tab[i][j] = NULL;
 		}
