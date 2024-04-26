@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 15:37:45 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/04/26 17:52:57 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/04/26 18:29:30 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,36 +153,36 @@ int	ft_nb_args(t_data *da, char **words)
 			else
 				j++;
 		}
-		while (words[j])
-		{
-			if ((words[j - 2][0] == '<' || words[j - 2][0] == '>') && !words[j - 2][1])
-			{
-				if (words[j - 1][0] == 34)
-				{
-					while (if_finish_quotes(words[j - 1]) != 1)
-						j++;
-				}
-				while (j < num_w && (words[j][0] != '<' && words[j][0] != '>'))
-				{
-					res++;
-					j++;
-				}
-			}
-			else if ((words[j - 1][0] == '<' || words[j - 1][0] == '>') && words[j - 1][1])
-			{
-				if (words[j - 1][1] == 34)
-				{
-					while (if_finish_quotes(words[j - 1]) != 1)
-						j++;
-				}
-				while (j < num_w && (words[j][0] != '<' && words[j][0] != '>'))
-				{
-					res++;
-					j++;
-				}
-			}
-			j++;
-		}
+		// while (words[j])
+		// {
+		// 	if ((words[j - 2][0] == '<' || words[j - 2][0] == '>') && !words[j - 2][1])
+		// 	{
+		// 		if (words[j - 1][0] == 34)
+		// 		{
+		// 			while (if_finish_quotes(words[j - 1]) != 1)
+		// 				j++;
+		// 		}
+		// 		while (j < num_w && (words[j][0] != '<' && words[j][0] != '>'))
+		// 		{
+		// 			res++;
+		// 			j++;
+		// 		}
+		// 	}
+		// 	else if ((words[j - 1][0] == '<' || words[j - 1][0] == '>') && words[j - 1][1])
+		// 	{
+		// 		if (words[j - 1][1] == 34)
+		// 		{
+		// 			while (if_finish_quotes(words[j - 1]) != 1)
+		// 				j++;
+		// 		}
+		// 		while (j < num_w && (words[j][0] != '<' && words[j][0] != '>'))
+		// 		{
+		// 			res++;
+		// 			j++;
+		// 		}
+		// 	}
+		// 	j++;
+		// }
 	}
 	return (res);
 }

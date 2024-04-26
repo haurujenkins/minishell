@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 11:49:04 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/04/22 19:05:47 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/04/26 18:46:25 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,5 +122,7 @@ int	main_exec(t_data *da, char **envp)
 	set_pipe(da);
 	if (check_extern_builtins(da, envp, 0) == 0)
 		exec_recur(da, envp, 0);
+	if (access("minishell_heredoc_tmpfile", F_OK) != -1)
+		unlink("minishell_heredoc_tmpfile");
 	return (0);
 }

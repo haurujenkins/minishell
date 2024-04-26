@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 11:10:09 by abolea            #+#    #+#             */
-/*   Updated: 2024/04/26 17:50:36 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/04/26 18:11:09 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,16 +78,16 @@ int	parsing(char *rl, t_data *da)
 	fill_args_tab(da, words);
 	fill_intab(da, temp_args);
 	fill_outab(da, temp_args);
-	// i = -1;
-	// while (temp_args[++i] != NULL)
-	// 	free(temp_args[i]);
-	// free(temp_args);
-	// num_w = -1;
-	// while (words[++num_w] != NULL)
-	// 	free(words[num_w]);
-	// free(words);
-	// words = NULL;
-	//print_args(i, da->pnum, da);
+	i = -1;
+	while (temp_args[++i] != NULL)
+		free(temp_args[i]);
+	free(temp_args);
+	num_w = -1;
+	while (words[++num_w] != NULL)
+		free(words[num_w]);
+	free(words);
+	words = NULL;
+	print_args(i, da->pnum, da);
 	return (0);
 }
 
@@ -121,8 +121,8 @@ int	main(int argc, char **argv, char **envp)
 			{
 				add_history(rl);
 				free(rl);
-				//main_exec(&da, envp);
-				//free_struct(&da);
+				main_exec(&da, envp);
+				// free_struct(&da);
 			}
 		}
 	}
