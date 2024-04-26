@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 14:31:09 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/04/22 18:54:19 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/04/25 13:44:55 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,42 @@ char	*cpy_until_char(char *s, char c, int start)
 	return (tmp);
 }
 
+int	len_for_args(char *s, int start)
+{
+	int		j;
+	int		len;
+
+	j = 0;
+	len = ft_strlen(s);
+	while ((s[start] != '<' && s[start] != '>' && s[start] != ' ') && start < len)
+	{
+		j++;
+		start++;
+	}
+	return (j);
+}
+
+char	*cpy_for_args(char *s, int start)
+{
+	char	*tmp;
+	int		j;
+	int		len;
+
+	j = 0;
+	len = len_for_args(s, start);
+	tmp = malloc((len - start + 1) * sizeof(char));
+	if (!tmp)
+		return (printf("Malloc failed\n"), NULL);
+	while ((s[start] != '<' && s[start] != '>' && s[start] != ' ') && start < len)
+	{
+		tmp[j] = s[start];
+		start++;
+		j++;
+	}
+	tmp[j] = '\0';
+	return (tmp);
+}
+
 int	if_finish_quotes(char *s)
 {
 	size_t	i;
@@ -78,9 +114,11 @@ int	if_finish_quotes(char *s)
 	i = 0;
 	if (!s)
 		return (0);
-	while (s[i] != 34 || s[i] != '\0')
+	while (s[i])
+	{
+		if (s[i] == 34)
+			return (1);
 		i++;
-	if (s[i] == 34)
-		return (1);
+	}
 	return (0);
 }

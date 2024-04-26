@@ -3,14 +3,30 @@
 /*                                                        :::      ::::::::   */
 /*   parse_quote.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 14:58:08 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/04/19 16:17:14 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/04/25 14:03:53 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+int	if_double_space(char *s)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	j = 0;
+	while (s[i])
+	{
+		if (s[i] == ' ' && s[i + 1] == ' ')
+			j++;
+		i++;
+	}
+	return (j);
+}
 
 char	*cpy_args_without_quotes(char *s)
 {
@@ -24,9 +40,11 @@ char	*cpy_args_without_quotes(char *s)
 	j = 0;
 	d_quote = 0;
 	s_quote = 0;
-	tmp = malloc((ft_strlen(s) - nb_quotes(s) + 1) * sizeof(char));
+	tmp = malloc((ft_strlen(s) - nb_quotes(s) - if_double_space(s) + 1) * sizeof(char));
 	while (s[i])
 	{
+		if (s[i] == ' ' && s[i + 1] == ' ')
+			i++;
 		if (s[i] == 34)
 			d_quote++;
 		if (s[i] == 39)

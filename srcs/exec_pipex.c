@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 13:01:33 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/04/22 12:28:44 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/04/26 16:37:49 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,12 @@ void	get_path(t_data *da, char **envp)
 			free_data(da, envp);
 			exit(EXIT_FAILURE);
 		}
+	}
+	else
+	{
+		da->my_path = malloc(sizeof(char *) * 2);
+		da->my_path[0] = ft_strdup("/usr/bin");
+		da->my_path[1] = NULL;
 	}
 }
 
@@ -49,48 +55,76 @@ char	*get_home(char **envp)
 
 int	get_args_builtins(t_data *da, int index)
 {
-	char	*temp_cmd;
+	int	i;
+	int	j;
 
-	temp_cmd = NULL;
-	if (da->args[index][1] == NULL)
-		temp_cmd = ft_strdup(da->args[index][0]);
-	else
-		temp_cmd = ft_strjoin(da->args[index][0], da->args[index][1]);
-	if (temp_cmd == NULL)
+	i = 0;
+	j = 1;
+	if (da->cmd1 != NULL)
 	{
-		da->exit_status = 1;
-		printf("malloc error\n");
-		return (1);
+		while (da->cmd1[i] != NULL)
+		{
+			free(da->cmd1[i]);
+			i++;
+		}
+		free(da->cmd1);
+		da->cmd1 = NULL;
+	}
+	i = 0;
+	if (da->args_tab[0] == NULL)
+	{
+		da->cmd1 = malloc(sizeof(char *) * 2);
+		da->cmd1[0] = ft_strdup(da->args[index][0]);
 	}
 	else
 	{
-		da->cmd1 = ft_split(temp_cmd, ' ');
-		free(temp_cmd);
-		if (da->cmd1 == NULL)
+		da->cmd1 = malloc(sizeof(char *) * (ft_tablen(da->args_tab[index]) + 2));
+		da->cmd1[0] = ft_strdup(da->args[index][0]);
+		while (da->args_tab[index][i] != NULL)
 		{
-			da->exit_status = 1;
-			printf("malloc error\n");
-			return (1);
+			da->cmd1[j] = ft_strdup(da->args_tab[index][i]);
+			i++;
+			j++;
 		}
+		da->cmd1[j] = NULL;
 	}
 	return (0);
 }
 
 void	get_args(t_data *da, char **envp, int index)
 {
-	char	*temp_cmd;
+	int	i;
+	int	j;
 
-	temp_cmd = NULL;
-	if (da->args[index][1] == NULL)
-		temp_cmd = ft_strdup(da->args[index][0]);
-	else
-		temp_cmd = ft_strjoin(da->args[index][0], da->args[index][1]);
-	if (temp_cmd[0] == '\0')
-		write(STDERR_FILENO, "permission denied:\n", 19);
+	i = 0;
+	j = 1;
+	if (da->cmd1 != NULL)
+	{
+		while (da->cmd1[i] != NULL)
+		{
+			free(da->cmd1[i]);
+			i++;
+		}
+		free(da->cmd1);
+		da->cmd1 = NULL;
+	}
+	i = 0;
+	if (da->args_tab[index][0] == NULL)
+	{
+		da->cmd1 = malloc(sizeof(char *) * 2);
+		da->cmd1[0] = ft_strdup(da->args[index][0]);
+	}
 	else
 	{
-		da->cmd1 = ft_split(temp_cmd, ' ');
-		free(temp_cmd);
+		da->cmd1 = malloc(sizeof(char *) * (ft_tablen(da->args_tab[index]) + 2));
+		da->cmd1[0] = ft_strdup(da->args[index][0]);
+		while (da->args_tab[index][i] != NULL)
+		{
+			da->cmd1[j] = ft_strdup(da->args_tab[index][i]);
+			i++;
+			j++;
+		}
+		da->cmd1[j] = NULL;
 	}
 	get_path(da, envp);
 }

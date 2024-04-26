@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 11:10:09 by abolea            #+#    #+#             */
-/*   Updated: 2024/04/23 17:29:32 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/04/26 17:50:36 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,13 +39,13 @@ int	parsing(char *rl, t_data *da)
 	char	**temp_args;
 	char	**words;
 	int		i;
-	int		num_words;	
+	int		num_w;	
 
 	i = 0;
 	temp_args = NULL;
 	words = NULL;
 	da->pnum = nb_pipe(rl);
-	num_words = 0;
+	num_w = 0;
 	temp_args = ft_split(rl, '|');
 	if (temp_args == NULL)
 		return (printf ("Error: malloc failed\n"), 1);
@@ -64,38 +64,30 @@ int	parsing(char *rl, t_data *da)
 		if_quotes_not_close(temp_args, i);
 		//after_dollar(temp_args[i]);
 		words = ft_split(temp_args[i], ' ');
-		if (words == NULL)
-			return (1);
-		while (words[num_words] != NULL)
-		{
-			num_words++;
-		}
-		da->args[i] = malloc((num_words + 1) * sizeof(char *));
+		while (words[num_w] != NULL)
+			num_w++;
+		da->args[i] = malloc((num_w + 1) * sizeof(char *));
 		if (da->args[i] == NULL)
 			return (printf("Error: malloc failed\n"), 1);
 		da->args[i][0] = fill_cmd(words);
-		if (num_words > 1)
-		{
-			da->args[i][1] = fill_args(words);
-			da->args[i][2] = NULL;
-		}
-		else
-			da->args[i][1] = NULL;
+		da->args[i][1] = NULL;
+		da->pos_cmd = pos_cmd(words);
 		da->io_nb = 0;
 		i++;
-		num_words = -1;
-		while (words[++num_words] != NULL)
-			free(words[num_words]);
-		free(words);
-		words = NULL;
 	}
+	fill_args_tab(da, words);
 	fill_intab(da, temp_args);
 	fill_outab(da, temp_args);
-	i = -1;
-	while (temp_args[++i] != NULL)
-		free(temp_args[i]);
-	free(temp_args);
-	print_args(i, da->pnum, da);
+	// i = -1;
+	// while (temp_args[++i] != NULL)
+	// 	free(temp_args[i]);
+	// free(temp_args);
+	// num_w = -1;
+	// while (words[++num_w] != NULL)
+	// 	free(words[num_w]);
+	// free(words);
+	// words = NULL;
+	//print_args(i, da->pnum, da);
 	return (0);
 }
 
@@ -123,14 +115,14 @@ int	main(int argc, char **argv, char **envp)
 			{
 				add_history(rl);
 				free(rl);
-				free_struct(&da);
+				// free_struct(&da);
 			}
 			else
 			{
 				add_history(rl);
 				free(rl);
-				main_exec(&da, envp);
-				free_struct(&da);
+				//main_exec(&da, envp);
+				//free_struct(&da);
 			}
 		}
 	}

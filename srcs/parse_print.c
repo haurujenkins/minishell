@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_print.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 13:59:33 by abolea            #+#    #+#             */
-/*   Updated: 2024/04/16 16:11:15 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/04/25 14:57:41 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 void	print_args(int i, int pnum, t_data *da)
 {
+	int	d;
 	int	j;
 	int	k;
 	int	l;
@@ -31,8 +32,16 @@ void	print_args(int i, int pnum, t_data *da)
 			printf("\n");
 		while (da->args[i][j])
 		{
-			printf("\033[0;33margs[%d][%d]\033[0;37m = %s\n", i, j, da->args[i][j]);
+			printf("\033[0;33mcmd[%d][%d]\033[0;37m = %s\n", i, j, da->args[i][j]);
 			j++;
+		}
+		d = 0;
+		if (da->args_tab[i][d])
+			printf("\n");
+		while (da->args_tab[i][d])
+		{
+			printf("\033[0;32margs[%d][%d]\033[0;37m = %s\n", i, d, da->args_tab[i][d]);
+			d++;
 		}
 		k = 0;
 		if (da->in_tab[i][k])

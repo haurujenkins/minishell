@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 14:48:53 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/04/23 17:38:43 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/04/26 11:36:50 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,11 @@ typedef struct data_s
 	int		in_delim;
 	int		o_append;
 	int		nb_append;
+	char	***args_tab;
+	int		nb_args;
+	int		i_args;
+	int		pos_cmd;
+	char	**words;
 }				t_data;
 
 void	get_args(t_data *da, char **envp, int index);
@@ -109,7 +114,7 @@ int		if_io_before_last_quotes(char *s, char c, int start);
 int		if_quotes(char *s, int start);
 char	*cpy_args_without_quotes(char *s);
 void	print_args(int i, int pnum, t_data *da);
-char	*fill_args(char **words);
+char	*fill_args(t_data *da, char **words);
 char	*fill_cmd(char **words);
 char	**new_temp_args(t_data *da, char **temp_args);
 int		nb_pipe(char *rl);
@@ -120,5 +125,12 @@ int		len_env(t_data *da, char *s);
 char	*find_in_env(t_data *da, char *s);
 char	*after_dollar(char *s);
 char	*temp_without_dollar(t_data *da, char *temp_args);
+char	*get_cmd(char *words);
+int		len_cmd(char *words);
+int		double_quotes_close(char *temp_args);
+char	*cpy_for_args(char *s, int start);
+int		len_for_args(char *s, int start);
+void	fill_args_tab(t_data *da, char **words);
+int		pos_cmd(char **words);
 
 #endif

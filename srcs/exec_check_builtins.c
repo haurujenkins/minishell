@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 13:33:51 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/04/22 19:22:10 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/04/26 16:35:47 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,13 +69,13 @@ int	check_extern_builtins(t_data *da, char **envp, int index)
 	}
 	if (size == 5 && ft_strchr(da->args[0][0], "unset"))
 	{
-		if (da->args[0][1] == NULL)
+		if (da->args_tab[0][0] == NULL)
 			return (0);
 		else if (da->pnum == 1)
 			return (my_unset(da), 1);
 	}
 	if (ft_strchr(da->args[0][0], "export") && size == 6 && \
-	da->pnum == 1 && da->args[0][1] != NULL)
+	da->pnum == 1 && da->args_tab[0][0] != NULL)
 	{
 		if (get_args_builtins(da, index) == 1)
 			return (1);

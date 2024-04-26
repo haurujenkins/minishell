@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_fillin.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 14:55:13 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/04/22 18:54:50 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/04/24 13:50:30 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,6 @@ char	*fill_input(char *temp_args, t_data *da)
 			else if (ft_isprint(temp_args[da->io_nb]) == 1)
 			{
 				args = cpy_until_char(temp_args, ' ', da->io_nb);
-				if (if_finish_quotes(args) == 1)
-					return (NULL);
 				return (args);
 			}
 		}
