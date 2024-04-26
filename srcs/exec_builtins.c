@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtins.c                                         :+:      :+:    :+:   */
+/*   exec_builtins.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 11:12:16 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/04/10 18:07:17 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/04/22 19:36:06 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,17 @@ void	my_env(char **env, int num)
 			{
 				printf("%c", env[i][j]);
 			}
-			printf("=\"");
-			while (env[i][++j])
+			if (env[i][j] == '=')
 			{
-				printf("%c", env[i][j]);
+				printf("=\"");
+				while (env[i][++j])
+				{
+					printf("%c", env[i][j]);
+				}
+				printf("\"\n");
 			}
-			printf("\"\n");
+			else
+				printf("\n");
 			i++;
 		}
 	}
@@ -51,11 +56,29 @@ void	my_echo(char **cmd, t_data *da)
 {
 	bool	newline;
 	int		i;
+	int		j;
 
 	i = 1;
+	j = 0;
+	newline = true;
+	if (!cmd[1])
+	{
+		printf("\n");
+		return ;
+	}
+	if (cmd[i][0] == '$' && !cmd[i][1])
+	{
+		printf("$\n");
+		return ;
+	}
 	if (ft_strncmp(da->args[0][1], "$?", 2) == 0)
 	{
-		printf("%i\n", da->exit_status);
+		printf("%i", da->exit_status);
+		while (cmd[i][j] != '?')
+			j++;
+		while (cmd[i][++j] != '\0')
+			printf("%c", cmd[i][j]);
+		printf("\n");
 		return ;
 	}
 	while (cmd[i])
@@ -71,7 +94,7 @@ void	my_echo(char **cmd, t_data *da)
 		}
 		i++;
 	}
-	if (newline)
+	if (newline && !ft_strchr(cmd[1], "\n"))
 		printf("\n");
 }
 
@@ -80,8 +103,13 @@ void	my_pwd(void)
 	char	*pwd;
 
 	pwd = getcwd(NULL, 0);
-	printf("%s\n", pwd);
-	free(pwd);
+	if (pwd)
+	{
+		printf("%s\n", pwd);
+		free(pwd);
+	}
+	else
+		printf("\n");
 }
 
 void	my_cd(char **cmd, char **envp, t_data *da)
@@ -92,17 +120,31 @@ void	my_cd(char **cmd, char **envp, t_data *da)
 	{
 		path = get_home(envp);
 		if (!path)
+		{
+			da->exit_status = 1;
+			printf("Error: malloc failed\n");
 			return ;
+		}
 	}
 	else
-		path = cmd[1];
+	{
+		path = ft_strdup(cmd[1]);
+		if (!path)
+		{
+			da->exit_status = 1;
+			printf("Error: malloc failed\n");
+			return ;
+		}
+	}
 	if (chdir(path) == -1)
 	{
-		printf("minishell: cd: %s: No such file or directory\n", path);
+		write(2, " No such file or directory\n", 27);
 		free(path);
 		da->exit_status = 1;
 		return ;
 	}
+	else
+		export_pwd(da, getcwd(NULL, 0));
 	free(path);
 	da->exit_status = 0;
 }
@@ -116,13 +158,27 @@ void	my_unset(t_data *da)
 	i = 0;
 	j = 0;
 	new_env = malloc(sizeof(char *) * (ft_tablen(da->my_env) + 1));
+	if (!new_env)
+	{
+		da->exit_status = 1;
+		printf("Error: malloc failed\n");
+		return ;
+	}
+	get_args_builtins(da, 0);
 	while (da->my_env[i] != NULL)
 	{
 		if (ft_strncmp(da->my_env[i], da->cmd1[1], ft_strlen(da->cmd1[1])) != 0)
 		{
 			new_env[j] = ft_strdup(da->my_env[i]);
+			if (!new_env[j])
+			{
+				da->exit_status = 1;
+				printf("Error: malloc failed\n");
+				return ;
+			}
 			j++;
 		}
+		free(da->my_env[i]);
 		i++;
 	}
 	new_env[j] = NULL;

@@ -1,15 +1,25 @@
 NAME			=	minishell
 
-SRCS			=	main.c \
-					main_exec.c \
+SRCS			=	parse_main.c \
+					exec_main.c \
 					exec_utils.c \
 					exec_pipex.c \
-					pipe.c \
-					files.c \
-					builtins.c \
-					check_builtins.c \
-					export.c \
-					print_begin.c \
+					exec_pipe.c \
+					exec_files.c \
+					exec_builtins.c \
+					exec_check_builtins.c \
+					exec_export.c \
+					parse_print.c \
+					parse_append.c \
+					parse_utils.c \
+					parse_delim.c \
+					parse_fillout.c \
+					parse_fillin.c \
+					parse_quote.c \
+					parse_fill_args.c \
+					parse_nb.c \
+					parse_dollar.c \
+					parse_env.c
 
 
 OBJS			=	$(addprefix .build/, $(SRCS:.c=.o))
@@ -18,7 +28,7 @@ LD_FLAGS		=	-L libft
 
 HEAD			=	-I includes -I libft
 
-CC				=cc
+CC				=	cc
 
 CFLAGS			=	-Wall -Werror -Wextra
 

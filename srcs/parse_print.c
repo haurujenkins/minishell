@@ -1,16 +1,84 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   print_begin.c                                      :+:      :+:    :+:   */
+/*   parse_print.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 13:59:33 by abolea            #+#    #+#             */
-/*   Updated: 2024/04/12 11:08:55 by abolea           ###   ########.fr       */
+/*   Updated: 2024/04/25 14:57:41 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+void	print_args(int i, int pnum, t_data *da)
+{
+	int	d;
+	int	j;
+	int	k;
+	int	l;
+	int	m;
+	int	n;
+
+	i = 0;
+	while (i < pnum)
+	{
+		printf("\033[1;34m\nCommande %d:\033[0;37m\n\n", i + 1);
+		j = 0;
+		printf("\033[0;31mcmd[%d][%d]\033[0;37m = %s\n", i, j, da->args[i][0]);
+		j++;
+		if (da->args[i][j])
+			printf("\n");
+		while (da->args[i][j])
+		{
+			printf("\033[0;33mcmd[%d][%d]\033[0;37m = %s\n", i, j, da->args[i][j]);
+			j++;
+		}
+		d = 0;
+		if (da->args_tab[i][d])
+			printf("\n");
+		while (da->args_tab[i][d])
+		{
+			printf("\033[0;32margs[%d][%d]\033[0;37m = %s\n", i, d, da->args_tab[i][d]);
+			d++;
+		}
+		k = 0;
+		if (da->in_tab[i][k])
+			printf("\n");
+		while (da->in_tab[i][k])
+		{
+			printf("\033[0;32minput[%d][%d]\033[0;37m = %s\n", i, k, da->in_tab[i][k]);
+			k++;
+		}
+		l = 0;
+		if (da->out_tab[i][l])
+			printf("\n");
+		while (da->out_tab[i][l])
+		{
+			printf("\033[0;35moutput[%d][%d]\033[0;37m = %s\n", i, l, da->out_tab[i][l]);
+			l++;
+		}
+		m = 0;
+		if (da->delim_tab[i][m])
+			printf("\n");
+		while (da->delim_tab[i][m])
+		{
+			printf("delimiteur[%d][%d]\033[0;37m = %s\n", i, m, da->delim_tab[i][m]);
+			m++;
+		}
+		n = 0;
+		if (da->append_tab[i][n])
+			printf("\n");
+		while (da->append_tab[i][n])
+		{
+			printf("append_out[%d][%d]\033[0;37m = %s\n", i, n, da->append_tab[i][n]);
+			n++;
+		}
+		i++;
+	}
+	printf("\n");
+}
 
 void	loading(int p)
 {	

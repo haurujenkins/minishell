@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 14:48:53 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/04/12 15:59:50 by abolea           ###   ########.fr       */
+/*   Updated: 2024/04/26 11:36:50 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 # include <readline/history.h>
 # include <stdbool.h>
 # include "../libft/libft.h"
+# define MAX_INPUT_LENGTH 1024
 
 typedef struct data_s
 {
@@ -33,7 +34,6 @@ typedef struct data_s
 	int		out;
 	char	**my_env;
 	char	**cmd1;
-	char	**cmd2;
 	char	**my_path;
 	char	*cmd;
 	char	*point_path;
@@ -47,21 +47,26 @@ typedef struct data_s
 	char	***args;
 	char	***in_tab;
 	char	***out_tab;
-	int		nb_redir_in;
-	int		nb_redir_out;
 	int		p_in;
 	int		p_out;
 	int		check_export;
 	int		exit_status;
 	char	***delim_tab;
 	char	***append_tab;
-	size_t	io_nb;
+	int		nb_redir_in;
+	int		nb_redir_out;
+	int		io_nb;
 	int		i_in_quotes;
 	int		o_in_quotes;
 	int		nb_delim;
 	int		in_delim;
 	int		o_append;
 	int		nb_append;
+	char	***args_tab;
+	int		nb_args;
+	int		i_args;
+	int		pos_cmd;
+	char	**words;
 }				t_data;
 
 void	get_args(t_data *da, char **envp, int index);
@@ -77,19 +82,55 @@ char	*get_home(char **envp);
 void	close_fd(t_data *da, int index);
 int		ft_tablen(char **tab);
 char	**ft_realloc(char **tab, int size);
-void	get_args_builtins(t_data *da, int index);
-void	my_env(char **env, int num);
+int		get_args_builtins(t_data *da, int index);
 void	my_cd(char **cmd, char **envp, t_data *da);
 void	my_pwd(void);
 void	my_echo(char **cmd, t_data *da);
+void	my_env(char **env, int num);
 void	my_export(t_data *da);
 void	my_unset(t_data *da);
 void	sort_env(t_data *da);
 void	free_pipe(t_data *da);
-void	print_args(int i, int pnum, t_data *da);
+void	free_struct(t_data *da);
+void	export_pwd(t_data *da, char *temp_value);
 
+void	print_args(int i, int pnum, t_data *da);
 void	loading(int p);
 void	print_title();
 void	print_all();
+int		ft_nb_redir(char *temp_args, char c);
+int		fill_append_tab(t_data *da, char **temp_args);
+char	*sup_append(char *s);
+int		len_without_append(char *s);
+int		fill_delim_tab(t_data *da, char **temp_args);
+char	*sup_delim(char *s);
+char	*cpy_until_char(char *s, char c, int start);
+int		if_finish_quotes(char *s);
+int		if_finish_squotes(char *s);
+void	fill_outab(t_data *da, char **temp_args);
+void	fill_intab(t_data *da, char **temp_args);
+void	if_quotes_not_close(char **temp_args, int i);
+int		if_io_before_last_quotes(char *s, char c, int start);
+int		if_quotes(char *s, int start);
+char	*cpy_args_without_quotes(char *s);
+void	print_args(int i, int pnum, t_data *da);
+char	*fill_args(t_data *da, char **words);
+char	*fill_cmd(char **words);
+char	**new_temp_args(t_data *da, char **temp_args);
+int		nb_pipe(char *rl);
+int		nb_io(char *s);
+int		nb_quotes(char *s);
+int		if_dollar(char *s);
+int		len_env(t_data *da, char *s);
+char	*find_in_env(t_data *da, char *s);
+char	*after_dollar(char *s);
+char	*temp_without_dollar(t_data *da, char *temp_args);
+char	*get_cmd(char *words);
+int		len_cmd(char *words);
+int		double_quotes_close(char *temp_args);
+char	*cpy_for_args(char *s, int start);
+int		len_for_args(char *s, int start);
+void	fill_args_tab(t_data *da, char **words);
+int		pos_cmd(char **words);
 
 #endif
