@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 15:37:45 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/04/26 14:44:54 by abolea           ###   ########.fr       */
+/*   Updated: 2024/04/26 16:20:06 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -211,7 +211,7 @@ char	*fill_args(t_data *da, char **words)
 			}
 			else if ((words[da->i_args][0] != '>' && words[da->i_args][0] != '<'))
 			{
-				args = ft_strjoin_ori(args, words[da->i_args]);
+				args = cpy_for_args(words[da->i_args], 0);
 				da->i_args++;
 				args = cpy_args_without_quotes(args);
 				return (args);
@@ -281,8 +281,6 @@ void	fill_args_tab(t_data *da, char **words)
 				da->args_tab[i][j] = fill_args(da, words);
 				if (da->args_tab[i][j])
 					j++;
-				printf("j = %d\n", j);
-				printf("n = %d\n", da->nb_args);
 			}
 			da->args_tab[i][j] = NULL;
 		}

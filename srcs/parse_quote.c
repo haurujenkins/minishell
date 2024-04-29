@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 14:58:08 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/04/25 14:03:53 by abolea           ###   ########.fr       */
+/*   Updated: 2024/04/26 16:37:03 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,40 +28,84 @@ int	if_double_space(char *s)
 	return (j);
 }
 
+// char	*cpy_args_without_quotes(char *s)
+// {
+// 	int		i;
+// 	int		j;
+// 	char	*tmp;
+// 	int		d_quote;
+// 	int		s_quote;
+
+// 	i = 0;
+// 	j = 0;
+// 	d_quote = 0;
+// 	s_quote = 0;
+// 	tmp = malloc((ft_strlen(s) - nb_quotes(s) - if_double_space(s) + 1) * sizeof(char));
+// 	while (s[i])
+// 	{
+// 		if (s[i] == ' ' && s[i + 1] == ' ')
+// 			i++;
+// 		if (s[i] == 34)
+// 			d_quote++;
+// 		if (s[i] == 39)
+// 			s_quote++;
+// 		if ((s[i] == 34 && d_quote % 2 == 0) || (s[i] == 34 && d_quote % 2 != 0 && s_quote % 2 == 0))
+// 			i++;
+// 		else if ((s[i] == 39 && s_quote % 2 == 0) || (s[i] == 39 && s_quote % 2 != 0 && d_quote % 2 == 0))
+// 			i++;
+// 		else
+// 		{
+// 			tmp[j] = s[i];
+// 			i++;
+// 			j++;
+// 		}
+// 	}
+// 	tmp[j] = '\0';
+// 	free(s);
+// 	return (tmp);
+// }
+
 char	*cpy_args_without_quotes(char *s)
 {
 	int		i;
 	int		j;
 	char	*tmp;
-	int		d_quote;
-	int		s_quote;
-
+	
 	i = 0;
 	j = 0;
-	d_quote = 0;
-	s_quote = 0;
-	tmp = malloc((ft_strlen(s) - nb_quotes(s) - if_double_space(s) + 1) * sizeof(char));
+	tmp = malloc((ft_strlen(s) - nb_quotes(s)- if_double_space(s) + 1) * sizeof(char));
 	while (s[i])
 	{
 		if (s[i] == ' ' && s[i + 1] == ' ')
 			i++;
 		if (s[i] == 34)
-			d_quote++;
-		if (s[i] == 39)
-			s_quote++;
-		if ((s[i] == 34 && d_quote % 2 == 0) || (s[i] == 34 && d_quote % 2 != 0 && s_quote % 2 == 0))
 			i++;
-		else if ((s[i] == 39 && s_quote % 2 == 0) || (s[i] == 39 && s_quote % 2 != 0 && d_quote % 2 == 0))
-			i++;
-		else
-		{
-			tmp[j] = s[i];
-			i++;
-			j++;
-		}
+		tmp[j] = s[i];
+		i++;
+		j++;
 	}
 	tmp[j] = '\0';
-	free(s);
+	return (tmp);
+}
+
+char	*cpy_args_without_s_quotes(char *s)
+{
+	int		i;
+	int		j;
+	char	*tmp;
+	
+	i = 0;
+	j = 0;
+	tmp = malloc((ft_strlen(s) - nb_quotes(s) + 1) * sizeof(char));
+	while (s[i])
+	{
+		if (s[i] == 39)
+			i++;
+		tmp[j] = s[i];
+		i++;
+		j++;
+	}
+	tmp[j] = '\0';
 	return (tmp);
 }
 

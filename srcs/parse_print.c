@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 13:59:33 by abolea            #+#    #+#             */
-/*   Updated: 2024/04/25 14:57:41 by abolea           ###   ########.fr       */
+/*   Updated: 2024/04/26 15:51:00 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	print_args(int i, int pnum, t_data *da)
 			printf("\n");
 		while (da->args_tab[i][d])
 		{
-			printf("\033[0;32margs[%d][%d]\033[0;37m = %s\n", i, d, da->args_tab[i][d]);
+			printf("\033[0;33margs[%d][%d]\033[0;37m = %s\n", i, d, da->args_tab[i][d]);
 			d++;
 		}
 		k = 0;

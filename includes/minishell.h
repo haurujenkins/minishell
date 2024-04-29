@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 14:48:53 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/04/26 11:36:50 by abolea           ###   ########.fr       */
+/*   Updated: 2024/04/26 16:37:36 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,5 +132,6 @@ char	*cpy_for_args(char *s, int start);
 int		len_for_args(char *s, int start);
 void	fill_args_tab(t_data *da, char **words);
 int		pos_cmd(char **words);
+char	*cpy_args_without_s_quotes(char *s);
 
 #endif
