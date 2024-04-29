@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 11:49:04 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/04/29 10:01:27 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/04/29 13:48:02 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,8 @@ int	exec_recur(t_data *da, char **envp, int index)
 
 void	exec_cmd(t_data *da, char **envp, int i)
 {
-	int	j;
+	int			j;
+	struct stat	filestat;
 
 	if (check_builtins(da) == 1)
 	{
@@ -97,7 +98,28 @@ void	exec_cmd(t_data *da, char **envp, int i)
 			if (da->cmd1[0][0] != '/' && da->cmd1[0][0] != '.')
 				da->cmd = ft_strjoin_slash(da->my_path[i], da->cmd1[0]);
 			else
+			{
+				// write(1, "test\n", 5);
+				if (stat(da->cmd1[0], &filestat) < 0)
+				{
+					write(2, da->cmd1[0], ft_strlen(da->cmd1[0]));
+					write(2, ": No such file or directory\n", 29);
+					exit(127);
+				}
+				if (S_ISDIR(filestat.st_mode))
+				{
+					write(2, da->cmd1[0], ft_strlen(da->cmd1[0]));
+					write(2, ": Is a directory\n", 17);
+					exit(126);
+				}
+				if (!(filestat.st_mode & S_IXUSR))
+				{
+					write(2, da->cmd1[0], ft_strlen(da->cmd1[0]));
+					write(2, ": Permission denied\n", 21);
+					exit(126);
+				}
 				da->cmd = ft_strdup(da->cmd1[0]);
+			}
 			if (da->cmd == NULL)
 			{
 				free_data(da, envp);

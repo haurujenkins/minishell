@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 13:03:01 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/04/29 11:07:20 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/04/29 15:19:26 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,9 @@ void	read_until_delimiter(char *delimiter, int fd)
 
 int	check_files(t_data *da, int index)
 {
-	int	i;
-	int	fdelim;
+	int			i;
+	int			fdelim;
+	struct stat	filestat;
 
 	i = 0;
 	fdelim = 0;
@@ -81,7 +82,30 @@ int	check_files(t_data *da, int index)
 				da->fd_input = open("minishell_heredoc_tmpfile", O_RDONLY);
 			}
 			if (da->fd_input < 0)
-				perror("Error opening input file");
+			{
+				if (stat(da->in_tab[index][i], &filestat) == -1)
+				{
+					write(2, "bash: ", 6);
+					write(2, da->in_tab[index][i], ft_strlen(da->in_tab[index][i]));
+					write(2, ": No such file or directory\n", 28);
+					exit(1);
+				}
+				if (S_ISDIR(filestat.st_mode))
+				{
+					write(2, "bash: ", 6);
+					write(2, da->in_tab[index][i], ft_strlen(da->in_tab[index][i]));
+					write(2, ": Is a directory\n", 17);
+					exit(1);
+				}
+				if (!(filestat.st_mode & S_IXUSR))
+				{
+					close(da->fd_input);
+					write(2, "bash: ", 6);
+					write(2, da->in_tab[index][i], ft_strlen(da->in_tab[index][i]));
+					write(2, ": Permission denied\n", 21);
+					exit(1);
+				}
+			}
 			i++;
 		}
 	}
@@ -108,8 +132,28 @@ int	check_files(t_data *da, int index)
 				O_WRONLY | O_CREAT | O_APPEND, 0644);
 			if (da->fd_output < 0)
 			{
-				close(da->fd_input);
-				perror("Error opening output file");
+				if (stat(da->out_tab[index][i], &filestat) == -1)
+				{
+					write(2, "bash: ", 6);
+					write(2, da->out_tab[index][i], ft_strlen(da->out_tab[index][i]));
+					write(2, ": No such file or directory\n", 28);
+					exit(1);
+				}
+				if (S_ISDIR(filestat.st_mode))
+				{
+					write(2, "bash: ", 6);
+					write(2, da->out_tab[index][i], ft_strlen(da->out_tab[index][i]));
+					write(2, ": Is a directory\n", 17);
+					exit(1);
+				}
+				if (!(filestat.st_mode & S_IXUSR))
+				{
+					close(da->fd_input);
+					write(2, "bash: ", 6);
+					write(2, da->out_tab[index][i], ft_strlen(da->out_tab[index][i]));
+					write(2, ": Permission denied\n", 21);
+					exit(1);
+				}
 			}
 			i++;
 		}
