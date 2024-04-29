@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 14:58:08 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/04/26 16:37:03 by abolea           ###   ########.fr       */
+/*   Updated: 2024/04/29 11:25:11 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -229,7 +229,7 @@ void	if_quotes_not_close(char **temp_args, int i)
 						break ;
 					}
 					else if (temp_args[i][k] == 0)
-						exit(printf("Error : simple quote not close\n"));
+						exit(write(2, "Error : simple quote not close\n", 31));
 					k++;
 				}
 			}
@@ -244,7 +244,7 @@ void	if_quotes_not_close(char **temp_args, int i)
 						break ;
 					}
 					else if (temp_args[i][k] == 0)
-						exit(printf("Error : double quote not close\n"));
+						exit(write(2, "Error : double quote not close\n", 31));
 					k++;
 				}
 			}

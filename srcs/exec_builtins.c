@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 11:12:16 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/04/22 19:36:06 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/04/29 09:59:09 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ void	my_echo(char **cmd, t_data *da)
 		printf("$\n");
 		return ;
 	}
-	if (ft_strncmp(da->args[0][1], "$?", 2) == 0)
+	if (ft_strncmp(da->args_tab[0][0], "$?", 2) == 0)
 	{
 		printf("%i", da->exit_status);
 		while (cmd[i][j] != '?')
@@ -122,7 +122,7 @@ void	my_cd(char **cmd, char **envp, t_data *da)
 		if (!path)
 		{
 			da->exit_status = 1;
-			printf("Error: malloc failed\n");
+			write(2, "Error: malloc failed\n", 21);
 			return ;
 		}
 	}
@@ -132,7 +132,7 @@ void	my_cd(char **cmd, char **envp, t_data *da)
 		if (!path)
 		{
 			da->exit_status = 1;
-			printf("Error: malloc failed\n");
+			write(2, "Error: malloc failed\n", 21);
 			return ;
 		}
 	}
@@ -161,7 +161,7 @@ void	my_unset(t_data *da)
 	if (!new_env)
 	{
 		da->exit_status = 1;
-		printf("Error: malloc failed\n");
+		write(2, "Error: malloc failed\n", 21);
 		return ;
 	}
 	get_args_builtins(da, 0);
@@ -173,7 +173,7 @@ void	my_unset(t_data *da)
 			if (!new_env[j])
 			{
 				da->exit_status = 1;
-				printf("Error: malloc failed\n");
+				write(2, "Error: malloc failed\n", 21);
 				return ;
 			}
 			j++;

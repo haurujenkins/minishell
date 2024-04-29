@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 14:28:18 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/04/22 14:42:24 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/04/29 10:02:48 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ char	*fill_append(char *temp_args, t_data *da)
 		{
 			args = ft_strdup("0");
 			if (args == NULL)
-				return (printf("Error: malloc failed\n"), NULL);
+				return (write(2, "Error: malloc failed\n", 21), NULL);
 			da->o_append++;
 			return (args);
 		}
@@ -81,7 +81,7 @@ char	*fill_append(char *temp_args, t_data *da)
 		{
 			args = ft_strdup("1");
 			if (args == NULL)
-				return (printf("Error: malloc failed\n"), NULL);
+				return (write(2, "Error: malloc failed\n", 21), NULL);
 			da->o_append += 2;
 			return (args);
 		}
@@ -120,7 +120,7 @@ int	fill_append_tab(t_data *da, char **temp_args)
 	i = 0;
 	da->append_tab = malloc(da->pnum * sizeof(char **));
 	if (da->append_tab == NULL)
-		return (printf("Error: malloc failed\n"), 1);
+		return (write(2, "Error: malloc failed\n", 21), 1);
 	while (i < da->pnum)
 	{
 		j = 0;
@@ -128,7 +128,7 @@ int	fill_append_tab(t_data *da, char **temp_args)
 		da->nb_append = ft_nb_append(temp_args[i]);
 		da->append_tab[i] = malloc((da->nb_append + 1) * sizeof(char *));
 		if (da->append_tab[i] == NULL)
-			return (printf("Error: malloc failed\n"), 1);
+			return (write(2, "Error: malloc failed\n", 21), 1);
 		if (da->nb_append == 0)
 			da->append_tab[i][j] = NULL;
 		else

@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 11:49:04 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/04/22 19:05:47 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/04/29 10:01:27 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,8 @@ void	exec_cmd(t_data *da, char **envp, int i)
 		da->cmd = ft_strdup(ft_itoa(da->exit_status));
 		if (ft_strlen(da->args[0][0]) > 2)
 			da->cmd = ft_strjoin_ori(da->cmd, da->args[0][0] + 2);
-		printf("%s: command not found\n", da->cmd);
+		write(2, da->cmd, ft_strlen(da->cmd));
+		write(2, ": command not found\n", 20);
 		exit(127);
 	}
 	else
@@ -113,7 +114,8 @@ void	exec_cmd(t_data *da, char **envp, int i)
 			i++;
 		}
 	}
-	printf("%s: command not found\n", da->cmd1[0]);
+	write(2, da->cmd1[0], ft_strlen(da->cmd1[0]));
+	write(2, ": command not found\n", 20);
 	exit(127);
 }
 
@@ -122,5 +124,7 @@ int	main_exec(t_data *da, char **envp)
 	set_pipe(da);
 	if (check_extern_builtins(da, envp, 0) == 0)
 		exec_recur(da, envp, 0);
+	if (access("minishell_heredoc_tmpfile", F_OK) != -1)
+		unlink("minishell_heredoc_tmpfile");
 	return (0);
 }

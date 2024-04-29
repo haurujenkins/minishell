@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 15:37:45 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/04/26 16:20:06 by abolea           ###   ########.fr       */
+/*   Updated: 2024/04/29 11:25:00 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,19 +103,19 @@ char	**new_temp_args(t_data *da, char **temp_args)
 		temp_args[i] = temp_without_dollar(da, temp_args[i]);
 		if (temp_args[i] == NULL)
 		{
-			printf("Error: malloc failed\n");
+			write(2, "Error: malloc failed\n", 21);
 			return (NULL);
 		}
 		temp_args[i] = sup_delim(temp_args[i]);
 		if (temp_args[i] == NULL)
 		{
-			printf("Error: malloc failed\n");
+			write(2, "Error: malloc failed\n", 21);
 			return (NULL);
 		}
 		temp_args[i] = sup_append(temp_args[i]);
 		if (temp_args[i] == NULL)
 		{
-			printf("Error: malloc failed\n");
+			write(2, "Error: malloc failed\n", 21);
 			return (NULL);
 		}
 		i++;
@@ -153,36 +153,36 @@ int	ft_nb_args(t_data *da, char **words)
 			else
 				j++;
 		}
-		while (words[j])
-		{
-			if ((words[j - 2][0] == '<' || words[j - 2][0] == '>') && !words[j - 2][1])
-			{
-				if (words[j - 1][0] == 34)
-				{
-					while (if_finish_quotes(words[j - 1]) != 1)
-						j++;
-				}
-				while (j < num_w && (words[j][0] != '<' && words[j][0] != '>'))
-				{
-					res++;
-					j++;
-				}
-			}
-			else if ((words[j - 1][0] == '<' || words[j - 1][0] == '>') && words[j - 1][1])
-			{
-				if (words[j - 1][1] == 34)
-				{
-					while (if_finish_quotes(words[j - 1]) != 1)
-						j++;
-				}
-				while (j < num_w && (words[j][0] != '<' && words[j][0] != '>'))
-				{
-					res++;
-					j++;
-				}
-			}
-			j++;
-		}
+		// while (words[j])
+		// {
+		// 	if ((words[j - 2][0] == '<' || words[j - 2][0] == '>') && !words[j - 2][1])
+		// 	{
+		// 		if (words[j - 1][0] == 34)
+		// 		{
+		// 			while (if_finish_quotes(words[j - 1]) != 1)
+		// 				j++;
+		// 		}
+		// 		while (j < num_w && (words[j][0] != '<' && words[j][0] != '>'))
+		// 		{
+		// 			res++;
+		// 			j++;
+		// 		}
+		// 	}
+		// 	else if ((words[j - 1][0] == '<' || words[j - 1][0] == '>') && words[j - 1][1])
+		// 	{
+		// 		if (words[j - 1][1] == 34)
+		// 		{
+		// 			while (if_finish_quotes(words[j - 1]) != 1)
+		// 				j++;
+		// 		}
+		// 		while (j < num_w && (words[j][0] != '<' && words[j][0] != '>'))
+		// 		{
+		// 			res++;
+		// 			j++;
+		// 		}
+		// 	}
+		// 	j++;
+		// }
 	}
 	return (res);
 }
