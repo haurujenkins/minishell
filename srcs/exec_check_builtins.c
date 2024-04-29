@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 13:33:51 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/04/26 16:35:47 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/04/29 09:58:08 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ int	check_builtins(t_data *da)
 	if (size == 4 && ft_strchr(da->cmd1[0], "exit"))
 	{
 		if (da->cmd1[1] != NULL)
-			return (printf("minishell: exit: too many arguments\n"), 1);
+			return (write(2, "minishell: exit: too many arguments\n", 36), 1);
 		else
 			exit(0);
 	}
@@ -133,7 +133,11 @@ int	check_builtins(t_data *da)
 	if (size == 3 && ft_strchr(da->cmd1[0], "env"))
 	{
 		if (da->cmd1[1] != NULL)
-			return (printf("env: bad option %s\n", da->cmd1[1]), 1);
+		{
+			write(2, "env: bad option ", 16);
+			write(2, da->cmd1[1], ft_strlen(da->cmd1[1]));
+			return (write(2, "\n", 1), 1);
+		}
 		else
 			return (my_env(da->my_env, 1), 1);
 	}

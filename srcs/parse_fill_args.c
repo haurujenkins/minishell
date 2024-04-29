@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 15:37:45 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/04/26 18:29:30 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/04/29 10:04:44 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,19 +103,19 @@ char	**new_temp_args(t_data *da, char **temp_args)
 		temp_args[i] = temp_without_dollar(da, temp_args[i]);
 		if (temp_args[i] == NULL)
 		{
-			printf("Error: malloc failed\n");
+			write(2, "Error: malloc failed\n", 21);
 			return (NULL);
 		}
 		temp_args[i] = sup_delim(temp_args[i]);
 		if (temp_args[i] == NULL)
 		{
-			printf("Error: malloc failed\n");
+			write(2, "Error: malloc failed\n", 21);
 			return (NULL);
 		}
 		temp_args[i] = sup_append(temp_args[i]);
 		if (temp_args[i] == NULL)
 		{
-			printf("Error: malloc failed\n");
+			write(2, "Error: malloc failed\n", 21);
 			return (NULL);
 		}
 		i++;

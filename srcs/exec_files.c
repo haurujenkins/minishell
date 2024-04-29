@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 13:03:01 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/04/26 15:40:28 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/04/29 11:07:20 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ int	check_files(t_data *da, int index)
 		if (dup2(da->fd_input, STDIN_FILENO) == -1)
 		{
 			perror("dup2");
-			exit(EXIT_FAILURE);
+			exit(127);
 		}
 		close(da->fd_input);
 	}
@@ -119,7 +119,7 @@ int	check_files(t_data *da, int index)
 		if (dup2(da->fd_output, STDOUT_FILENO) == -1)
 		{
 			perror("dup2");
-			exit(EXIT_FAILURE);
+			exit(127);
 		}
 		close(da->fd_output);
 	}

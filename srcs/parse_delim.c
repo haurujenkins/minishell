@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_delim.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 14:38:28 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/04/24 13:13:04 by abolea           ###   ########.fr       */
+/*   Updated: 2024/04/29 10:03:39 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ char	*fill_delim(char *temp_args, t_data *da)
 		{
 			args = ft_strdup("0");
 			if (args == NULL)
-				return (printf("Error: malloc failed\n"), NULL);
+				return (write(2, "Error: malloc failed\n", 21), NULL);
 			da->in_delim++;
 			return (args);
 		}
@@ -81,7 +81,7 @@ char	*fill_delim(char *temp_args, t_data *da)
 		{
 			args = ft_strdup("1");
 			if (args == NULL)
-				return (printf("Error: malloc failed\n"), NULL);
+				return (write(2, "Error: malloc failed\n", 21), NULL);
 			da->in_delim += 2;
 			return (args);
 		}
@@ -120,7 +120,7 @@ int	fill_delim_tab(t_data *da, char **temp_args)
 	i = 0;
 	da->delim_tab = malloc(da->pnum * sizeof(char **));
 	if (da->delim_tab == NULL)
-		return (printf("Error: malloc failed\n"), 1);
+		return (write(2, "Error: malloc failed\n", 21), 1);
 	while (i < da->pnum)
 	{
 		j = 0;
@@ -128,7 +128,7 @@ int	fill_delim_tab(t_data *da, char **temp_args)
 		da->nb_delim = ft_nb_delim(temp_args[i]);
 		da->delim_tab[i] = malloc((da->nb_delim + 1) * sizeof(char *));
 		if (da->delim_tab[i] == NULL)
-			return (printf("Error: malloc failed\n"), 1);
+			return (write(2, "Error: malloc failed\n", 21), 1);
 		if (da->nb_delim == 0)
 			da->delim_tab[i][j] = NULL;
 		else

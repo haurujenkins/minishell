@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_quote.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 14:58:08 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/04/25 14:03:53 by abolea           ###   ########.fr       */
+/*   Updated: 2024/04/29 10:06:15 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,7 +185,7 @@ void	if_quotes_not_close(char **temp_args, int i)
 						break ;
 					}
 					else if (temp_args[i][k] == 0)
-						exit(printf("Error : simple quote not close\n"));
+						exit(write(2, "Error : simple quote not close\n", 31));
 					k++;
 				}
 			}
@@ -200,7 +200,7 @@ void	if_quotes_not_close(char **temp_args, int i)
 						break ;
 					}
 					else if (temp_args[i][k] == 0)
-						exit(printf("Error : double quote not close\n"));
+						exit(write(2, "Error : double quote not close\n", 31));
 					k++;
 				}
 			}

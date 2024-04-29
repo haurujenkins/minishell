@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 14:31:09 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/04/25 13:44:55 by abolea           ###   ########.fr       */
+/*   Updated: 2024/04/29 10:06:39 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ char	*cpy_until_char(char *s, char c, int start)
 	len = ft_strlen(s);
 	tmp = malloc((len - start + 1) * sizeof(char));
 	if (!tmp)
-		return (printf("Malloc failed\n"), NULL);
+		return (write(2, "Malloc failed\n", 14), NULL);
 	while (s[start] != c && start < len)
 	{
 		tmp[j] = s[start];
@@ -96,7 +96,7 @@ char	*cpy_for_args(char *s, int start)
 	len = len_for_args(s, start);
 	tmp = malloc((len - start + 1) * sizeof(char));
 	if (!tmp)
-		return (printf("Malloc failed\n"), NULL);
+		return (write(2, "Malloc failed\n", 14), NULL);
 	while ((s[start] != '<' && s[start] != '>' && s[start] != ' ') && start < len)
 	{
 		tmp[j] = s[start];
