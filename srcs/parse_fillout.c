@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 14:53:14 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/04/24 13:51:01 by abolea           ###   ########.fr       */
+/*   Updated: 2024/04/30 16:54:05 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,31 +59,28 @@ char	*fill_output(char *temp_args, t_data *da)
 	return (NULL);
 }
 
-void	fill_outab(t_data *da, char **temp_args)
+void	fill_outab(t_data *da, char *temp_args)
 {
 	int	i;
 	int	j;
 
-	i = -1;
+	i = 0;
 	da->nb_redir_out = 0;
 	da->out_tab = malloc(da->pnum * sizeof(char **));
-	while (++i < da->pnum)
+	j = 0;
+	da->io_nb = 0;
+	da->nb_redir_out = ft_nb_redir(temp_args, '>');
+	da->out_tab[i] = malloc((da->nb_redir_out + 1) * sizeof(char *));
+	if (da->nb_redir_out == 0)
+		da->out_tab[i][j] = NULL;
+	else
 	{
-		j = 0;
-		da->io_nb = 0;
-		da->nb_redir_out = ft_nb_redir(temp_args[i], '>');
-		da->out_tab[i] = malloc((da->nb_redir_out + 1) * sizeof(char *));
-		if (da->nb_redir_out == 0)
-			da->out_tab[i][j] = NULL;
-		else
+		while (j < da->nb_redir_out)
 		{
-			while (j < da->nb_redir_out)
-			{
-				da->out_tab[i][j] = fill_output(temp_args[i], da);
-				if (da->out_tab[i][j])
-					j++;
-			}
-			da->out_tab[i][j] = NULL;
+			da->out_tab[i][j] = fill_output(temp_args, da);
+			if (da->out_tab[i][j])
+				j++;
 		}
+		da->out_tab[i][j] = NULL;
 	}
 }

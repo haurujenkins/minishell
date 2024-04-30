@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_main.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 11:10:09 by abolea            #+#    #+#             */
-/*   Updated: 2024/04/29 10:05:14 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/04/30 17:11:02 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ int	parsing(char *rl, t_data *da)
 	{
 		if_quotes_not_close(temp_args, i);
 		//after_dollar(temp_args[i]);
+		temp_args[i] = new_temp(temp_args[i]);
 		words = ft_split(temp_args[i], ' ');
 		while (words[num_w] != NULL)
 			num_w++;
@@ -73,11 +74,11 @@ int	parsing(char *rl, t_data *da)
 		da->args[i][1] = NULL;
 		da->pos_cmd = pos_cmd(words);
 		da->io_nb = 0;
+		fill_args_tab(da, words);
+		fill_intab(da, temp_args[i]);
+		fill_outab(da, temp_args[i]);
 		i++;
 	}
-	fill_args_tab(da, words);
-	fill_intab(da, temp_args);
-	fill_outab(da, temp_args);
 	i = -1;
 	while (temp_args[++i] != NULL)
 		free(temp_args[i]);
@@ -87,7 +88,7 @@ int	parsing(char *rl, t_data *da)
 		free(words[num_w]);
 	free(words);
 	words = NULL;
-	//print_args(i, da->pnum, da);
+	// print_args(i, da->pnum, da);
 	return (0);
 }
 

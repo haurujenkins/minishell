@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 14:31:09 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/04/29 10:06:39 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/04/30 17:10:49 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ int	if_finish_quotes(char *s)
 		return (0);
 	while (s[i])
 	{
-		if (s[i] == 34)
+		if (s[i] == 34 || s[i] == 39)
 			return (1);
 		i++;
 	}

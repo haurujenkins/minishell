@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 14:48:53 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/04/26 16:37:36 by abolea           ###   ########.fr       */
+/*   Updated: 2024/04/30 15:58:07 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,8 +107,8 @@ char	*sup_delim(char *s);
 char	*cpy_until_char(char *s, char c, int start);
 int		if_finish_quotes(char *s);
 int		if_finish_squotes(char *s);
-void	fill_outab(t_data *da, char **temp_args);
-void	fill_intab(t_data *da, char **temp_args);
+void	fill_outab(t_data *da, char *temp_args);
+void	fill_intab(t_data *da, char *temp_args);
 void	if_quotes_not_close(char **temp_args, int i);
 int		if_io_before_last_quotes(char *s, char c, int start);
 int		if_quotes(char *s, int start);
@@ -130,8 +130,9 @@ int		len_cmd(char *words);
 int		double_quotes_close(char *temp_args);
 char	*cpy_for_args(char *s, int start);
 int		len_for_args(char *s, int start);
-void	fill_args_tab(t_data *da, char **words);
+void	fill_args_tab(t_data *da, char **temp_args);
 int		pos_cmd(char **words);
 char	*cpy_args_without_s_quotes(char *s);
+char	*new_temp(char *s);
 
 #endif
