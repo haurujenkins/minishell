@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 13:03:01 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/04/29 15:19:26 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/04/30 18:21:02 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,11 +61,9 @@ void	read_until_delimiter(char *delimiter, int fd)
 int	check_files(t_data *da, int index)
 {
 	int			i;
-	int			fdelim;
 	struct stat	filestat;
 
 	i = 0;
-	fdelim = 0;
 	da->fd_input = -1;
 	da->fd_output = -1;
 	if (da->in_tab[index][0] != NULL)
