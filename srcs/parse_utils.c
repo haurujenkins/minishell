@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 14:31:09 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/04/30 17:10:49 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/03 13:26:08 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,9 +116,9 @@ int	if_finish_quotes(char *s)
 		return (0);
 	while (s[i])
 	{
-		if (s[i] == 34 || s[i] == 39)
-			return (1);
 		i++;
 	}
+	if (s[i - 1] == 34 || s[i - 1] == 39)
+			return (1);
 	return (0);
 }

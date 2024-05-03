@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 15:37:45 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/04/30 17:11:36 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/03 15:25:27 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,8 @@ char	*fill_cmd(char **words)
 		args = NULL;
 	else
 		args = get_cmd(words[i]);
+	if (args)
+		args = cpy_args_without_quotes(args);
 	return (args);
 }
 
@@ -123,64 +125,66 @@ char	**new_temp_args(t_data *da, char **temp_args)
 	return (temp_args);
 }
 
-int	ft_nb_args(t_data *da, char **words)
+int ft_nb_args(t_data *da, char **words)
 {
-	int		res;
-	int		j;
-	int		num_words;
+	int res;
+	int j;
 
-	num_words = 0;
 	res = 0;
-	while (words[num_words])
-		num_words++;
 	j = pos_args(da, words);
 	if (j == -1)
 		return (0);
-	else
+	while (words[j])
 	{
-		while (words[j] && words[j][0] != '<' && words[j][0] != '>')
+		if (j > 2)
 		{
-			if ((words[j - 1][0] == '>' || words[j - 1][0] == '<') && (words[j][0] == 34 || words[j - 1][1] == 34))
+			if ((words[j - 2][0] == '<' || words[j - 2][0] == '>') && (words[j][0] != '<' && words[j][0] != '>'))
 			{
-				while (if_finish_quotes(words[j - 1]) != 1)
-					j++;
-			}
-			else if (words[j][0] == '<' && words[j][0] == '>')
-			{
-				if (words[j - 1][0] == 34 || words[j - 1][1] == 34)
+				if (words[j - 1][0] == 34 || words[j - 1][0] == 39)
 				{
-					while (if_finish_quotes(words[j - 1]) != 1)
+					j++;
+					while (if_quotes(words[j - 1], 0) != 1)
 						j++;
-				}
-				else
-					j++;
-			}
-			else
-			{
-				res++;
-				j++;
-			}
-		}
-		while (words[j])
-		{
-			if ((words[j - 2][0] == '<' || words[j - 2][0] == '>') && !words[j - 2][1])
-			{
-				if (words[j - 1][0] == 34)
-				{
-					while (if_finish_quotes(words[j  - 1]) != 1)
-						j ++;
 				}
 				while (words[j] && (words[j][0] != '<' && words[j][0] != '>'))
 				{
-					res++;
-					j++;
+					if (words[j][0] == 34)
+					{
+						j++;
+						while (if_quotes(words[j], 0) != 1)
+							j++;
+						res++;
+						j++;
+					}
+					else
+					{
+						j++;
+						res++;
+					}
 				}
 			}
-			j++;
+			else if ((words[j][0] == '<' || words[j][0] == '>') || (words[j - 1][0] == '<' || words[j - 1][0] == '>'))
+				j++;
+			else if ((words[j][0] != '<' && words[j][0] != '>') && (words[j - 1][0] != '<' && words[j - 1][0] != '>'))
+			{
+				j++;
+				res++;
+			}
+		}
+		else
+		{
+			if ((words[j][0] == '<' || words[j][0] == '>') || (words[j - 1][0] == '<' || words[j - 1][0] == '>'))
+				j++;
+			else if ((words[j][0] != '<' && words[j][0] != '>') && (words[j - 1][0] != '<' && words[j - 1][0] != '>'))
+			{
+				j++;
+				res++;
+			}
 		}
 	}
 	return (res);
 }
+
 
 char	*fill_args(t_data *da, char **words)
 {
@@ -191,50 +195,64 @@ char	*fill_args(t_data *da, char **words)
 	else
 	{
 		args = ft_strdup("");
-		while (words[da->i_args] && words[da->i_args][0] != '<' && words[da->i_args][0] != '>')
-		{
-			if ((words[da->i_args - 1][0] == '>' || words[da->i_args - 1][0] == '<') && ((words[da->i_args][0] == 34 || words[da->i_args - 1][1] == 34) || (words[da->i_args][0] == 39 || words[da->i_args - 1][1] == 39)))
-			{
-				while (if_finish_quotes(words[da->i_args - 1]) != 1)
-					da->i_args++;
-			}
-			else if (words[da->i_args][0] == '<' && words[da->i_args][0] == '>')
-			{
-				if ((words[da->i_args - 1][0] == 34 || words[da->i_args - 1][1] == 34) || (words[da->i_args - 1][0] == 39 || words[da->i_args - 1][1] == 39))
-				{
-					while (if_finish_quotes(words[da->i_args - 1]) != 1)
-						da->i_args++;
-				}
-				else
-					da->i_args++;
-			}
-			else
-			{
-				args = ft_strjoin_ori(args, words[da->i_args]);
-				args = cpy_args_without_quotes(args);
-				da->i_args++;
-				return (args);
-			}
-		}
 		while (words[da->i_args])
 		{
-			if ((words[da->i_args - 2][0] == '<' || words[da->i_args - 2][0] == '>') && !words[da->i_args - 2][1])
+			if (da->i_args > 2)
 			{
-				if (words[da->i_args - 1][0] == 34 || words[da->i_args - 1][0] == 39)
+				if ((words[da->i_args - 2][0] == '<' || words[da->i_args - 2][0] == '>') && (words[da->i_args][0] != '<' && words[da->i_args][0] != '>'))
 				{
-					while (if_finish_quotes(words[da->i_args  - 1]) != 1)
-						da->i_args ++;
+					if (words[da->i_args - 1][0] == 34 || words[da->i_args - 1][0] == 39)
+					{
+						da->i_args++;
+						while (if_quotes(words[da->i_args  - 1], 0) != 1)
+							da->i_args++;
+					}
+					while (words[da->i_args][0] != '<' && words[da->i_args ][0] != '>')
+					{
+						if (words[da->i_args][0] == 34)
+						{
+							while (if_finish_quotes(words[da->i_args]) != 1)
+							{
+								args = ft_strjoin_ori(args, words[da->i_args]);
+								args = ft_strjoin_ori(args, " ");
+								da->i_args++;
+							}
+							args = ft_strjoin_ori(args, words[da->i_args]);
+							args = cpy_args_without_quotes(args);
+							da->i_args++;
+							return (args);
+						}
+						else
+						{
+							args = ft_strjoin_ori(args, words[da->i_args]);
+							args = cpy_args_without_quotes(args);
+							da->i_args++;
+							return (args);
+						}
+					}
 				}
-				while (words[da->i_args] && (words[da->i_args ][0] != '<' && words[da->i_args ][0] != '>'))
+				else if ((words[da->i_args][0] == '<' || words[da->i_args][0] == '>') || (words[da->i_args - 1][0] == '<' || words[da->i_args - 1][0] == '>'))
+					da->i_args++;
+				else if ((words[da->i_args][0] != '<' && words[da->i_args][0] != '>') && (words[da->i_args - 1][0] != '<' && words[da->i_args - 1][0] != '>'))
 				{
 					args = ft_strjoin_ori(args, words[da->i_args]);
 					args = cpy_args_without_quotes(args);
-					da->i_args ++;
-				}
-				if (args)
+					da->i_args++;
 					return (args);
+				}
 			}
-			da->i_args++;
+			else
+			{
+				if ((words[da->i_args][0] == '<' || words[da->i_args][0] == '>') || (words[da->i_args - 1][0] == '<' || words[da->i_args - 1][0] == '>'))
+					da->i_args++;
+				else if ((words[da->i_args][0] != '<' && words[da->i_args][0] != '>') && (words[da->i_args - 1][0] != '<' && words[da->i_args - 1][0] != '>'))
+				{
+					args = ft_strjoin_ori(args, words[da->i_args]);
+					args = cpy_args_without_quotes(args);
+					da->i_args++;
+					return (args);
+				}
+			}
 		}
 	}
 	return (NULL);
@@ -246,8 +264,6 @@ void	fill_args_tab(t_data *da, char **words)
 	int	j;
 
 	i = 0;
-	da->nb_args = 0;
-	da->i_args = 0;
 	da->args_tab = malloc(da->pnum * sizeof(char **));
 	j = 0;
 	da->i_args = pos_args(da, words);

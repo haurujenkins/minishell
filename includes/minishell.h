@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 14:48:53 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/04/30 15:58:07 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/02 08:53:35 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,6 @@ void	if_quotes_not_close(char **temp_args, int i);
 int		if_io_before_last_quotes(char *s, char c, int start);
 int		if_quotes(char *s, int start);
 char	*cpy_args_without_quotes(char *s);
-void	print_args(int i, int pnum, t_data *da);
 char	*fill_args(t_data *da, char **words);
 char	*fill_cmd(char **words);
 char	**new_temp_args(t_data *da, char **temp_args);
