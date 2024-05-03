@@ -6,48 +6,37 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 11:12:16 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/04/29 15:11:41 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/03 13:40:02 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	my_env(char **env, int num)
+void	my_env(char **env, int num, int j)
 {
 	int	i;
-	int	j;
 
-	i = 0;
+	i = -1;
 	if (num == 1)
-	{
-		while (env[i] != NULL)
-		{
+		while (env[++i] != NULL)
 			printf("%s\n", env[i]);
-			i++;
-		}
-	}
 	else
 	{
-		while (env[i] != NULL)
+		while (env[++i] != NULL)
 		{
 			printf("declare -x ");
 			j = -1;
 			while (env[i][++j] && env[i][j] != '=')
-			{
 				printf("%c", env[i][j]);
-			}
 			if (env[i][j] == '=')
 			{
 				printf("=\"");
 				while (env[i][++j])
-				{
 					printf("%c", env[i][j]);
-				}
 				printf("\"\n");
 			}
 			else
 				printf("\n");
-			i++;
 		}
 	}
 }

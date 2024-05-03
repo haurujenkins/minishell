@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 13:37:46 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/04/29 10:09:33 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/03 15:42:16 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	sort_env(t_data *da)
 	}
 	dup_env[i] = NULL;
 	sort_tab(dup_env);
-	my_env(dup_env, 2);
+	my_env(dup_env, 2, 0);
 	i = -1;
 	while (dup_env[++i])
 	{
@@ -80,6 +80,23 @@ void	export_var(t_data *da, char *temp_cmd, char *temp_value)
 	}
 }
 
+void	old_pwd(t_data *da, int i, char *temp, char *cmd)
+{
+	while (da->my_env[i])
+	{
+		if (ft_strchr(da->my_env[i], "OLDPWD") == 1)
+		{
+			cmd = ft_strdup("OLDPWD");
+			free(da->my_env[i]);
+			da->my_env[i] = ft_strjoin_ori(cmd, temp);
+			free(temp);
+			da->check_export = 1;
+			return ;
+		}
+		i++;
+	}
+}
+
 void	export_pwd(t_data *da, char *temp_value)
 {
 	int		i;
@@ -98,20 +115,25 @@ void	export_pwd(t_data *da, char *temp_value)
 		}
 		i++;
 	}
-	i = 0;
-	while (da->my_env[i])
+	old_pwd(da, 0, temp, cmd);
+}
+
+int	export_errors(t_data *da, int k)
+{
+	da->check_export = 0;
+	if (da->cmd1[k][0] == '=' && ft_strlen(da->cmd1[k]) == 1)
 	{
-		if (ft_strchr(da->my_env[i], "OLDPWD") == 1)
-		{
-			cmd = ft_strdup("OLDPWD");
-			free(da->my_env[i]);
-			da->my_env[i] = ft_strjoin_ori(cmd, temp);
-			free(temp);
-			da->check_export = 1;
-			return ;
-		}
-		i++;
+		write(2, " not a valid identifier\n", 24);
+		da->exit_status = 1;
+		return (0);
 	}
+	if (da->cmd1[k][0] > 47 && da->cmd1[k][0] < 58)
+	{
+		write(2, " not a valid identifier\n", 24);
+		da->exit_status = 1;
+		return (0);
+	}
+	return (1);
 }
 
 void	my_export(t_data *da)
@@ -125,19 +147,8 @@ void	my_export(t_data *da)
 	while (da->cmd1[k] != NULL)
 	{
 		i = 0;
-		da->check_export = 0;
-		if (da->cmd1[k][0] == '=' && ft_strlen(da->cmd1[k]) == 1)
-		{
-			write(2, " not a valid identifier\n", 24);
-			da->exit_status = 1;
+		if (export_errors(da, k) == 0)
 			return ;
-		}
-		if (da->cmd1[k][0] > 47 && da->cmd1[k][0] < 58)
-		{
-			write(2, " not a valid identifier\n", 24);
-			da->exit_status = 1;
-			return ;
-		}
 		while (da->cmd1[k][i] != '=')
 		{
 			if (da->cmd1[k][i] == '-')
@@ -161,9 +172,7 @@ void	my_export(t_data *da)
 		ft_strlcpy(temp_cmd, da->cmd1[k], i + 1);
 		temp_value = malloc(sizeof(char) * (ft_strlen(da->cmd1[k]) - i + 1));
 		if (da->cmd1[k][i] == '\0' || da->cmd1[k][i] == ' ')
-		{
 			ft_strlcpy(temp_value, "", 1);
-		}
 		else
 		{
 			ft_strlcpy(temp_value, da->cmd1[k] + i, \

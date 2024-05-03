@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 14:48:53 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/04/29 13:10:21 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/03 15:49:05 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void	get_args(t_data *da, char **envp, int index);
 void	set_pipe(t_data *da);
 int		main_exec(t_data *da, char **envp);
 int		check_files(t_data *da, int index);
-void	exec_cmd(t_data *da, char **envp, int i);
+void	exec_cmd(t_data *da, char **envp);
 void	set_all(t_data *da, char **envp);
 void	free_data(t_data *da, char **envp);
 int		check_builtins(t_data *da);
@@ -87,13 +87,18 @@ int		get_args_builtins(t_data *da, int index);
 void	my_cd(char **cmd, char **envp, t_data *da);
 void	my_pwd(void);
 void	my_echo(char **cmd, t_data *da);
-void	my_env(char **env, int num);
+void	my_env(char **env, int num, int j);
 void	my_export(t_data *da);
 void	my_unset(t_data *da);
 void	sort_env(t_data *da);
 void	free_pipe(t_data *da);
 void	free_struct(t_data *da);
 void	export_pwd(t_data *da, char *temp_value);
+void	infile_error(t_data *da, int index, int i);
+void	read_until_delimiter(char *delimiter, int fd);
+void	outfile_error(t_data *da, int index, int i);
+void	check_infile(t_data *da, int index);
+void	check_outfile(t_data *da, int index);
 
 void	print_args(int i, int pnum, t_data *da);
 void	loading(int p);
@@ -133,5 +138,6 @@ char	*cpy_for_args(char *s, int start);
 int		len_for_args(char *s, int start);
 void	fill_args_tab(t_data *da, char **words);
 int		pos_cmd(char **words);
+
 
 #endif

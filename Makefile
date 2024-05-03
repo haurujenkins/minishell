@@ -9,6 +9,7 @@ SRCS			=	parse_main.c \
 					exec_builtins.c \
 					exec_check_builtins.c \
 					exec_export.c \
+					exec_check_files.c \
 					parse_print.c \
 					parse_append.c \
 					parse_utils.c \

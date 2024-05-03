@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 13:01:33 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/04/29 12:53:59 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/03 15:57:06 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,24 +53,29 @@ char	*get_home(char **envp)
 	return (home);
 }
 
+void	free_cmd(t_data *da)
+{
+	int	i;
+
+	i = 0;
+	while (da->cmd1[i] != NULL)
+	{
+		free(da->cmd1[i]);
+		i++;
+	}
+	free(da->cmd1);
+	da->cmd1 = NULL;
+}
+
 int	get_args_builtins(t_data *da, int index)
 {
 	int	i;
 	int	j;
 
-	i = 0;
+	i = -1;
 	j = 1;
 	if (da->cmd1 != NULL)
-	{
-		while (da->cmd1[i] != NULL)
-		{
-			free(da->cmd1[i]);
-			i++;
-		}
-		free(da->cmd1);
-		da->cmd1 = NULL;
-	}
-	i = 0;
+		free_cmd(da);
 	if (da->args_tab[0] == NULL)
 	{
 		da->cmd1 = malloc(sizeof(char *) * 2);
@@ -78,12 +83,12 @@ int	get_args_builtins(t_data *da, int index)
 	}
 	else
 	{
-		da->cmd1 = malloc(sizeof(char *) * (ft_tablen(da->args_tab[index]) + 2));
+		da->cmd1 = malloc(sizeof(char *) * \
+		(ft_tablen(da->args_tab[index]) + 2));
 		da->cmd1[0] = ft_strdup(da->args[index][0]);
-		while (da->args_tab[index][i] != NULL)
+		while (da->args_tab[index][++i] != NULL)
 		{
 			da->cmd1[j] = ft_strdup(da->args_tab[index][i]);
-			i++;
 			j++;
 		}
 		da->cmd1[j] = NULL;
@@ -96,19 +101,10 @@ void	get_args(t_data *da, char **envp, int index)
 	int	i;
 	int	j;
 
-	i = 0;
+	i = -1;
 	j = 1;
 	if (da->cmd1 != NULL)
-	{
-		while (da->cmd1[i] != NULL)
-		{
-			free(da->cmd1[i]);
-			i++;
-		}
-		free(da->cmd1);
-		da->cmd1 = NULL;
-	}
-	i = 0;
+		free_cmd(da);
 	if (da->args_tab[index][0] == NULL)
 	{
 		da->cmd1 = malloc(sizeof(char *) * 2);
@@ -116,12 +112,12 @@ void	get_args(t_data *da, char **envp, int index)
 	}
 	else
 	{
-		da->cmd1 = malloc(sizeof(char *) * (ft_tablen(da->args_tab[index]) + 2));
+		da->cmd1 = malloc(sizeof(char *) * \
+		(ft_tablen(da->args_tab[index]) + 2));
 		da->cmd1[0] = ft_strdup(da->args[index][0]);
-		while (da->args_tab[index][i] != NULL)
+		while (da->args_tab[index][++i] != NULL)
 		{
 			da->cmd1[j] = ft_strdup(da->args_tab[index][i]);
-			i++;
 			j++;
 		}
 		da->cmd1[j] = NULL;

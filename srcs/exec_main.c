@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 11:49:04 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/04/29 13:48:02 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/03 15:52:06 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	exec_child(t_data *da, int index, char **envp)
 	close_fd(da, index);
 	get_args(da, envp, index);
 	check_files(da, index);
-	exec_cmd(da, envp, 0);
+	exec_cmd(da, envp);
 }
 
 int	exec_recur(t_data *da, char **envp, int index)
@@ -43,8 +43,7 @@ int	exec_recur(t_data *da, char **envp, int index)
 	if (index == da->pnum)
 	{
 		close(da->pipefd[index - 1][0]);
-		close(da->pipefd[index - 1][1]);
-		return (0);
+		return (close(da->pipefd[index - 1][1]), 0);
 	}
 	da->pid1 = fork();
 	if (da->pid1 == -1)
@@ -53,9 +52,7 @@ int	exec_recur(t_data *da, char **envp, int index)
 		exit(EXIT_FAILURE);
 	}
 	else if (da->pid1 == 0)
-	{
 		exec_child(da, index, envp);
-	}
 	else
 	{
 		if (index != da->pnum - 1)
@@ -68,10 +65,60 @@ int	exec_recur(t_data *da, char **envp, int index)
 	return (0);
 }
 
-void	exec_cmd(t_data *da, char **envp, int i)
+void	check_cmd_stat(t_data *da)
+{
+	struct stat	filestat;
+
+	if (stat(da->cmd1[0], &filestat) < 0)
+	{
+		write(2, da->cmd1[0], ft_strlen(da->cmd1[0]));
+		write(2, ": No such file or directory\n", 29);
+		exit(127);
+	}
+	if (S_ISDIR(filestat.st_mode))
+	{
+		write(2, da->cmd1[0], ft_strlen(da->cmd1[0]));
+		write(2, ": Is a directory\n", 17);
+		exit(126);
+	}
+	if (!(filestat.st_mode & S_IXUSR))
+	{
+		write(2, da->cmd1[0], ft_strlen(da->cmd1[0]));
+		write(2, ": Permission denied\n", 21);
+		exit(126);
+	}
+	da->cmd = ft_strdup(da->cmd1[0]);
+}
+
+void	check_cmd(t_data *da, int i, char **envp)
+{
+
+	while (da->my_path[i])
+	{
+		if (da->cmd1[0][0] != '/' && da->cmd1[0][0] != '.')
+			da->cmd = ft_strjoin_slash(da->my_path[i], da->cmd1[0]);
+		else
+			check_cmd_stat(da);
+		if (da->cmd == NULL)
+		{
+			free_data(da, envp);
+			write(2, "Malloc Error", 12);
+			exit(EXIT_FAILURE);
+		}
+		if (access(da->cmd, X_OK) == 0)
+		{
+			execve(da->cmd, da->cmd1, envp);
+			perror("execve");
+			exit(EXIT_FAILURE);
+		}
+		free(da->cmd);
+		i++;
+	}
+}
+
+void	exec_cmd(t_data *da, char **envp)
 {
 	int			j;
-	struct stat	filestat;
 
 	if (check_builtins(da) == 1)
 	{
@@ -92,50 +139,7 @@ void	exec_cmd(t_data *da, char **envp, int i)
 		exit(127);
 	}
 	else
-	{
-		while (da->my_path[i])
-		{
-			if (da->cmd1[0][0] != '/' && da->cmd1[0][0] != '.')
-				da->cmd = ft_strjoin_slash(da->my_path[i], da->cmd1[0]);
-			else
-			{
-				// write(1, "test\n", 5);
-				if (stat(da->cmd1[0], &filestat) < 0)
-				{
-					write(2, da->cmd1[0], ft_strlen(da->cmd1[0]));
-					write(2, ": No such file or directory\n", 29);
-					exit(127);
-				}
-				if (S_ISDIR(filestat.st_mode))
-				{
-					write(2, da->cmd1[0], ft_strlen(da->cmd1[0]));
-					write(2, ": Is a directory\n", 17);
-					exit(126);
-				}
-				if (!(filestat.st_mode & S_IXUSR))
-				{
-					write(2, da->cmd1[0], ft_strlen(da->cmd1[0]));
-					write(2, ": Permission denied\n", 21);
-					exit(126);
-				}
-				da->cmd = ft_strdup(da->cmd1[0]);
-			}
-			if (da->cmd == NULL)
-			{
-				free_data(da, envp);
-				write(2, "Malloc Error", 12);
-				exit(EXIT_FAILURE);
-			}
-			if (access(da->cmd, X_OK) == 0)
-			{
-				execve(da->cmd, da->cmd1, envp);
-				perror("execve");
-				exit(EXIT_FAILURE);
-			}
-			free(da->cmd);
-			i++;
-		}
-	}
+		check_cmd(da, 0, envp);
 	write(2, da->cmd1[0], ft_strlen(da->cmd1[0]));
 	write(2, ": command not found\n", 20);
 	exit(127);
