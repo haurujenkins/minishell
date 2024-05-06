@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_dollar.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 16:20:22 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/04/29 10:07:36 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/04/29 11:24:13 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ int	len_after_dollar(char *s)
 	j = 0;
 	while (s[i] != '$')
 		i++;
+	if (s[i - 1] != 39)
+		j++;
 	i++;
 	while (ft_isalnum(s[i]) == 1)
 	{
@@ -47,8 +49,9 @@ char	*after_dollar(char *s)
 		return (write(2, "Malloc failed\n", 14), NULL);
 	while (s[i] != '$')
 		i++;
-	i++;
-	while (ft_isalnum(s[i]) == 1)
+	if (s[i - 1] != 39)
+		i++;
+	while (ft_isalnum(s[i]) == 1 || s[i] == '$')
 	{
 		tmp[j] = s[i];
 		i++;
@@ -63,6 +66,7 @@ char	*temp_without_dollar(t_data *da, char *temp_args)
 	int		i;
 	int		j;
 	int		k;
+	int		s_quote;
 	int		len;
 	char	*new_args;
 	char	*before_args;
@@ -71,9 +75,14 @@ char	*temp_without_dollar(t_data *da, char *temp_args)
 	i = 0;
 	j = 0;
 	k = 0;
+	s_quote = 0;
 	before_args = after_dollar(temp_args);
 	if (before_args == NULL)
 		return (temp_args);
+	if (before_args[0] == '$')
+		s_quote = 2;
+	if (s_quote != 0)
+		return (cpy_args_without_s_quotes(temp_args));
 	new_args = find_in_env(da, before_args);
 	while (temp_args[i])
 	{
@@ -87,7 +96,7 @@ char	*temp_without_dollar(t_data *da, char *temp_args)
 		j++;
 		i++;
 	}
-	len = (j + ft_strlen(new_args) + 1);
+	len = (j + ft_strlen(new_args) + s_quote + 1);
 	res = malloc(len * sizeof(char));
 	if (res == NULL)
 	{

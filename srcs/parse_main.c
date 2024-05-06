@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 11:10:09 by abolea            #+#    #+#             */
-/*   Updated: 2024/05/06 10:36:09 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/06 11:50:20 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,10 +59,19 @@ int	parsing(char *rl, t_data *da)
 	temp_args = new_temp_args(da, temp_args);
 	if (temp_args == NULL)
 		return (1);
+	da->args_tab = malloc(da->pnum * sizeof(char **));
+	if (!da->args_tab)
+		return (1);
+	da->in_tab = malloc(da->pnum * sizeof(char **));
+	if (!da->in_tab)
+		return (1);
+	da->out_tab = malloc(da->pnum * sizeof(char **));
+	if (!da->out_tab)
+		return (1);
 	while (i < da->pnum)
 	{
 		if_quotes_not_close(temp_args, i);
-		//after_dollar(temp_args[i]);
+		temp_args[i] = new_temp(temp_args[i]);
 		words = ft_split(temp_args[i], ' ');
 		while (words[num_w] != NULL)
 			num_w++;
@@ -73,11 +82,11 @@ int	parsing(char *rl, t_data *da)
 		da->args[i][1] = NULL;
 		da->pos_cmd = pos_cmd(words);
 		da->io_nb = 0;
+		fill_args_tab(da, words, i);
+		fill_intab(da, temp_args[i], i);
+		fill_outab(da, temp_args[i], i);
 		i++;
 	}
-	fill_args_tab(da, words);
-	fill_intab(da, temp_args);
-	fill_outab(da, temp_args);
 	i = -1;
 	while (temp_args[++i] != NULL)
 		free(temp_args[i]);

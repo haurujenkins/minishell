@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_fill_args.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 15:37:45 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/04/29 10:04:44 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/03 15:35:05 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,8 @@ char	*fill_cmd(char **words)
 		args = NULL;
 	else
 		args = get_cmd(words[i]);
+	if (args)
+		args = cpy_args_without_quotes(args);
 	return (args);
 }
 
@@ -123,168 +125,157 @@ char	**new_temp_args(t_data *da, char **temp_args)
 	return (temp_args);
 }
 
-int	ft_nb_args(t_data *da, char **words)
+int ft_nb_args(t_data *da, char **words)
 {
-	int		j;
-	int		num_w;
-	int		res;
+	int res;
+	int j;
 
-	num_w = 0;
 	res = 0;
-	while (words[num_w])
-		num_w++;
-	j = da->pos_cmd + 1;
-	if (j == 0)
+	j = pos_args(da, words);
+	if (j == -1)
 		return (0);
-	else
+	while (words[j])
 	{
-		while (words[j] != NULL && (words[j][0] != '<' && words[j][0] != '>'))
+		if (j > 2)
 		{
-			if (words[j][0] == 34)
+			if ((words[j - 2][0] == '<' || words[j - 2][0] == '>') && (words[j][0] != '<' && words[j][0] != '>'))
 			{
-				res++;
-				j++;
+				if (words[j - 1][0] == 34 || words[j - 1][0] == 39)
+				{
+					j++;
+					while (if_quotes(words[j - 1], 0) != 1)
+						j++;
+				}
+				while (words[j] && (words[j][0] != '<' && words[j][0] != '>'))
+				{
+					if (words[j][0] == 34)
+					{
+						j++;
+						while (if_quotes(words[j], 0) != 1)
+							j++;
+						res++;
+						j++;
+					}
+					else
+					{
+						j++;
+						res++;
+					}
+				}
 			}
-			else if ((words[j][0] != '>' && words[j][0] != '<'))
+			else if ((words[j][0] == '<' || words[j][0] == '>') || (words[j - 1][0] == '<' || words[j - 1][0] == '>'))
+				j++;
+			else if ((words[j][0] != '<' && words[j][0] != '>') && (words[j - 1][0] != '<' && words[j - 1][0] != '>'))
 			{
+				j++;
 				res++;
-				j++;
 			}
-			else
-				j++;
 		}
-		// while (words[j])
-		// {
-		// 	if ((words[j - 2][0] == '<' || words[j - 2][0] == '>') && !words[j - 2][1])
-		// 	{
-		// 		if (words[j - 1][0] == 34)
-		// 		{
-		// 			while (if_finish_quotes(words[j - 1]) != 1)
-		// 				j++;
-		// 		}
-		// 		while (j < num_w && (words[j][0] != '<' && words[j][0] != '>'))
-		// 		{
-		// 			res++;
-		// 			j++;
-		// 		}
-		// 	}
-		// 	else if ((words[j - 1][0] == '<' || words[j - 1][0] == '>') && words[j - 1][1])
-		// 	{
-		// 		if (words[j - 1][1] == 34)
-		// 		{
-		// 			while (if_finish_quotes(words[j - 1]) != 1)
-		// 				j++;
-		// 		}
-		// 		while (j < num_w && (words[j][0] != '<' && words[j][0] != '>'))
-		// 		{
-		// 			res++;
-		// 			j++;
-		// 		}
-		// 	}
-		// 	j++;
-		// }
+		else
+		{
+			if ((words[j][0] == '<' || words[j][0] == '>') || (words[j - 1][0] == '<' || words[j - 1][0] == '>'))
+				j++;
+			else if ((words[j][0] != '<' && words[j][0] != '>') && (words[j - 1][0] != '<' && words[j - 1][0] != '>'))
+			{
+				j++;
+				res++;
+			}
+		}
 	}
 	return (res);
 }
 
+
 char	*fill_args(t_data *da, char **words)
 {
 	char	*args;
-	int		num_w;
 
-	num_w = 0;
-	while (words[num_w])
-		num_w++;
 	if (da->nb_args == 0)
 		return (NULL);
 	else
 	{
 		args = ft_strdup("");
-		while (words[da->i_args] != NULL && words[da->i_args][0] != '<' && words[da->i_args][0] != '>')
-		{
-			if (words[da->i_args][0] == 34)
-			{
-				args = ft_strjoin_ori(args, words[da->i_args]);
-				da->i_args++;
-				args = cpy_args_without_quotes(args);
-				return (args);
-			}
-			else if ((words[da->i_args][0] != '>' && words[da->i_args][0] != '<'))
-			{
-				args = ft_strjoin_ori(args, words[da->i_args]);
-				da->i_args++;
-				args = cpy_args_without_quotes(args);
-				return (args);
-			}
-			else
-				da->i_args++;
-		}
 		while (words[da->i_args])
 		{
-			if ((words[da->i_args - 2][0] == '<' || words[da->i_args - 2][0] == '>') && !words[da->i_args - 2][1])
+			if (da->i_args > 2)
 			{
-				if (words[da->i_args - 1][0] == 34)
+				if ((words[da->i_args - 2][0] == '<' || words[da->i_args - 2][0] == '>') && (words[da->i_args][0] != '<' && words[da->i_args][0] != '>'))
 				{
-					while (if_finish_quotes(words[da->i_args - 1]) != 1)
+					if (words[da->i_args - 1][0] == 34 || words[da->i_args - 1][0] == 39)
+					{
 						da->i_args++;
+						while (if_quotes(words[da->i_args  - 1], 0) != 1)
+							da->i_args++;
+					}
+					while (words[da->i_args][0] != '<' && words[da->i_args ][0] != '>')
+					{
+						if (words[da->i_args][0] == 34)
+						{
+							while (if_finish_quotes(words[da->i_args]) != 1)
+							{
+								args = ft_strjoin_ori(args, words[da->i_args]);
+								args = ft_strjoin_ori(args, " ");
+								da->i_args++;
+							}
+							args = ft_strjoin_ori(args, words[da->i_args]);
+							args = cpy_args_without_quotes(args);
+							da->i_args++;
+							return (args);
+						}
+						else
+						{
+							args = ft_strjoin_ori(args, words[da->i_args]);
+							args = cpy_args_without_quotes(args);
+							da->i_args++;
+							return (args);
+						}
+					}
 				}
-				while (da->i_args < num_w && (words[da->i_args][0] != '<' && words[da->i_args][0] != '>'))
+				else if ((words[da->i_args][0] == '<' || words[da->i_args][0] == '>') || (words[da->i_args - 1][0] == '<' || words[da->i_args - 1][0] == '>'))
+					da->i_args++;
+				else if ((words[da->i_args][0] != '<' && words[da->i_args][0] != '>') && (words[da->i_args - 1][0] != '<' && words[da->i_args - 1][0] != '>'))
 				{
 					args = ft_strjoin_ori(args, words[da->i_args]);
-					da->i_args++;
 					args = cpy_args_without_quotes(args);
+					da->i_args++;
 					return (args);
 				}
 			}
-			else if ((words[da->i_args - 1][0] == '<' || words[da->i_args - 1][0] == '>') && words[da->i_args - 1][1])
+			else
 			{
-				if (words[da->i_args - 1][1] == 34)
-				{
-					while (if_finish_quotes(words[da->i_args - 1]) != 1)
-						da->i_args++;
-				}
-				while (da->i_args < num_w && (words[da->i_args][0] != '<' && words[da->i_args][0] != '>'))
+				if ((words[da->i_args][0] == '<' || words[da->i_args][0] == '>') || (words[da->i_args - 1][0] == '<' || words[da->i_args - 1][0] == '>'))
+					da->i_args++;
+				else if ((words[da->i_args][0] != '<' && words[da->i_args][0] != '>') && (words[da->i_args - 1][0] != '<' && words[da->i_args - 1][0] != '>'))
 				{
 					args = ft_strjoin_ori(args, words[da->i_args]);
-					da->i_args++;
 					args = cpy_args_without_quotes(args);
+					da->i_args++;
 					return (args);
 				}
 			}
-			da->i_args++;
 		}
 	}
-	return (NULL);	
+	return (NULL);
 }
 
-void	fill_args_tab(t_data *da, char **words)
+void	fill_args_tab(t_data *da, char **words, int i)
 {
-	int	i;
 	int	j;
 
-	i = -1;
-	da->nb_args = 0;
-	da->i_args = 0;
-	da->args_tab = malloc(da->pnum * sizeof(char **));
-	while (++i < da->pnum)
+	j = 0;
+	da->i_args = pos_args(da, words);
+	da->nb_args = ft_nb_args(da, words);
+	da->args_tab[i] = malloc((da->nb_args + 1) * sizeof(char *));
+	if (da->nb_args == 0)
+		da->args_tab[i][j] = NULL;
+	else
 	{
-		j = 0;
-		da->i_args = pos_args(da, words);
-		da->nb_args = ft_nb_args(da, words);
-		da->args_tab[i] = malloc((da->nb_args + 1) * sizeof(char *));
-		if (da->nb_args == 0)
-			da->args_tab[i][j] = NULL;
-		else
+		while (j < da->nb_args)
 		{
-			while (j < da->nb_args)
-			{
-				da->args_tab[i][j] = fill_args(da, words);
-				if (da->args_tab[i][j])
-					j++;
-				// printf("j = %d\n", j);
-				// printf("n = %d\n", da->nb_args);
-			}
-			da->args_tab[i][j] = NULL;
+			da->args_tab[i][j] = fill_args(da, words);
+			if (da->args_tab[i][j])
+				j++;
 		}
+		da->args_tab[i][j] = NULL;
 	}
 }

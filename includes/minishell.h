@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 14:48:53 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/06 10:02:15 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/06 11:50:45 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,13 +114,12 @@ char	*sup_delim(char *s);
 char	*cpy_until_char(char *s, char c, int start);
 int		if_finish_quotes(char *s);
 int		if_finish_squotes(char *s);
-void	fill_outab(t_data *da, char **temp_args);
-void	fill_intab(t_data *da, char **temp_args);
+void	fill_outab(t_data *da, char *temp_args, int i);
+void	fill_intab(t_data *da, char *temp_args, int i);
 void	if_quotes_not_close(char **temp_args, int i);
 int		if_io_before_last_quotes(char *s, char c, int start);
 int		if_quotes(char *s, int start);
 char	*cpy_args_without_quotes(char *s);
-void	print_args(int i, int pnum, t_data *da);
 char	*fill_args(t_data *da, char **words);
 char	*fill_cmd(char **words);
 char	**new_temp_args(t_data *da, char **temp_args);
@@ -137,8 +136,10 @@ int		len_cmd(char *words);
 int		double_quotes_close(char *temp_args);
 char	*cpy_for_args(char *s, int start);
 int		len_for_args(char *s, int start);
-void	fill_args_tab(t_data *da, char **words);
+void	fill_args_tab(t_data *da, char **temp_args, int i);
 int		pos_cmd(char **words);
+char	*cpy_args_without_s_quotes(char *s);
+char	*new_temp(char *s);
 
 
 #endif
