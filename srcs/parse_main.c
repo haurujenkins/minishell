@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 11:10:09 by abolea            #+#    #+#             */
-/*   Updated: 2024/05/03 14:02:50 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/06 11:23:31 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,10 +59,18 @@ int	parsing(char *rl, t_data *da)
 	temp_args = new_temp_args(da, temp_args);
 	if (temp_args == NULL)
 		return (1);
+	da->args_tab = malloc(da->pnum * sizeof(char **));
+	if (!da->args_tab)
+		return (1);
+	da->in_tab = malloc(da->pnum * sizeof(char **));
+	if (!da->in_tab)
+		return (1);
+	da->out_tab = malloc(da->pnum * sizeof(char **));
+	if (!da->out_tab)
+		return (1);
 	while (i < da->pnum)
 	{
 		if_quotes_not_close(temp_args, i);
-		//after_dollar(temp_args[i]);
 		temp_args[i] = new_temp(temp_args[i]);
 		words = ft_split(temp_args[i], ' ');
 		while (words[num_w] != NULL)
@@ -74,9 +82,9 @@ int	parsing(char *rl, t_data *da)
 		da->args[i][1] = NULL;
 		da->pos_cmd = pos_cmd(words);
 		da->io_nb = 0;
-		fill_args_tab(da, words);
-		fill_intab(da, temp_args[i]);
-		fill_outab(da, temp_args[i]);
+		fill_args_tab(da, words, i);
+		fill_intab(da, temp_args[i], i);
+		fill_outab(da, temp_args[i], i);
 		i++;
 	}
 	i = -1;
@@ -88,7 +96,7 @@ int	parsing(char *rl, t_data *da)
 		free(words[num_w]);
 	free(words);
 	words = NULL;
-	print_args(i, da->pnum, da);
+	// print_args(i, da->pnum, da);
 	return (0);
 }
 
@@ -122,7 +130,7 @@ int	main(int argc, char **argv, char **envp)
 			{
 				add_history(rl);
 				free(rl);
-				// main_exec(&da, envp);
+				main_exec(&da, envp);
 				// free_struct(&da);
 			}
 		}

@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 15:37:45 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/03 15:25:27 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/03 15:35:05 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -258,13 +258,10 @@ char	*fill_args(t_data *da, char **words)
 	return (NULL);
 }
 
-void	fill_args_tab(t_data *da, char **words)
+void	fill_args_tab(t_data *da, char **words, int i)
 {
-	int	i;
 	int	j;
 
-	i = 0;
-	da->args_tab = malloc(da->pnum * sizeof(char **));
 	j = 0;
 	da->i_args = pos_args(da, words);
 	da->nb_args = ft_nb_args(da, words);

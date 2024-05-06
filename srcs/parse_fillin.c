@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 14:55:13 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/04/30 16:54:01 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/06 11:19:15 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,16 +60,11 @@ char	*fill_input(char *temp_args, t_data *da)
 	return (NULL);
 }
 
-void	fill_intab(t_data *da, char *temp_args)
+void	fill_intab(t_data *da, char *temp_args, int i)
 {
-	int	i;
 	int	j;
 
-	i = 0;
-	da->nb_redir_in = 0;
-	da->in_tab = malloc(da->pnum * sizeof(char **));
 	j = 0;
-	da->io_nb = 0;
 	da->nb_redir_in = ft_nb_redir(temp_args, '<');
 	da->in_tab[i] = malloc((da->nb_redir_in + 1) * sizeof(char *));
 	if (da->nb_redir_in == 0)
