@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 11:10:09 by abolea            #+#    #+#             */
-/*   Updated: 2024/04/29 15:21:31 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/06 10:36:09 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,14 @@ int	parsing(char *rl, t_data *da)
 	return (0);
 }
 
+void	sigint_handler()
+{
+	write(1, "\n", 1);
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	char	*rl;
@@ -100,10 +108,20 @@ int	main(int argc, char **argv, char **envp)
 	if (argc != 1 || argv[0][0] == '\0')
 		printf("ERROR\n");
 	set_all(&da, envp);
-	// print_all();
+	if (signal(SIGINT, sigint_handler) == SIG_ERR)
+	{
+		perror("signal");
+		exit(EXIT_FAILURE);
+	}
 	while (1)
 	{
 		rl = readline("\033[1;36m<3 \033[0;37m");
+		if (!rl)
+		{
+			printf("\n");
+			free_struct(&da);
+			break ;
+		}
 		if (check_error(rl))
 		{
 			write(2, "parse error\n", 12);
@@ -115,14 +133,14 @@ int	main(int argc, char **argv, char **envp)
 			{
 				add_history(rl);
 				free(rl);
-				// free_struct(&da);
+				free_struct(&da);
 			}
 			else
 			{
 				add_history(rl);
 				free(rl);
 				main_exec(&da, envp);
-				// free_struct(&da);
+				free_struct(&da);
 			}
 		}
 	}

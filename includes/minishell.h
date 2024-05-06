@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 14:48:53 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/03 15:49:05 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/06 10:02:15 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,7 @@ void	read_until_delimiter(char *delimiter, int fd);
 void	outfile_error(t_data *da, int index, int i);
 void	check_infile(t_data *da, int index);
 void	check_outfile(t_data *da, int index);
+void	exit_free(t_data *da);
 
 void	print_args(int i, int pnum, t_data *da);
 void	loading(int p);
