@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 14:48:53 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/06 11:50:45 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/06 17:03:41 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,11 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <stdbool.h>
-#include <sys/stat.h>
+# include <sys/stat.h>
 # include "../libft/libft.h"
 # define MAX_INPUT_LENGTH 1024
+
+extern volatile sig_atomic_t ctrl_c_flag;
 
 typedef struct data_s
 {
@@ -70,6 +72,12 @@ typedef struct data_s
 	char	**words;
 }				t_data;
 
+struct s_signals
+{
+	int		lines;
+	char	*endof;
+};
+
 void	get_args(t_data *da, char **envp, int index);
 void	set_pipe(t_data *da);
 int		main_exec(t_data *da, char **envp);
@@ -100,6 +108,8 @@ void	outfile_error(t_data *da, int index, int i);
 void	check_infile(t_data *da, int index);
 void	check_outfile(t_data *da, int index);
 void	exit_free(t_data *da);
+void	sigint_handler();
+void	set_flag(void);
 
 void	print_args(int i, int pnum, t_data *da);
 void	loading(int p);

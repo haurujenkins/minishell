@@ -6,11 +6,21 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 11:49:04 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/03 15:52:06 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/06 16:50:19 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+void	sigint_handler_child()
+{
+	printf("\n");
+}
+
+void	sigquit_handler_child()
+{
+	printf("Quit (core dumped)\n");
+}
 
 void	exec_child(t_data *da, int index, char **envp)
 {
@@ -40,6 +50,8 @@ int	exec_recur(t_data *da, char **envp, int index)
 {
 	int	child_status;
 
+	signal(SIGINT, sigint_handler_child);
+	signal(SIGQUIT, sigquit_handler_child);
 	if (index == da->pnum)
 	{
 		close(da->pipefd[index - 1][0]);
@@ -52,7 +64,9 @@ int	exec_recur(t_data *da, char **envp, int index)
 		exit(EXIT_FAILURE);
 	}
 	else if (da->pid1 == 0)
+	{
 		exec_child(da, index, envp);
+	}
 	else
 	{
 		if (index != da->pnum - 1)

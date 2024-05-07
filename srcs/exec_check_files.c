@@ -6,11 +6,25 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 11:53:36 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/03 13:49:14 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/06 17:05:27 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+struct s_signals g_mysignal;
+
+void	sigint_handler_doc()
+{
+	printf("\n");
+	exit(1);
+}
+
+void	sigquit_handler_doc()
+{
+	printf("bash: warning: here-document delimited by end-of-file (wanted `%s')\n", "EOF");
+	exit(1);
+}
 
 void	read_until_delimiter(char *delimiter, int fd)
 {
@@ -18,6 +32,7 @@ void	read_until_delimiter(char *delimiter, int fd)
 	ssize_t	bytes_read;
 	int		size;
 
+	g_mysignal.lines = 0;
 	fd = open("minishell_heredoc_tmpfile", O_WRONLY | O_CREAT | O_TRUNC, 0600);
 	bytes_read = 1;
 	size = ft_strlen(delimiter);
@@ -33,6 +48,7 @@ void	read_until_delimiter(char *delimiter, int fd)
 			perror("Erreur lors de l'écriture dans le fichier temporaire");
 			exit(EXIT_FAILURE);
 		}
+		g_mysignal.lines ++;
 	}
 	if (bytes_read == -1)
 	{
@@ -50,7 +66,7 @@ void	infile_error(t_data *da, int index, int i)
 		write(2, "bash: ", 6);
 		write(2, da->in_tab[index][i], ft_strlen(da->in_tab[index][i]));
 		write(2, ": No such file or directory\n", 28);
-		exit(1);
+		exit(2);
 	}
 	if (S_ISDIR(filestat.st_mode))
 	{
@@ -109,6 +125,8 @@ void	check_infile(t_data *da, int index)
 			da->fd_input = open(da->in_tab[index][i], O_RDONLY);
 		else
 		{
+			signal(SIGINT, sigint_handler_doc);
+			signal(SIGQUIT, sigquit_handler_doc);
 			read_until_delimiter(da->in_tab[index][i], da->fd_input);
 			close(da->fd_input);
 			da->fd_input = open("minishell_heredoc_tmpfile", O_RDONLY);

@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 11:12:16 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/03 13:40:02 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/06 13:28:21 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	my_echo(char **cmd, t_data *da)
 		printf("$\n");
 		return ;
 	}
-	if (ft_strncmp(da->args_tab[0][0], "$?", 2) == 0)
+	if (ft_strncmp(cmd[i], "$?", 2) == 0)
 	{
 		printf("%i", da->exit_status);
 		while (cmd[i][j] != '?')

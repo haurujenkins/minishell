@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 11:10:09 by abolea            #+#    #+#             */
-/*   Updated: 2024/05/06 11:50:20 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/06 16:45:16 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,13 +117,10 @@ int	main(int argc, char **argv, char **envp)
 	if (argc != 1 || argv[0][0] == '\0')
 		printf("ERROR\n");
 	set_all(&da, envp);
-	if (signal(SIGINT, sigint_handler) == SIG_ERR)
-	{
-		perror("signal");
-		exit(EXIT_FAILURE);
-	}
 	while (1)
 	{
+		signal(SIGINT, sigint_handler);
+		signal(SIGQUIT, SIG_IGN);
 		rl = readline("\033[1;36m<3 \033[0;37m");
 		if (!rl)
 		{
