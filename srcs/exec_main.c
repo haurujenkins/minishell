@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 11:49:04 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/06 16:50:19 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/07 16:47:09 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,11 @@
 void	sigint_handler_child()
 {
 	printf("\n");
+}
+
+void	sigint_handler_heredoc()
+{
+	return ;
 }
 
 void	sigquit_handler_child()
@@ -50,8 +55,16 @@ int	exec_recur(t_data *da, char **envp, int index)
 {
 	int	child_status;
 
-	signal(SIGINT, sigint_handler_child);
-	signal(SIGQUIT, sigquit_handler_child);
+	if (da->delim_tab[0][0] == 0)
+	{
+		signal(SIGINT, sigint_handler_child);
+		signal(SIGQUIT, sigquit_handler_child);
+	}
+	else
+	{
+		signal(SIGINT, sigint_handler_heredoc);
+		signal(SIGQUIT, SIG_IGN);
+	}
 	if (index == da->pnum)
 	{
 		close(da->pipefd[index - 1][0]);

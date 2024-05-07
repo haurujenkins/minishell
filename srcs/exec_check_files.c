@@ -6,13 +6,11 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 11:53:36 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/06 17:05:27 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/07 17:04:57 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-struct s_signals g_mysignal;
 
 void	sigint_handler_doc()
 {
@@ -20,41 +18,47 @@ void	sigint_handler_doc()
 	exit(1);
 }
 
-void	sigquit_handler_doc()
+void	sigquit_handler_doc(t_data *da)
 {
-	printf("bash: warning: here-document delimited by end-of-file (wanted `%s')\n", "EOF");
-	exit(1);
+	da->mysignal.nb_delim--;
+	printf("bash: warning: here-document delimited by end-of-file (wanted `%s')\n", da->mysignal.endof);
+	if (da->mysignal.nb_delim == 0)
+		exit(1);
+	da->mysignal.exit = 1;
 }
 
-void	read_until_delimiter(char *delimiter, int fd)
+void	read_until_delimiter(char *delimiter, int fd, t_data *da)
 {
-	char	buffer[MAX_INPUT_LENGTH];
-	ssize_t	bytes_read;
-	int		size;
+	char	*line;
 
-	g_mysignal.lines = 0;
+	da->mysignal.exit = 0;
+	da->mysignal.endof = delimiter;
 	fd = open("minishell_heredoc_tmpfile", O_WRONLY | O_CREAT | O_TRUNC, 0600);
-	bytes_read = 1;
-	size = ft_strlen(delimiter);
-	while (bytes_read > 0)
+
+	while (1)
 	{
-		bytes_read = read(STDIN_FILENO, buffer, MAX_INPUT_LENGTH);
-		if (ft_strnstr(buffer, delimiter, bytes_read) && size == bytes_read - 1)
+		if (da->mysignal.exit == 1)
+			return ;
+		line = readline("> ");
+		if (!line)
 		{
+			sigquit_handler_doc(da);
 			return ;
 		}
-		if (write(fd, buffer, bytes_read) == -1)
+		if (strcmp(line, delimiter) == 0)
+		{
+			free(line);
+			break ;
+		}
+		if (write(fd, line, strlen(line)) == -1)
 		{
 			perror("Erreur lors de l'écriture dans le fichier temporaire");
 			exit(EXIT_FAILURE);
 		}
-		g_mysignal.lines ++;
+		write(fd, "\n", 1);
+		free(line);
 	}
-	if (bytes_read == -1)
-	{
-		perror("Erreur lors de la lecture de l'entrée standard");
-		exit(EXIT_FAILURE);
-	}
+	close(fd);
 }
 
 void	infile_error(t_data *da, int index, int i)
@@ -113,11 +117,26 @@ void	outfile_error(t_data *da, int index, int i)
 	}
 }
 
-void	check_infile(t_data *da, int index)
+void	count_delim(t_data *da, int index)
 {
 	int	i;
 
 	i = 0;
+	while (da->in_tab[index][i])
+	{
+		if (da->delim_tab[index][i] != NULL && \
+		da->delim_tab[index][i][0] != '0')
+			da->mysignal.nb_delim++;
+		i++;
+	}
+}
+
+void	check_infile(t_data *da, int index)
+{
+	int			i;
+
+	i = 0;
+	count_delim(da, index);
 	while (da->in_tab[index][i])
 	{
 		if (da->delim_tab[index][i] == NULL || \
@@ -126,8 +145,9 @@ void	check_infile(t_data *da, int index)
 		else
 		{
 			signal(SIGINT, sigint_handler_doc);
-			signal(SIGQUIT, sigquit_handler_doc);
-			read_until_delimiter(da->in_tab[index][i], da->fd_input);
+			signal(SIGQUIT, SIG_IGN);
+			read_until_delimiter(da->in_tab[index][i], da->fd_input, da);
+			da->mysignal.nb_delim--;
 			close(da->fd_input);
 			da->fd_input = open("minishell_heredoc_tmpfile", O_RDONLY);
 		}
