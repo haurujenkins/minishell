@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 15:34:31 by abolea            #+#    #+#             */
-/*   Updated: 2024/05/06 16:24:09 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/08 17:04:56 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,16 @@ int	len_without_double_space(char *s)
 {
 	int		i;
 	int		j;
+	int		in_quotes;
 
 	i = 0;
 	j = 0;
+	in_quotes = 1;
 	while (s[i])
 	{
-		if (s[i] == ' ' && s[i + 1] == ' ')
+		if (s[i] == 34)
+			in_quotes *= -1;
+		if (s[i] == ' ' && s[i + 1] == ' ' && in_quotes > 0)
 			i++;
 		else if (s[i])
 		{
@@ -38,17 +42,19 @@ char	*sup_double_space(char *s)
 	int		j;
 	int		len;
 	char	*tmp;
+	int		in_quotes;
 
 	i = 0;
 	j = 0;
+	in_quotes = 1;
 	len = len_without_double_space(s);
 	tmp = malloc((len + 1) * sizeof(char));
 	while (s[i])
 	{
-		if (s[i] == ' ' && s[i + 1] == ' ')
-		{
+		if (s[i] == 34)
+			in_quotes *= -1;
+		if (s[i] == ' ' && s[i + 1] == ' ' && in_quotes > 0)
 			i++;
-		}
 		else if (s[i])
 		{
 			tmp[j] = s[i];

@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 11:10:09 by abolea            #+#    #+#             */
-/*   Updated: 2024/05/08 15:03:42 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/08 17:05:30 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ int	parsing(char *rl, t_data *da)
 	char	**temp_args;
 	char	**words;
 	int		i;
+	int		j;
 	int		num_w;	
 
 	i = 0;
@@ -123,7 +124,15 @@ int	parsing(char *rl, t_data *da)
 	{
 		if_quotes_not_close(temp_args, i);
 		temp_args[i] = new_temp(temp_args[i]);
+		temp_args[i] = negative_in_quotes(temp_args[i]);
 		words = ft_split(temp_args[i], ' ');
+		j = 0;
+		while (words[j])
+		{
+			words[j] = all_positive(words[j]);
+			j++;
+		}
+		temp_args[i] = all_positive(temp_args[i]);
 		while (words[num_w] != NULL)
 			num_w++;
 		da->args[i] = malloc((num_w + 1) * sizeof(char *));

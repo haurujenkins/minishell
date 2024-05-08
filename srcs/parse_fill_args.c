@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 15:37:45 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/08 15:16:33 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/08 17:05:35 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,10 +85,6 @@ int	pos_args(t_data *da, char **words)
 	{
 		if ((words[j - 1][0] != '<' && words[j - 1][0] != '>') \
 		&& (words[j][0] != '>' && words[j][0] != '<'))
-			return (j);
-		else if (((words[j - 1][0] == '<' \
-		&& words[j - 1][0] == '>') || words[j - 1][1]) && \
-		(words[j][0] != '>' && words[j][0] != '<'))
 			return (j);
 		j++;
 	}
@@ -201,8 +197,7 @@ int ft_nb_args(t_data *da, char **words)
 			{
 				if (words[j - 1][0] == 34 || words[j - 1][0] == 39)
 				{
-					j++;
-					while (if_quotes(words[j - 1], 0) != 1)
+					while (if_finish_quotes(words[j - 1]) != 1)
 						j++;
 				}
 				while (words[j] && (words[j][0] != '<' && words[j][0] != '>'))
@@ -280,32 +275,15 @@ char	*fill_args(t_data *da, char **words, int i)
 				{
 					if (words[da->i_args - 1][0] == 34 || words[da->i_args - 1][0] == 39)
 					{
-						da->i_args++;
-						while (if_quotes(words[da->i_args  - 1], 0) != 1)
+						while (if_finish_quotes(words[da->i_args  - 1]) != 1)
 							da->i_args++;
 					}
 					while (words[da->i_args][0] != '<' && words[da->i_args ][0] != '>')
 					{
-						if (words[da->i_args][0] == 34 || words[da->i_args][0] == 39)
-						{
-							while (if_finish_quotes(words[da->i_args]) != 1)
-							{
-								args = ft_strjoin_ori(args, words[da->i_args]);
-								args = ft_strjoin_ori(args, " ");
-								da->i_args++;
-							}
-							args = ft_strjoin_ori(args, words[da->i_args]);
-							args = cpy_args_without_quotes(args);
-							da->i_args++;
-							return (args);
-						}
-						else
-						{
-							args = ft_strjoin_ori(args, words[da->i_args]);
-							args = cpy_args_without_quotes(args);
-							da->i_args++;
-							return (args);
-						}
+						args = ft_strjoin_ori(args, words[da->i_args]);
+						args = cpy_args_without_quotes(args);
+						da->i_args++;
+						return (args);
 					}
 				}
 				else if ((words[da->i_args][0] == '<' || words[da->i_args][0] == '>') || (words[da->i_args - 1][0] == '<' || words[da->i_args - 1][0] == '>'))
@@ -324,42 +302,33 @@ char	*fill_args(t_data *da, char **words, int i)
 					da->i_args++;
 				else if ((words[da->i_args][0] != '<' && words[da->i_args][0] != '>') && (words[da->i_args - 1][0] != '<' && words[da->i_args - 1][0] != '>'))
 				{
-					if (words[da->i_args][0] == 34 || words[da->i_args][0] == 39)
-						{
-							while (if_finish_quotes(words[da->i_args]) != 1)
-							{
-								args = ft_strjoin_ori(args, words[da->i_args]);
-								args = ft_strjoin_ori(args, " ");
-								da->i_args++;
-							}
+						args = ft_strjoin_ori(args, words[da->i_args]);
+						args = cpy_args_without_quotes(args);
+						da->i_args++;
+						return (args);
+				}
+				else
+				{
+					if (if_quotes(words[da->i_args], 0) == 1)
+					{
+						while ((words[da->i_args] && (words[da->i_args][0] != '<' && words[da->i_args][0] != '>')))
+						{	
 							args = ft_strjoin_ori(args, words[da->i_args]);
-							args = cpy_args_without_quotes(args);
+							if (words[da->i_args + 1] && (words[da->i_args + 1][0] != '<' && words[da->i_args + 1][0] != '>'))
+								args = ft_strjoin_ori(args, " ");
 							da->i_args++;
-							return (args);
 						}
+						if (ft_strncmp(da->args[i][0], "export", 6) != 0)
+							args = cpy_args_without_quotes(args);
+						da->i_args++;
+						return (args);
+					}
 					else
 					{
-						if (if_quotes(words[da->i_args], 0) == 1)
-						{
-							while ((words[da->i_args] && (words[da->i_args][0] != '<' && words[da->i_args][0] != '>')))
-							{	
-								args = ft_strjoin_ori(args, words[da->i_args]);
-								if (words[da->i_args + 1] && (words[da->i_args + 1][0] != '<' && words[da->i_args + 1][0] != '>'))
-									args = ft_strjoin_ori(args, " ");
-								da->i_args++;
-							}
-							if (ft_strncmp(da->args[i][0], "export", 6) != 0)
-								args = cpy_args_without_quotes(args);
-							da->i_args++;
-							return (args);
-						}
-						else
-						{
-							args = ft_strjoin_ori(args, words[da->i_args]);
-							args = cpy_args_without_quotes(args);
-							da->i_args++;
-							return (args);
-						}
+						args = ft_strjoin_ori(args, words[da->i_args]);
+						args = cpy_args_without_quotes(args);
+						da->i_args++;
+						return (args);
 					}
 				}
 			}
