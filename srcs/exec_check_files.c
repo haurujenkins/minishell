@@ -6,60 +6,11 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 11:53:36 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/07 17:04:57 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/08 14:09:40 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-void	sigint_handler_doc()
-{
-	printf("\n");
-	exit(1);
-}
-
-void	sigquit_handler_doc(t_data *da)
-{
-	da->mysignal.nb_delim--;
-	printf("bash: warning: here-document delimited by end-of-file (wanted `%s')\n", da->mysignal.endof);
-	if (da->mysignal.nb_delim == 0)
-		exit(1);
-	da->mysignal.exit = 1;
-}
-
-void	read_until_delimiter(char *delimiter, int fd, t_data *da)
-{
-	char	*line;
-
-	da->mysignal.exit = 0;
-	da->mysignal.endof = delimiter;
-	fd = open("minishell_heredoc_tmpfile", O_WRONLY | O_CREAT | O_TRUNC, 0600);
-
-	while (1)
-	{
-		if (da->mysignal.exit == 1)
-			return ;
-		line = readline("> ");
-		if (!line)
-		{
-			sigquit_handler_doc(da);
-			return ;
-		}
-		if (strcmp(line, delimiter) == 0)
-		{
-			free(line);
-			break ;
-		}
-		if (write(fd, line, strlen(line)) == -1)
-		{
-			perror("Erreur lors de l'écriture dans le fichier temporaire");
-			exit(EXIT_FAILURE);
-		}
-		write(fd, "\n", 1);
-		free(line);
-	}
-	close(fd);
-}
 
 void	infile_error(t_data *da, int index, int i)
 {
@@ -117,40 +68,14 @@ void	outfile_error(t_data *da, int index, int i)
 	}
 }
 
-void	count_delim(t_data *da, int index)
-{
-	int	i;
-
-	i = 0;
-	while (da->in_tab[index][i])
-	{
-		if (da->delim_tab[index][i] != NULL && \
-		da->delim_tab[index][i][0] != '0')
-			da->mysignal.nb_delim++;
-		i++;
-	}
-}
-
 void	check_infile(t_data *da, int index)
 {
 	int			i;
 
 	i = 0;
-	count_delim(da, index);
 	while (da->in_tab[index][i])
 	{
-		if (da->delim_tab[index][i] == NULL || \
-		da->delim_tab[index][i][0] == '0')
-			da->fd_input = open(da->in_tab[index][i], O_RDONLY);
-		else
-		{
-			signal(SIGINT, sigint_handler_doc);
-			signal(SIGQUIT, SIG_IGN);
-			read_until_delimiter(da->in_tab[index][i], da->fd_input, da);
-			da->mysignal.nb_delim--;
-			close(da->fd_input);
-			da->fd_input = open("minishell_heredoc_tmpfile", O_RDONLY);
-		}
+		da->fd_input = open(da->in_tab[index][i], O_RDONLY);
 		if (da->fd_input < 0)
 		{
 			infile_error(da, index, i);

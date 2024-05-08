@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 11:10:09 by abolea            #+#    #+#             */
-/*   Updated: 2024/05/07 15:59:51 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/08 15:20:48 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,6 +142,8 @@ int	main(int argc, char **argv, char **envp)
 			}
 			else
 			{
+				heredoc_replace(&da, 0);
+				print_args(0, da.pnum, &da);
 				add_history(rl);
 				free(rl);
 				main_exec(&da, envp);

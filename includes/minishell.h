@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 14:48:53 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/07 16:55:43 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/08 15:09:15 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,13 +108,14 @@ void	free_pipe(t_data *da);
 void	free_struct(t_data *da);
 void	export_pwd(t_data *da, char *temp_value);
 void	infile_error(t_data *da, int index, int i);
-void	read_until_delimiter(char *delimiter, int fd, t_data *da);
+char	*read_until_delimiter(char *delimiter, t_data *da);
 void	outfile_error(t_data *da, int index, int i);
 void	check_infile(t_data *da, int index);
 void	check_outfile(t_data *da, int index);
 void	exit_free(t_data *da);
 void	sigint_handler();
 void	set_flag(void);
+void	heredoc_replace(t_data *da, int index);
 
 void	print_args(int i, int pnum, t_data *da);
 void	loading(int p);
