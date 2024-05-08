@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 14:48:53 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/08 17:23:24 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/08 13:50:08 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,64 +23,51 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <stdbool.h>
-# include <sys/stat.h>
+#include <sys/stat.h>
 # include "../libft/libft.h"
-#include <termios.h>
 # define MAX_INPUT_LENGTH 1024
-
-extern volatile sig_atomic_t ctrl_c_flag;
-
-typedef struct s_signals
-{
-	char	*endof;
-	int		nb_delim;
-	int		exit;
-	int		heredoc;
-}			t_signals;
-
 
 typedef struct data_s
 {
-	int			i;
-	int			j;
-	int			line;
-	int			out;
-	char		**my_env;
-	char		**cmd1;
-	char		**my_path;
-	char		*cmd;
-	char		*point_path;
-	int			fd_input;
-	int			fd_output;
-	int			fail_pipe;
-	int			**pipefd;
-	pid_t		pid1;
-	pid_t		pid2;
-	int			pnum;
-	char		***args;
-	char		***in_tab;
-	char		***out_tab;
-	int			p_in;
-	int			p_out;
-	int			check_export;
-	int			exit_status;
-	char		***delim_tab;
-	char		***append_tab;
-	int			nb_redir_in;
-	int			nb_redir_out;
-	int			io_nb;
-	int			i_in_quotes;
-	int			o_in_quotes;
-	int			nb_delim;
-	int			in_delim;
-	int			o_append;
-	int			nb_append;
-	char		***args_tab;
-	int			nb_args;
-	int			i_args;
-	int			pos_cmd;
-	char		**words;
-	t_signals	mysignal;
+	int		i;
+	int		j;
+	int		line;
+	int		out;
+	char	**my_env;
+	char	**cmd1;
+	char	**my_path;
+	char	*cmd;
+	char	*point_path;
+	int		fd_input;
+	int		fd_output;
+	int		fail_pipe;
+	int		**pipefd;
+	pid_t	pid1;
+	pid_t	pid2;
+	int		pnum;
+	char	***args;
+	char	***in_tab;
+	char	***out_tab;
+	int		p_in;
+	int		p_out;
+	int		check_export;
+	int		exit_status;
+	char	***delim_tab;
+	char	***append_tab;
+	int		nb_redir_in;
+	int		nb_redir_out;
+	int		io_nb;
+	int		i_in_quotes;
+	int		o_in_quotes;
+	int		nb_delim;
+	int		in_delim;
+	int		o_append;
+	int		nb_append;
+	char	***args_tab;
+	int		nb_args;
+	int		i_args;
+	int		pos_cmd;
+	char	**words;
 }				t_data;
 
 void	get_args(t_data *da, char **envp, int index);
@@ -108,14 +95,11 @@ void	free_pipe(t_data *da);
 void	free_struct(t_data *da);
 void	export_pwd(t_data *da, char *temp_value);
 void	infile_error(t_data *da, int index, int i);
-char	*read_until_delimiter(char *delimiter, t_data *da);
+void	read_until_delimiter(char *delimiter, int fd);
 void	outfile_error(t_data *da, int index, int i);
 void	check_infile(t_data *da, int index);
 void	check_outfile(t_data *da, int index);
 void	exit_free(t_data *da);
-void	sigint_handler(int signum);
-void	set_flag(void);
-void	heredoc_replace(t_data *da, int index);
 
 void	print_args(int i, int pnum, t_data *da);
 void	loading(int p);

@@ -6,21 +6,11 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 11:49:04 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/08 15:26:28 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/03 15:52:06 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-void	sigint_handler_child()
-{
-	printf("\n");
-}
-
-void	sigquit_handler_child()
-{
-	printf("Quit (core dumped)\n");
-}
 
 void	exec_child(t_data *da, int index, char **envp)
 {
@@ -50,8 +40,6 @@ int	exec_recur(t_data *da, char **envp, int index)
 {
 	int	child_status;
 
-	signal(SIGINT, sigint_handler_child);
-	signal(SIGQUIT, sigquit_handler_child);
 	if (index == da->pnum)
 	{
 		close(da->pipefd[index - 1][0]);
@@ -64,9 +52,7 @@ int	exec_recur(t_data *da, char **envp, int index)
 		exit(EXIT_FAILURE);
 	}
 	else if (da->pid1 == 0)
-	{
 		exec_child(da, index, envp);
-	}
 	else
 	{
 		if (index != da->pnum - 1)
@@ -159,28 +145,12 @@ void	exec_cmd(t_data *da, char **envp)
 	exit(127);
 }
 
-void	del_tmpfiles(t_data *da, int index)
-{
-	int	i;
-
-	while (da->in_tab[index] != NULL)
-	{
-		i = 0;
-		while (da->in_tab[index][i] != NULL)
-		{
-			if (da->delim_tab[index][i][0] == '1')
-				unlink(da->in_tab[index][i]);
-			i++;
-		}
-		index++;
-	}
-}
-
 int	main_exec(t_data *da, char **envp)
 {
 	set_pipe(da);
 	if (check_extern_builtins(da, envp, 0) == 0)
 		exec_recur(da, envp, 0);
-	del_tmpfiles(da, 0);
+	if (access("minishell_heredoc_tmpfile", F_OK) != -1)
+		unlink("minishell_heredoc_tmpfile");
 	return (0);
 }
