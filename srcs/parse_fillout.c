@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 14:53:14 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/06 11:19:22 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/07 12:19:21 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,43 +18,29 @@ char	*fill_output(char *temp_args, t_data *da)
 
 	while (temp_args[da->io_nb])
 	{
-		if (temp_args[da->io_nb] == '>')
+		if (temp_args[da->io_nb] == '>' && temp_args[da->io_nb + 1] == ' ')
 		{
 			da->io_nb++;
-			if (temp_args[da->io_nb] == ' ')
-			{
+			while (temp_args[da->io_nb] == ' ')
 				da->io_nb++;
-				while (temp_args[da->io_nb] == ' ')
-					da->io_nb++;
-				if (temp_args[da->io_nb] == 34)
-				{
-					da->io_nb++;
-					args = cpy_until_char(temp_args, 34, da->io_nb);
-					while (temp_args[da->io_nb] != 34 && temp_args[da->io_nb])
-						da->io_nb++;
-					return (args);
-				}
-				else
-				{
-					args = cpy_until_char(temp_args, ' ', da->io_nb);
-					return (args);
-				}
-			}
-			else if (temp_args[da->io_nb] == 34)
+			if (temp_args[da->io_nb] == 34 || temp_args[da->io_nb] == 39)
 			{
 				da->io_nb++;
 				args = cpy_until_char(temp_args, 34, da->io_nb);
-				while (temp_args[da->io_nb] != 34 && temp_args[da->io_nb])
+				while ((temp_args[da->io_nb] != 34 && temp_args[da->io_nb] != 39) && temp_args[da->io_nb])
 					da->io_nb++;
 				return (args);
 			}
-			else if (ft_isprint(temp_args[da->io_nb]) == 1)
+			else
 			{
 				args = cpy_until_char(temp_args, ' ', da->io_nb);
+				while (temp_args[da->io_nb] != ' ' && temp_args[da->io_nb])
+					da->io_nb++;
 				return (args);
 			}
 		}
-		da->io_nb++;
+		else
+			da->io_nb++;
 	}
 	return (NULL);
 }
@@ -64,6 +50,7 @@ void	fill_outab(t_data *da, char *temp_args, int i)
 	int	j;
 
 	j = 0;
+	da->io_nb = 0;
 	da->nb_redir_out = ft_nb_redir(temp_args, '>');
 	da->out_tab[i] = malloc((da->nb_redir_out + 1) * sizeof(char *));
 	if (da->nb_redir_out == 0)

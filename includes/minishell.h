@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 14:48:53 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/06 11:50:45 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/08 13:50:08 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,7 @@ void	if_quotes_not_close(char **temp_args, int i);
 int		if_io_before_last_quotes(char *s, char c, int start);
 int		if_quotes(char *s, int start);
 char	*cpy_args_without_quotes(char *s);
-char	*fill_args(t_data *da, char **words);
+char	*fill_args(t_data *da, char **words, int i);
 char	*fill_cmd(char **words);
 char	**new_temp_args(t_data *da, char **temp_args);
 int		nb_pipe(char *rl);

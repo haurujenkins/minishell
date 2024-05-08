@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_nb.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 16:03:17 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/04/18 17:39:26 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/07 14:38:43 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,12 @@ int	nb_pipe(char *rl)
 	pnum = 1;
 	while (rl[i])
 	{
+		if (rl[i] == 34 || rl[i] == 39)
+		{
+			i++;
+			while ((rl[i] != 34 && rl[i] != 39) && rl[i])
+				i++;
+		}
 		if (rl[i] == '|')
 			pnum++;
 		i++;
@@ -54,10 +60,10 @@ int		ft_nb_redir(char *temp_args, char c)
 	nb = 0;
 	while (temp_args[i])
 	{
-		if (temp_args[i] == 34)
+		if (temp_args[i] == 34 || temp_args[i] == 39)
 		{
 			i++;
-			while (temp_args[i] != 34 && temp_args[i])
+			while ((temp_args[i] != 34 && temp_args[i] != 39) && temp_args[i])
 				i++;
 		}
 		if (temp_args[i] == c)

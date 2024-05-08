@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 14:31:09 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/03 13:26:08 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/07 14:33:18 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ char	*cpy_until_char(char *s, char c, int start)
 	tmp = malloc((len - start + 1) * sizeof(char));
 	if (!tmp)
 		return (write(2, "Malloc failed\n", 14), NULL);
-	while (s[start] != c && start < len)
+	while ((s[start] != 39 && s[start] != c) && start < len)
 	{
 		tmp[j] = s[start];
 		start++;
@@ -118,7 +118,7 @@ int	if_finish_quotes(char *s)
 	{
 		i++;
 	}
-	if (s[i - 1] == 34 || s[i - 1] == 39)
-			return (1);
+	if ((s[i - 1] == 34 || s[i - 1] == 39) && i > 0)
+		return (1);
 	return (0);
 }

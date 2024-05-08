@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_main.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 11:10:09 by abolea            #+#    #+#             */
-/*   Updated: 2024/05/06 11:50:20 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/08 15:03:42 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,50 @@ int	check_error(char *rl)
 	return (0);
 }
 
+char	*negative_in_quotes(char *s)
+{
+	int	i;
+
+	i = 0;
+	while (s[i])
+	{
+		if (s[i] == 34)
+		{
+			i++;
+			while (s[i] != 34)
+			{
+				s[i] *= -1;
+				i++;
+			}
+		}
+		else if (s[i] == 39)
+		{
+			i++;
+			while (s[i] != 39)
+			{
+				s[i] *= -1;
+				i++;
+			}
+		}
+		i++;
+	}
+	return (s);
+}
+
+char	*all_positive(char *s)
+{
+	int	i;
+
+	i = 0;
+	while (s[i])
+	{
+		if (s[i] < 0)
+			s[i] *= -1;
+		i++;
+	}
+	return (s);
+}
+
 int	parsing(char *rl, t_data *da)
 {
 	char	**temp_args;
@@ -46,9 +90,16 @@ int	parsing(char *rl, t_data *da)
 	words = NULL;
 	da->pnum = nb_pipe(rl);
 	num_w = 0;
+	rl = negative_in_quotes(rl);
 	temp_args = ft_split(rl, '|');
 	if (temp_args == NULL)
 		return (printf ("Error: malloc failed\n"), 1);
+	while (temp_args[i])
+	{
+		temp_args[i] = all_positive(temp_args[i]);
+		i++;
+	}
+	i = 0;
 	da->args = malloc(da->pnum * sizeof(char **));
 	if (da->args == NULL)
 		return (printf("Error: malloc failed\n"), 1);
@@ -96,17 +147,17 @@ int	parsing(char *rl, t_data *da)
 		free(words[num_w]);
 	free(words);
 	words = NULL;
-	print_args(i, da->pnum, da);
+	// print_args(i, da->pnum, da);
 	return (0);
 }
 
-void	sigint_handler()
-{
-	write(1, "\n", 1);
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
-}
+// void	sigint_handler()
+// {
+// 	write(1, "\n", 1);
+// 	rl_on_new_line();
+// 	rl_replace_line("", 0);
+// 	rl_redisplay();
+// }
 
 int	main(int argc, char **argv, char **envp)
 {
@@ -117,17 +168,17 @@ int	main(int argc, char **argv, char **envp)
 	if (argc != 1 || argv[0][0] == '\0')
 		printf("ERROR\n");
 	set_all(&da, envp);
-	if (signal(SIGINT, sigint_handler) == SIG_ERR)
-	{
-		perror("signal");
-		exit(EXIT_FAILURE);
-	}
+	// if (signal(SIGINT, sigint_handler) == SIG_ERR)
+	// {
+	// 	perror("signal");
+	// 	exit(EXIT_FAILURE);
+	// }
+	// print_all();
 	while (1)
 	{
 		rl = readline("\033[1;36m<3 \033[0;37m");
 		if (!rl)
 		{
-			printf("\n");
 			free_struct(&da);
 			break ;
 		}

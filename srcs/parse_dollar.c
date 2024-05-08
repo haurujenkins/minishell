@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 16:20:22 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/04/29 11:24:13 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/08 15:15:44 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,8 @@ char	*after_dollar(char *s)
 		return (write(2, "Malloc failed\n", 14), NULL);
 	while (s[i] != '$')
 		i++;
+	if (ft_isalnum(s[i + 1]) != 1)
+		return (NULL);
 	if (s[i - 1] != 39)
 		i++;
 	while (ft_isalnum(s[i]) == 1 || s[i] == '$')

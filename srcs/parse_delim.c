@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_delim.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 14:38:28 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/04/29 10:03:39 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/07 16:47:19 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,16 @@ int	len_without_delim(char *s)
 {
 	int		i;
 	int		j;
+	int		in_quotes;
 
 	i = 0;
 	j = 0;
+	in_quotes = 1;
 	while (s[i])
 	{
-		if (s[i] == '<' && s[i + 1] == '<')
+		if (s[i] == 34 || s[i] == 39)
+			in_quotes *= -1;
+		if ((s[i] == '>' && s[i + 1] == '>') && in_quotes > 0)
 			i++;
 		else if (s[i])
 		{
@@ -38,14 +42,18 @@ char	*sup_delim(char *s)
 	int		j;
 	int		len;
 	char	*tmp;
+	int		in_quotes;
 
 	i = 0;
 	j = 0;
+	in_quotes = 1;
 	len = len_without_delim(s);
 	tmp = malloc((len + 1) * sizeof(char));
 	while (s[i])
 	{
-		if (s[i] == '<' && s[i + 1] == '<')
+		if (s[i] == 34 || s[i] == 39)
+			in_quotes *= -1;
+		if ((s[i] == '>' && s[i + 1] == '>') && in_quotes > 0)
 		{
 			i++;
 		}

@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 15:34:31 by abolea            #+#    #+#             */
-/*   Updated: 2024/04/30 15:37:11 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/06 16:24:09 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ char *temp_with_space(char *s)
     in_quotes = 1;
     while (s[i]) 
 	{
-		if (s[i] == '"') 
+		if (s[i] == 34 || s[i] == 39) 
 			in_quotes *= -1;
 		if (s[i] == '<' && in_quotes == 1) 
 		{

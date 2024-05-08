@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 14:58:08 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/04/30 17:07:47 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/06 13:48:37 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,14 +70,24 @@ char	*cpy_args_without_quotes(char *s)
 	int		i;
 	int		j;
 	char	*tmp;
+	int		d_quotes;
+	int		s_quotes;
 	
 	i = 0;
 	j = 0;
+	d_quotes = 0;
+	s_quotes = 0;
 	tmp = malloc((ft_strlen(s) - nb_quotes(s)- if_double_space(s) + 1) * sizeof(char));
 	while (s[i])
 	{
-		if (s[i] == 34 || s[i] == 39)
+		while ((s[i] == 34 && s_quotes % 2 == 0) || (s[i] == 39 && d_quotes % 2 == 0))
+		{
+			if (s[i] == 34 && s_quotes % 2 == 0)
+				d_quotes++;
+			if (s[i] == 39 && d_quotes % 2 == 0)
+				s_quotes++;
 			i++;
+		}
 		tmp[j] = s[i];
 		i++;
 		j++;
