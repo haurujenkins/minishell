@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 11:10:09 by abolea            #+#    #+#             */
-/*   Updated: 2024/05/08 15:20:48 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/08 15:57:32 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,14 +100,6 @@ int	parsing(char *rl, t_data *da)
 	return (0);
 }
 
-void	sigint_handler()
-{
-	write(1, "\n", 1);
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
-}
-
 int	main(int argc, char **argv, char **envp)
 {
 	char	*rl;
@@ -143,6 +135,7 @@ int	main(int argc, char **argv, char **envp)
 			else
 			{
 				heredoc_replace(&da, 0);
+				signal(SIGINT, sigint_handler);
 				print_args(0, da.pnum, &da);
 				add_history(rl);
 				free(rl);

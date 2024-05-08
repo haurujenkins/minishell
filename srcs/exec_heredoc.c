@@ -6,14 +6,26 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 13:57:06 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/08 15:11:07 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/08 16:56:32 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-#define TMPFILE_NAME "minishell_heredoc_tmpfile"
+#define TMPFILE_NAME ".heredoc/minishell_heredoc_tmpfile"
 #define MAX_RANDOM_BYTES 8
+
+bool	stop_execution = false;
+
+void	sigint_handler(int signum)
+{
+	(void) signum;
+	write(1, "\n", 1);
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
+	stop_execution = true;
+}
 
 void	count_delim(t_data *da, int index)
 {
@@ -29,18 +41,12 @@ void	count_delim(t_data *da, int index)
 	}
 }
 
-void	sigint_handler_doc()
-{
-	printf("\n");
-	exit(1);
-}
-
 void	sigquit_handler_doc(t_data *da)
 {
 	da->mysignal.nb_delim--;
 	printf("bash: warning: here-document delimited by end-of-file (wanted `%s')\n", da->mysignal.endof);
 	if (da->mysignal.nb_delim == 0)
-		exit(1);
+		return ;
 	da->mysignal.exit = 1;
 }
 
@@ -98,12 +104,19 @@ char	*read_until_delimiter(char *delimiter, t_data *da)
 	while (1)
 	{
 		if (da->mysignal.exit == 1)
-			return (NULL);
-		line = readline("> ");
+			return (tmpfile_name);
+		rl_callback_handler_install("> ", NULL);
+        line = readline(NULL);
+        rl_callback_handler_remove();
+		if (stop_execution == true)
+		{
+			stop_execution = false;
+			return (printf("\nwsh"), tmpfile_name);
+		}
 		if (!line)
 		{
 			sigquit_handler_doc(da);
-			return (NULL);
+			return (tmpfile_name);
 		}
 		if (strcmp(line, delimiter) == 0)
 		{
@@ -138,9 +151,7 @@ void	heredoc_replace(t_data *da, int index)
 				i++ ;
 			else
 			{
-				signal(SIGINT, sigint_handler_doc);
-				signal(SIGQUIT, SIG_IGN);
-				tmpfile = read_until_delimiter(da->delim_tab[index][i], da);
+				tmpfile = read_until_delimiter(da->in_tab[index][i], da);
 				free(da->in_tab[index][i]);
 				da->in_tab[index][i] = ft_strdup(tmpfile);
 				da->mysignal.nb_delim--;
