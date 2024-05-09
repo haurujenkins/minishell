@@ -6,11 +6,27 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 16:20:22 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/08 15:15:44 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/09 13:48:14 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+int	nb_dollars(char *s)
+{
+	int	i;
+	int	d;
+	
+	i = 0;
+	d = 0;
+	while (s[i])
+	{
+		if (s[i] == '$')
+			d++;
+		i++;
+	}
+	return (d);
+}
 
 int	len_after_dollar(char *s)
 {

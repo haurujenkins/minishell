@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 16:03:17 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/07 14:38:43 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/09 14:32:56 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ int		ft_nb_redir(char *temp_args, char c)
 			while ((temp_args[i] != 34 && temp_args[i] != 39) && temp_args[i])
 				i++;
 		}
-		if (temp_args[i] == c)
+		if (temp_args[i] == c && temp_args[i + 2])
 			nb++;
 		i++;
 	}

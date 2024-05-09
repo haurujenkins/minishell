@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 11:10:09 by abolea            #+#    #+#             */
-/*   Updated: 2024/05/08 17:05:30 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/09 14:34:49 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,18 +44,20 @@ char	*negative_in_quotes(char *s)
 		if (s[i] == 34)
 		{
 			i++;
-			while (s[i] != 34)
+			while (s[i] && s[i] != 34)
 			{
-				s[i] *= -1;
+				if (s[i] == ' ' || s[i] == '|')
+					s[i] *= -1;
 				i++;
 			}
 		}
 		else if (s[i] == 39)
 		{
 			i++;
-			while (s[i] != 39)
+			while (s[i] && s[i] != 39)
 			{
-				s[i] *= -1;
+				if (s[i] == ' ' || s[i] == '|')
+					s[i] *= -1;
 				i++;
 			}
 		}
@@ -156,7 +158,7 @@ int	parsing(char *rl, t_data *da)
 		free(words[num_w]);
 	free(words);
 	words = NULL;
-	// print_args(i, da->pnum, da);
+	print_args(i, da->pnum, da);
 	return (0);
 }
 

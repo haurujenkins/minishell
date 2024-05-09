@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 14:55:13 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/07 11:08:14 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/09 14:33:15 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ char	*fill_input(char *temp_args, t_data *da)
 
 	while (temp_args[da->io_nb])
 	{
-		if (temp_args[da->io_nb] == '<' && temp_args[da->io_nb + 1] == ' ')
+		if (temp_args[da->io_nb] == '<' && temp_args[da->io_nb + 2])
 		{
 			da->io_nb++;
 			while (temp_args[da->io_nb] == ' ')

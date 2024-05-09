@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 15:37:45 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/08 17:05:35 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/09 14:24:33 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	pos_cmd(char **words)
 	int	j;
 
 	j = 1;
-	if ((words[0][0] != '<' && words[0][0] != '>'))
+	if (words[0] && (words[0][0] != '<' && words[0][0] != '>'))
 		return (0);
 	while (words[j])
 	{
@@ -152,12 +152,18 @@ char *sup_d_quotes_before_dollar(char *s)
 char	**new_temp_args(t_data *da, char **temp_args)
 {
 	int	i;
+	int	d;
 
 	i = 0;
+	d = nb_dollars(temp_args[i]);
 	while (i < da->pnum)
 	{
 		temp_args[i] = sup_d_quotes_before_dollar(temp_args[i]);
-		temp_args[i] = temp_without_dollar(da, temp_args[i]);
+		while (d != 0)
+		{
+			temp_args[i] = temp_without_dollar(da, temp_args[i]);
+			d--;
+		}
 		if (temp_args[i] == NULL)
 		{
 			write(2, "Error: malloc failed\n", 21);
@@ -202,18 +208,8 @@ int ft_nb_args(t_data *da, char **words)
 				}
 				while (words[j] && (words[j][0] != '<' && words[j][0] != '>'))
 				{
-					if (words[j][0] == 34 || words[j][0] == 39)
-					{
-						while (if_finish_quotes(words[j]) != 1)
-							j++;
-						res++;
-						j++;
-					}
-					else
-					{
-						j++;
-						res++;
-					}
+					j++;
+					res++;
 				}
 			}
 			else if ((words[j][0] == '<' || words[j][0] == '>') || (words[j - 1][0] == '<' || words[j - 1][0] == '>'))
@@ -232,8 +228,6 @@ int ft_nb_args(t_data *da, char **words)
 			{
 				if (words[j][0] == 34 || words[j][0] == 39)
 				{
-					while (if_finish_quotes(words[j]) != 1)
-						j++;
 					res++;
 					j++;
 				}
