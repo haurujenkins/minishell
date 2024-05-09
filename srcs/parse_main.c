@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 11:10:09 by abolea            #+#    #+#             */
-/*   Updated: 2024/05/09 14:34:49 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/09 14:55:38 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,7 +158,7 @@ int	parsing(char *rl, t_data *da)
 		free(words[num_w]);
 	free(words);
 	words = NULL;
-	print_args(i, da->pnum, da);
+	// print_args(i, da->pnum, da);
 	return (0);
 }
 
@@ -210,7 +210,8 @@ int	main(int argc, char **argv, char **envp)
 			{
 				add_history(rl);
 				free(rl);
-				main_exec(&da, envp);
+				if (da.args[0][0])
+					main_exec(&da, envp);
 				free_struct(&da);
 			}
 		}
