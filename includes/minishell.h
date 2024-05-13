@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 14:48:53 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/09 13:46:34 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/13 14:27:50 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ char	**ft_realloc(char **tab, int size);
 int		get_args_builtins(t_data *da, int index);
 void	my_cd(char **cmd, char **envp, t_data *da);
 void	my_pwd(void);
-void	my_echo(char **cmd, t_data *da);
+void	my_echo(char **cmd);
 void	my_env(char **env, int num, int j);
 void	my_export(t_data *da);
 void	my_unset(t_data *da);
@@ -141,6 +141,6 @@ int		pos_cmd(char **words);
 char	*cpy_args_without_s_quotes(char *s);
 char	*new_temp(char *s);
 int		nb_dollars(char *s);
-
+char	*all_positive(char *s);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 15:37:45 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/09 14:24:33 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/13 15:32:47 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,8 @@ char	*get_cmd(char *words)
 		i++;
 	}
 	args[i] = '\0';
+	if (ft_strncmp(args, "\\n", 2) == 0)
+		return (NULL);
 	return (args);
 }
 
@@ -149,6 +151,33 @@ char *sup_d_quotes_before_dollar(char *s)
 	return (res);
 }
 
+char	*dollar_negative_in_s_quote(char *s)
+{
+	int	i;
+	int	d_quotes;
+
+	i = 0;
+	d_quotes = 1;
+	while (s[i])
+	{
+		if (s[i] == 34)
+			d_quotes *= -1;
+		if (s[i] == 39 && d_quotes > 0)
+		{
+			i++;
+			while (s[i] != 39)
+			{
+				if (s[i] == '$')
+					s[i] *= -1;
+				i++;
+			}
+		}
+		i++;
+	}
+	s[i] = '\0';
+	return (s);
+}
+
 char	**new_temp_args(t_data *da, char **temp_args)
 {
 	int	i;
@@ -159,11 +188,13 @@ char	**new_temp_args(t_data *da, char **temp_args)
 	while (i < da->pnum)
 	{
 		temp_args[i] = sup_d_quotes_before_dollar(temp_args[i]);
-		while (d != 0)
+		temp_args[i] = dollar_negative_in_s_quote(temp_args[i]);
+		while (d > 0)
 		{
 			temp_args[i] = temp_without_dollar(da, temp_args[i]);
 			d--;
 		}
+		temp_args[i] = all_positive(temp_args[i]);
 		if (temp_args[i] == NULL)
 		{
 			write(2, "Error: malloc failed\n", 21);

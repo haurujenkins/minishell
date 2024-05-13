@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 16:20:22 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/09 13:48:14 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/13 15:50:13 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	nb_dollars(char *s)
 	d = 0;
 	while (s[i])
 	{
-		if (s[i] == '$')
+		if (s[i] == '$' && (ft_isalnum(s[i + 1]) == 1 || s[i + 1] == '?'))
 			d++;
 		i++;
 	}
@@ -40,7 +40,7 @@ int	len_after_dollar(char *s)
 	if (s[i - 1] != 39)
 		j++;
 	i++;
-	while (ft_isalnum(s[i]) == 1)
+	while (ft_isalnum(s[i]) == 1 || s[i] == '?')
 	{
 		i++;
 		j++;
@@ -65,11 +65,11 @@ char	*after_dollar(char *s)
 		return (write(2, "Malloc failed\n", 14), NULL);
 	while (s[i] != '$')
 		i++;
-	if (ft_isalnum(s[i + 1]) != 1)
+	if (ft_isalnum(s[i + 1]) != 1 && s[i + 1] != '?')
 		return (NULL);
 	if (s[i - 1] != 39)
 		i++;
-	while (ft_isalnum(s[i]) == 1 || s[i] == '$')
+	while (ft_isalnum(s[i]) == 1 || s[i] == '?')
 	{
 		tmp[j] = s[i];
 		i++;
@@ -101,15 +101,16 @@ char	*temp_without_dollar(t_data *da, char *temp_args)
 		s_quote = 2;
 	if (s_quote != 0)
 		return (cpy_args_without_s_quotes(temp_args));
-	new_args = find_in_env(da, before_args);
+	if (before_args[0] == '?')
+		new_args = ft_itoa(da->exit_status);
+	else
+		new_args = find_in_env(da, before_args);
 	while (temp_args[i])
 	{
 		if (temp_args[i] == '$' && temp_args[i + 1])
 		{
 			while (temp_args[i] != '\0' && temp_args[i] != ' ')
-			{
 				i++;
-			}
 		}
 		j++;
 		i++;
@@ -132,21 +133,28 @@ char	*temp_without_dollar(t_data *da, char *temp_args)
 		i++;
 		j++;
 	}
+	if (temp_args[0] == '$')
+	{
+		i++;
+		while (temp_args[i] != ' ' && temp_args[i] != '$')
+			i++;
+	}
 	while (new_args[k])
 	{
 		res[j] = new_args[k];
 		j++;
 		k++;
 	}
+	while (temp_args[i] != '$')
+	{
+		res[j] = temp_args[i];
+		i++;
+		j++;
+	}
+	while ((temp_args[i] != ' ' && temp_args[i]))
+		i++;
 	while (temp_args[i])
 	{
-		if (temp_args[i] == '$' && temp_args[i + 1])
-		{
-			while (temp_args[i] != '\0' && temp_args[i] != ' ')
-			{
-				i++;
-			}
-		}
 		res[j] = temp_args[i];
 		i++;
 		j++;
