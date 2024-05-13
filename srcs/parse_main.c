@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 11:10:09 by abolea            #+#    #+#             */
-/*   Updated: 2024/05/13 16:02:46 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/13 16:21:44 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ int	check_error(char *rl)
 	int	i;
 
 	i = 0;
+	if (rl[i] == '|')
+		return (-1);
 	while (rl[i])
 	{
 		if (rl[i] == 34)
@@ -34,11 +36,58 @@ int	check_error(char *rl)
 	return (0);
 }
 
+char	*negative_in_quotes(char *s)
+{
+	int	i;
+
+	i = 0;
+	while (s[i])
+	{
+		if (s[i] == 34)
+		{
+			i++;
+			while (s[i] && s[i] != 34)
+			{
+				if (s[i] == ' ' || s[i] == '|')
+					s[i] *= -1;
+				i++;
+			}
+		}
+		else if (s[i] == 39)
+		{
+			i++;
+			while (s[i] && s[i] != 39)
+			{
+				if (s[i] == ' ' || s[i] == '|')
+					s[i] *= -1;
+				i++;
+			}
+		}
+		i++;
+	}
+	return (s);
+}
+
+char	*all_positive(char *s)
+{
+	int	i;
+
+	i = 0;
+	while (s[i])
+	{
+		if (s[i] < 0)
+			s[i] *= -1;
+		i++;
+	}
+	return (s);
+}
+
 int	parsing(char *rl, t_data *da)
 {
 	char	**temp_args;
 	char	**words;
 	int		i;
+	int		j;
 	int		num_w;	
 
 	i = 0;
@@ -46,9 +95,16 @@ int	parsing(char *rl, t_data *da)
 	words = NULL;
 	da->pnum = nb_pipe(rl);
 	num_w = 0;
+	rl = negative_in_quotes(rl);
 	temp_args = ft_split(rl, '|');
 	if (temp_args == NULL)
 		return (printf ("Error: malloc failed\n"), 1);
+	while (temp_args[i])
+	{
+		temp_args[i] = all_positive(temp_args[i]);
+		i++;
+	}
+	i = 0;
 	da->args = malloc(da->pnum * sizeof(char **));
 	if (da->args == NULL)
 		return (printf("Error: malloc failed\n"), 1);
@@ -72,7 +128,15 @@ int	parsing(char *rl, t_data *da)
 	{
 		if_quotes_not_close(temp_args, i);
 		temp_args[i] = new_temp(temp_args[i]);
+		temp_args[i] = negative_in_quotes(temp_args[i]);
 		words = ft_split(temp_args[i], ' ');
+		j = 0;
+		while (words[j])
+		{
+			words[j] = all_positive(words[j]);
+			j++;
+		}
+		temp_args[i] = all_positive(temp_args[i]);
 		while (words[num_w] != NULL)
 			num_w++;
 		da->args[i] = malloc((num_w + 1) * sizeof(char *));
@@ -96,7 +160,7 @@ int	parsing(char *rl, t_data *da)
 		free(words[num_w]);
 	free(words);
 	words = NULL;
-	print_args(i, da->pnum, da);
+	// print_args(i, da->pnum, da);
 	return (0);
 }
 
@@ -139,7 +203,8 @@ int	main(int argc, char **argv, char **envp)
 				print_args(0, da.pnum, &da);
 				add_history(rl);
 				free(rl);
-				main_exec(&da, envp);
+				if (da.args[0][0])
+					main_exec(&da, envp);
 				free_struct(&da);
 			}
 		}
