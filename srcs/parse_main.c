@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_main.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 11:10:09 by abolea            #+#    #+#             */
-/*   Updated: 2024/05/13 15:03:23 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/13 16:29:05 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,14 +164,6 @@ int	parsing(char *rl, t_data *da)
 	return (0);
 }
 
-// void	sigint_handler()
-// {
-// 	write(1, "\n", 1);
-// 	rl_on_new_line();
-// 	rl_replace_line("", 0);
-// 	rl_redisplay();
-// }
-
 int	main(int argc, char **argv, char **envp)
 {
 	char	*rl;
@@ -181,14 +173,10 @@ int	main(int argc, char **argv, char **envp)
 	if (argc != 1 || argv[0][0] == '\0')
 		printf("ERROR\n");
 	set_all(&da, envp);
-	// if (signal(SIGINT, sigint_handler) == SIG_ERR)
-	// {
-	// 	perror("signal");
-	// 	exit(EXIT_FAILURE);
-	// }
-	// print_all();
 	while (1)
 	{
+		signal(SIGINT, sigint_handler);
+		signal(SIGQUIT, SIG_IGN);
 		rl = readline("\033[1;36m<3 \033[0;37m");
 		if (!rl)
 		{
@@ -210,6 +198,9 @@ int	main(int argc, char **argv, char **envp)
 			}
 			else
 			{
+				heredoc_replace(&da, 0);
+				signal(SIGINT, sigint_handler);
+				print_args(0, da.pnum, &da);
 				add_history(rl);
 				free(rl);
 				if (da.args[0][0])
