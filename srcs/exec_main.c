@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 11:49:04 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/03 15:52:06 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/13 16:31:41 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,6 +143,25 @@ void	exec_cmd(t_data *da, char **envp)
 	write(2, da->cmd1[0], ft_strlen(da->cmd1[0]));
 	write(2, ": command not found\n", 20);
 	exit(127);
+}
+
+void	del_tmpfiles(t_data *da, int index)
+{
+	int	i;
+
+	if (da->in_tab == NULL || da->in_tab[index][0] == NULL)
+		return ;
+	while (index < da->pnum)
+	{
+		i = 0;
+		while (da->in_tab[index][i] != NULL)
+		{
+			if (da->delim_tab[index][i][0] == '1')
+				unlink(da->in_tab[index][i]);
+			i++;
+		}
+		index++;
+	}
 }
 
 int	main_exec(t_data *da, char **envp)
