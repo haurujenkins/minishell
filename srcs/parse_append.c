@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_append.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 14:28:18 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/04/29 10:02:48 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/07 16:46:18 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,16 @@ int	len_without_append(char *s)
 {
 	int		i;
 	int		j;
+	int		in_quotes;
 
 	i = 0;
 	j = 0;
+	in_quotes = 1;
 	while (s[i])
 	{
-		if (s[i] == '>' && s[i + 1] == '>')
+		if (s[i] == 34 || s[i] == 39)
+			in_quotes *= -1;
+		if ((s[i] == '>' && s[i + 1] == '>') && in_quotes > 0)
 			i++;
 		else if (s[i])
 		{
@@ -38,17 +42,19 @@ char	*sup_append(char *s)
 	int		j;
 	int		len;
 	char	*tmp;
+	int		in_quotes;
 
 	i = 0;
 	j = 0;
+	in_quotes = 1;
 	len = len_without_append(s);
 	tmp = malloc((len + 1) * sizeof(char));
 	while (s[i])
 	{
-		if (s[i] == '>' && s[i + 1] == '>')
-		{
+		if (s[i] == 34 || s[i] == 39)
+			in_quotes *= -1;
+		if ((s[i] == '>' && s[i + 1] == '>') && in_quotes > 0)
 			i++;
-		}
 		else if (s[i])
 		{
 			tmp[j] = s[i];

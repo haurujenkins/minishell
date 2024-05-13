@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 11:12:16 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/06 13:28:21 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/13 16:54:26 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,32 +41,15 @@ void	my_env(char **env, int num, int j)
 	}
 }
 
-void	my_echo(char **cmd, t_data *da)
+void	my_echo(char **cmd)
 {
 	bool	newline;
 	int		i;
-	int		j;
 
 	i = 1;
-	j = 0;
 	newline = true;
 	if (!cmd[1])
 	{
-		printf("\n");
-		return ;
-	}
-	if (cmd[i][0] == '$' && !cmd[i][1])
-	{
-		printf("$\n");
-		return ;
-	}
-	if (ft_strncmp(cmd[i], "$?", 2) == 0)
-	{
-		printf("%i", da->exit_status);
-		while (cmd[i][j] != '?')
-			j++;
-		while (cmd[i][++j] != '\0')
-			printf("%c", cmd[i][j]);
 		printf("\n");
 		return ;
 	}

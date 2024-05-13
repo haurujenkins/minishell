@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 14:48:53 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/08 15:58:54 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/13 16:53:57 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ char	**ft_realloc(char **tab, int size);
 int		get_args_builtins(t_data *da, int index);
 void	my_cd(char **cmd, char **envp, t_data *da);
 void	my_pwd(void);
-void	my_echo(char **cmd, t_data *da);
+void	my_echo(char **cmd);
 void	my_env(char **env, int num, int j);
 void	my_export(t_data *da);
 void	my_unset(t_data *da);
@@ -136,7 +136,7 @@ void	if_quotes_not_close(char **temp_args, int i);
 int		if_io_before_last_quotes(char *s, char c, int start);
 int		if_quotes(char *s, int start);
 char	*cpy_args_without_quotes(char *s);
-char	*fill_args(t_data *da, char **words);
+char	*fill_args(t_data *da, char **words, int i);
 char	*fill_cmd(char **words);
 char	**new_temp_args(t_data *da, char **temp_args);
 int		nb_pipe(char *rl);
@@ -156,6 +156,7 @@ void	fill_args_tab(t_data *da, char **temp_args, int i);
 int		pos_cmd(char **words);
 char	*cpy_args_without_s_quotes(char *s);
 char	*new_temp(char *s);
-
+int		nb_dollars(char *s);
+char	*all_positive(char *s);
 
 #endif

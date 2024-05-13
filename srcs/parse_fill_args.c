@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 15:37:45 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/03 15:35:05 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/13 15:32:47 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	pos_cmd(char **words)
 	int	j;
 
 	j = 1;
-	if ((words[0][0] != '<' && words[0][0] != '>'))
+	if (words[0] && (words[0][0] != '<' && words[0][0] != '>'))
 		return (0);
 	while (words[j])
 	{
@@ -56,6 +56,8 @@ char	*get_cmd(char *words)
 		i++;
 	}
 	args[i] = '\0';
+	if (ft_strncmp(args, "\\n", 2) == 0)
+		return (NULL);
 	return (args);
 }
 
@@ -86,23 +88,113 @@ int	pos_args(t_data *da, char **words)
 		if ((words[j - 1][0] != '<' && words[j - 1][0] != '>') \
 		&& (words[j][0] != '>' && words[j][0] != '<'))
 			return (j);
-		else if (((words[j - 1][0] == '<' \
-		&& words[j - 1][0] == '>') || words[j - 1][1]) && \
-		(words[j][0] != '>' && words[j][0] != '<'))
-			return (j);
 		j++;
 	}
 	return (-1);
 }
 
+int	d_quotes_dollar(char *s)
+{
+	int		i;
+	int		j;
+	int		d_quotes;
+
+	i = 0;
+	j = 0;
+	d_quotes = 0;
+	while (s[i])
+	{
+		if (s[i] == 34 && s[i + 1] == '$')
+		{
+			i++;
+			d_quotes++;
+		}
+		j++;
+		i++;
+		if (s[i] == 34 && d_quotes > 0 && d_quotes % 2 != 0)
+		{
+			i++;
+			d_quotes++;
+		}
+	}
+	return (j);
+}
+
+char *sup_d_quotes_before_dollar(char *s)
+{
+	int		i;
+	int		j;
+	int		d_quotes;
+	char	*res;
+
+	i = 0;
+	j = 0;
+	d_quotes = 0;
+	res = malloc((d_quotes_dollar(s) + 1) * sizeof(char));
+	while (s[i])
+	{
+		if (s[i] == 34 && s[i + 1] == '$')
+		{
+			i++;
+			d_quotes++;
+		}
+		res[j] = s[i];
+		j++;
+		i++;
+		if (s[i] == 34 && d_quotes > 0 && d_quotes % 2 != 0)
+		{
+			i++;
+			d_quotes++;
+		}
+	}
+	res[j] = '\0';
+	return (res);
+}
+
+char	*dollar_negative_in_s_quote(char *s)
+{
+	int	i;
+	int	d_quotes;
+
+	i = 0;
+	d_quotes = 1;
+	while (s[i])
+	{
+		if (s[i] == 34)
+			d_quotes *= -1;
+		if (s[i] == 39 && d_quotes > 0)
+		{
+			i++;
+			while (s[i] != 39)
+			{
+				if (s[i] == '$')
+					s[i] *= -1;
+				i++;
+			}
+		}
+		i++;
+	}
+	s[i] = '\0';
+	return (s);
+}
+
 char	**new_temp_args(t_data *da, char **temp_args)
 {
 	int	i;
+	int	d;
 
 	i = 0;
+	d = nb_dollars(temp_args[i]);
 	while (i < da->pnum)
 	{
-		temp_args[i] = temp_without_dollar(da, temp_args[i]);
+		temp_args[i] = sup_d_quotes_before_dollar(temp_args[i]);
+		temp_args[i] = dollar_negative_in_s_quote(temp_args[i]);
+		while (d > 0)
+		{
+			temp_args[i] = temp_without_dollar(da, temp_args[i]);
+			d--;
+		}
+		temp_args[i] = all_positive(temp_args[i]);
 		if (temp_args[i] == NULL)
 		{
 			write(2, "Error: malloc failed\n", 21);
@@ -142,25 +234,13 @@ int ft_nb_args(t_data *da, char **words)
 			{
 				if (words[j - 1][0] == 34 || words[j - 1][0] == 39)
 				{
-					j++;
-					while (if_quotes(words[j - 1], 0) != 1)
+					while (if_finish_quotes(words[j - 1]) != 1)
 						j++;
 				}
 				while (words[j] && (words[j][0] != '<' && words[j][0] != '>'))
 				{
-					if (words[j][0] == 34)
-					{
-						j++;
-						while (if_quotes(words[j], 0) != 1)
-							j++;
-						res++;
-						j++;
-					}
-					else
-					{
-						j++;
-						res++;
-					}
+					j++;
+					res++;
 				}
 			}
 			else if ((words[j][0] == '<' || words[j][0] == '>') || (words[j - 1][0] == '<' || words[j - 1][0] == '>'))
@@ -177,8 +257,25 @@ int ft_nb_args(t_data *da, char **words)
 				j++;
 			else if ((words[j][0] != '<' && words[j][0] != '>') && (words[j - 1][0] != '<' && words[j - 1][0] != '>'))
 			{
-				j++;
-				res++;
+				if (words[j][0] == 34 || words[j][0] == 39)
+				{
+					res++;
+					j++;
+				}
+				else
+				{
+					if (if_quotes(words[j], 0) == 1)
+					{
+						while ((words[j] && (words[j][0] != '<' && words[j][0] != '>')))
+							j++;
+						res++;
+					}
+					else
+					{
+						j++;
+						res++;
+					}
+				}
 			}
 		}
 	}
@@ -186,7 +283,7 @@ int ft_nb_args(t_data *da, char **words)
 }
 
 
-char	*fill_args(t_data *da, char **words)
+char	*fill_args(t_data *da, char **words, int i)
 {
 	char	*args;
 
@@ -203,32 +300,15 @@ char	*fill_args(t_data *da, char **words)
 				{
 					if (words[da->i_args - 1][0] == 34 || words[da->i_args - 1][0] == 39)
 					{
-						da->i_args++;
-						while (if_quotes(words[da->i_args  - 1], 0) != 1)
+						while (if_finish_quotes(words[da->i_args  - 1]) != 1)
 							da->i_args++;
 					}
 					while (words[da->i_args][0] != '<' && words[da->i_args ][0] != '>')
 					{
-						if (words[da->i_args][0] == 34)
-						{
-							while (if_finish_quotes(words[da->i_args]) != 1)
-							{
-								args = ft_strjoin_ori(args, words[da->i_args]);
-								args = ft_strjoin_ori(args, " ");
-								da->i_args++;
-							}
-							args = ft_strjoin_ori(args, words[da->i_args]);
-							args = cpy_args_without_quotes(args);
-							da->i_args++;
-							return (args);
-						}
-						else
-						{
-							args = ft_strjoin_ori(args, words[da->i_args]);
-							args = cpy_args_without_quotes(args);
-							da->i_args++;
-							return (args);
-						}
+						args = ft_strjoin_ori(args, words[da->i_args]);
+						args = cpy_args_without_quotes(args);
+						da->i_args++;
+						return (args);
 					}
 				}
 				else if ((words[da->i_args][0] == '<' || words[da->i_args][0] == '>') || (words[da->i_args - 1][0] == '<' || words[da->i_args - 1][0] == '>'))
@@ -247,10 +327,34 @@ char	*fill_args(t_data *da, char **words)
 					da->i_args++;
 				else if ((words[da->i_args][0] != '<' && words[da->i_args][0] != '>') && (words[da->i_args - 1][0] != '<' && words[da->i_args - 1][0] != '>'))
 				{
-					args = ft_strjoin_ori(args, words[da->i_args]);
-					args = cpy_args_without_quotes(args);
-					da->i_args++;
-					return (args);
+						args = ft_strjoin_ori(args, words[da->i_args]);
+						args = cpy_args_without_quotes(args);
+						da->i_args++;
+						return (args);
+				}
+				else
+				{
+					if (if_quotes(words[da->i_args], 0) == 1)
+					{
+						while ((words[da->i_args] && (words[da->i_args][0] != '<' && words[da->i_args][0] != '>')))
+						{	
+							args = ft_strjoin_ori(args, words[da->i_args]);
+							if (words[da->i_args + 1] && (words[da->i_args + 1][0] != '<' && words[da->i_args + 1][0] != '>'))
+								args = ft_strjoin_ori(args, " ");
+							da->i_args++;
+						}
+						if (ft_strncmp(da->args[i][0], "export", 6) != 0)
+							args = cpy_args_without_quotes(args);
+						da->i_args++;
+						return (args);
+					}
+					else
+					{
+						args = ft_strjoin_ori(args, words[da->i_args]);
+						args = cpy_args_without_quotes(args);
+						da->i_args++;
+						return (args);
+					}
 				}
 			}
 		}
@@ -272,7 +376,7 @@ void	fill_args_tab(t_data *da, char **words, int i)
 	{
 		while (j < da->nb_args)
 		{
-			da->args_tab[i][j] = fill_args(da, words);
+			da->args_tab[i][j] = fill_args(da, words, i);
 			if (da->args_tab[i][j])
 				j++;
 		}
