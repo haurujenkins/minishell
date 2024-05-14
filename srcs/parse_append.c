@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 14:28:18 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/07 16:46:18 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/14 15:36:19 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,7 @@ int	fill_append_tab(t_data *da, char **temp_args)
 	int	j;
 
 	i = 0;
-	da->append_tab = malloc(da->pnum * sizeof(char **));
+	da->append_tab = malloc((da->pnum + 1) * sizeof(char **));
 	if (da->append_tab == NULL)
 		return (write(2, "Error: malloc failed\n", 21), 1);
 	while (i < da->pnum)
@@ -132,7 +132,7 @@ int	fill_append_tab(t_data *da, char **temp_args)
 		j = 0;
 		da->o_append = i;
 		da->nb_append = ft_nb_append(temp_args[i]);
-		da->append_tab[i] = malloc((da->nb_append + 1) * sizeof(char *));
+		da->append_tab[i] = malloc((ft_nb_redir(temp_args[i], '>') - da->nb_append+ 1) * sizeof(char *));
 		if (da->append_tab[i] == NULL)
 			return (write(2, "Error: malloc failed\n", 21), 1);
 		if (da->nb_append == 0)

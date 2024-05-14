@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_main.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 11:10:09 by abolea            #+#    #+#             */
-/*   Updated: 2024/05/13 18:24:18 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/14 15:38:59 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,13 +115,13 @@ int	parsing(char *rl, t_data *da)
 	temp_args = new_temp_args(da, temp_args);
 	if (temp_args == NULL)
 		return (1);
-	da->args_tab = malloc(da->pnum * sizeof(char **));
+	da->args_tab = malloc((da->pnum + 1)* sizeof(char **));
 	if (!da->args_tab)
 		return (1);
-	da->in_tab = malloc(da->pnum * sizeof(char **));
+	da->in_tab = malloc((da->pnum + 1) * sizeof(char **));
 	if (!da->in_tab)
 		return (1);
-	da->out_tab = malloc(da->pnum * sizeof(char **));
+	da->out_tab = malloc((da->pnum + 1) * sizeof(char **));
 	if (!da->out_tab)
 		return (1);
 	while (i < da->pnum)
@@ -180,7 +180,7 @@ int	main(int argc, char **argv, char **envp)
 		rl = readline("\033[1;36m<3 \033[0;37m");
 		if (!rl)
 		{
-			free_struct(&da);
+			//free_struct(&da);
 			break ;
 		}
 		if (check_error(rl))
@@ -198,14 +198,16 @@ int	main(int argc, char **argv, char **envp)
 			}
 			else
 			{
-				heredoc_replace(&da, 0);
-				signal(SIGINT, sigint_handler);
-				print_args(0, da.pnum, &da);
-				add_history(rl);
-				free(rl);
-				if (da.args[0][0])
-					main_exec(&da, envp);
-				free_struct(&da);
+				if (!(heredoc_replace(&da, 0) == -1))
+				{
+					signal(SIGINT, sigint_handler);
+					print_args(0, da.pnum, &da);
+					add_history(rl);
+					free(rl);
+					if (da.args[0][0])
+						main_exec(&da, envp);
+					//free_struct(&da);
+				}
 			}
 		}
 	}

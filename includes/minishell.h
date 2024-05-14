@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 14:48:53 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/13 16:53:57 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/14 15:21:14 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,8 @@ void	check_outfile(t_data *da, int index);
 void	exit_free(t_data *da);
 void	sigint_handler(int signum);
 void	set_flag(void);
-void	heredoc_replace(t_data *da, int index);
+int		heredoc_replace(t_data *da, int index);
+void	del_tmpfiles(t_data *da, int index);
 
 void	print_args(int i, int pnum, t_data *da);
 void	loading(int p);

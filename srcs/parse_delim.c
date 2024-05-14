@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 14:38:28 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/13 17:08:12 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/14 15:35:29 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,7 @@ int	fill_delim_tab(t_data *da, char **temp_args)
 	int	j;
 
 	i = 0;
-	da->delim_tab = malloc(da->pnum * sizeof(char **));
+	da->delim_tab = malloc((da->pnum + 1) * sizeof(char **));
 	if (da->delim_tab == NULL)
 		return (write(2, "Error: malloc failed\n", 21), 1);
 	while (i < da->pnum)
@@ -132,7 +132,7 @@ int	fill_delim_tab(t_data *da, char **temp_args)
 		j = 0;
 		da->in_delim = i;
 		da->nb_delim = ft_nb_delim(temp_args[i]);
-		da->delim_tab[i] = malloc((da->nb_delim + 1) * sizeof(char *));
+		da->delim_tab[i] = malloc((ft_nb_redir(temp_args[i], '<') - da->nb_delim + 1) * sizeof(char *));
 		if (da->delim_tab[i] == NULL)
 			return (write(2, "Error: malloc failed\n", 21), 1);
 		if (da->nb_delim == 0)
