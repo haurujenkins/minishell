@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 13:57:06 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/14 16:07:03 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/14 16:10:05 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,10 +157,10 @@ int	heredoc_replace(t_data *da, int index)
 			if (da->delim_tab[index][i][0] == '1')
 			{
 				tmpfile = read_until_delimiter(da->in_tab[index][i], da);
-				if (tmpfile == NULL || stop_execution == 1)
-					return (stop_execution = 0, -1);
 				free(da->in_tab[index][i]);
 				da->in_tab[index][i] = ft_strdup(tmpfile);
+				if (stop_execution == 1)
+					return (stop_execution = 0, -1);
 				j++;
 			}
 			i++;
