@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 13:57:06 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/08 16:56:32 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/13 15:59:05 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,8 +106,8 @@ char	*read_until_delimiter(char *delimiter, t_data *da)
 		if (da->mysignal.exit == 1)
 			return (tmpfile_name);
 		rl_callback_handler_install("> ", NULL);
-        line = readline(NULL);
-        rl_callback_handler_remove();
+		line = readline(NULL);
+		rl_callback_handler_remove();
 		if (stop_execution == true)
 		{
 			stop_execution = false;
@@ -140,7 +140,7 @@ void	heredoc_replace(t_data *da, int index)
 	int			i;
 	char		*tmpfile;
 
-	while (da->in_tab[index])
+	while (index < da->pnum)
 	{
 		count_delim(da, index);
 		i = 0;
