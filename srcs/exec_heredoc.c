@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 13:57:06 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/14 12:57:16 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/14 13:32:54 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,51 +91,64 @@ char *generate_tmpfile_name(int i)
 	return (tmpfile_name);
 }
 
-char	*read_until_delimiter(char *delimiter, t_data *da)
+char *read_until_delimiter(char *delimiter, t_data *da)
 {
-	char	*line;
-	int		fd;
-	char	*tmpfile_name;
+    char    buffer[1024];
+    int     fd;
+    char    *tmpfile_name;
+    ssize_t len;
 
-	tmpfile_name = generate_tmpfile_name(0);
-	da->mysignal.exit = 0;
-	da->mysignal.endof = delimiter;
-	fd = open(tmpfile_name, O_WRONLY | O_CREAT | O_TRUNC, 0600);
-	while (1)
-	{
-		if (da->mysignal.exit == 1)
-			return (tmpfile_name);
-		rl_callback_handler_install("> ", NULL);
-		line = readline(NULL);
-		rl_callback_handler_remove();
-		if (stop_execution == true)
-		{
-			stop_execution = false;
-			return (printf("\nwsh"), tmpfile_name);
-		}
-		if (!line)
-		{
-			sigquit_handler_doc(da);
-			return (tmpfile_name);
-		}
-		if (strcmp(line, delimiter) == 0)
-		{
-			free(line);
-			break ;
-		}
-		if (write(fd, line, strlen(line)) == -1)
-		{
-			perror("Erreur lors de l'écriture dans le fichier temporaire");
-			exit(EXIT_FAILURE);
-		}
-		write(fd, "\n", 1);
-		free(line);
-	}
-	close(fd);
-	return (tmpfile_name);
+    tmpfile_name = generate_tmpfile_name(0);
+    da->mysignal.exit = 0;
+    da->mysignal.endof = delimiter;
+    fd = open(tmpfile_name, O_WRONLY | O_CREAT | O_TRUNC, 0600);
+	stop_execution = 0;
+    while (1)
+    {
+        if (da->mysignal.exit == 1)
+            return (tmpfile_name);
+        // Utiliser read() à la place de readline()
+        write(STDOUT_FILENO, "> ", 2); // Afficher le prompt
+        len = read(STDIN_FILENO, buffer, sizeof(buffer) - 1);
+
+        if (stop_execution == 1) {
+            write(1, "ctrl+c\n", 7);
+            return (tmpfile_name);
+        }
+        if (len <= 0) {
+            // EOF or error
+            if (len == 0) {
+                printf("\nEnd of input. Exiting...\n");
+            } else {
+                perror("Error reading input");
+            }
+            return (NULL);
+        }
+
+        // Ajouter un NULL-terminator à la fin de la chaîne
+        buffer[len] = '\0';
+
+        // Supprimer le caractère de nouvelle ligne si présent
+        if (buffer[len - 1] == '\n')
+            buffer[len - 1] = '\0';
+
+        if (strcmp(buffer, delimiter) == 0)
+            break;
+
+        if (write(fd, buffer, strlen(buffer)) == -1)
+        {
+            perror("Erreur lors de l'écriture dans le fichier temporaire");
+            return (NULL);
+        }
+
+        write(fd, "\n", 1);
+    }
+
+    close(fd);
+    return tmpfile_name;
 }
 
-void	heredoc_replace(t_data *da, int index)
+int	heredoc_replace(t_data *da, int index)
 {
 	int			i;
 	char		*tmpfile;
@@ -154,6 +167,8 @@ void	heredoc_replace(t_data *da, int index)
 			if (da->delim_tab[index][i][0] == '1')
 			{
 				tmpfile = read_until_delimiter(da->in_tab[index][i], da);
+				if (tmpfile == NULL || stop_execution == 1)
+					return (-1);
 				free(da->in_tab[index][i]);
 				da->in_tab[index][i] = ft_strdup(tmpfile);
 				j++;
@@ -162,4 +177,5 @@ void	heredoc_replace(t_data *da, int index)
 		}
 		index++;
 	}
+	return (0);
 }
