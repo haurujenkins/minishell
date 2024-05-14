@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 15:37:45 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/13 15:32:47 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/14 15:56:24 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,33 +149,6 @@ char *sup_d_quotes_before_dollar(char *s)
 	}
 	res[j] = '\0';
 	return (res);
-}
-
-char	*dollar_negative_in_s_quote(char *s)
-{
-	int	i;
-	int	d_quotes;
-
-	i = 0;
-	d_quotes = 1;
-	while (s[i])
-	{
-		if (s[i] == 34)
-			d_quotes *= -1;
-		if (s[i] == 39 && d_quotes > 0)
-		{
-			i++;
-			while (s[i] != 39)
-			{
-				if (s[i] == '$')
-					s[i] *= -1;
-				i++;
-			}
-		}
-		i++;
-	}
-	s[i] = '\0';
-	return (s);
 }
 
 char	**new_temp_args(t_data *da, char **temp_args)

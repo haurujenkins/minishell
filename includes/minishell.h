@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 14:48:53 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/14 15:21:14 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/14 16:52:18 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,5 +159,10 @@ char	*cpy_args_without_s_quotes(char *s);
 char	*new_temp(char *s);
 int		nb_dollars(char *s);
 char	*all_positive(char *s);
+char	*negative_in_quotes(char *s);
+char	*dollar_negative_in_s_quote(char *s);
+char	**init_words(char **temp_args, int i);
+char	**init_temp_args(char *rl, t_data *da);
+int		init_malloc(char **temp_args, t_data *da);
 
 #endif

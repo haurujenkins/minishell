@@ -22,7 +22,9 @@ SRCS			=	parse_main.c \
 					parse_nb.c \
 					parse_dollar.c \
 					parse_env.c \
-					parse_new_temp.c
+					parse_new_temp.c \
+					parse_modif_rl.c \
+					parse_init.c
 
 
 OBJS			=	$(addprefix .build/, $(SRCS:.c=.o))
