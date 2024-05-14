@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 11:10:09 by abolea            #+#    #+#             */
-/*   Updated: 2024/05/14 13:42:57 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/14 16:02:10 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,8 +160,17 @@ int	parsing(char *rl, t_data *da)
 		free(words[num_w]);
 	free(words);
 	words = NULL;
-	print_args(i, da->pnum, da);
+	//print_args(i, da->pnum, da);
 	return (0);
+}
+
+void	sigint_handler_main(int signum)
+{
+	(void)signum;
+	write(1, "\n", 1);
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -175,7 +184,7 @@ int	main(int argc, char **argv, char **envp)
 	set_all(&da, envp);
 	while (1)
 	{
-		signal(SIGINT, sigint_handler);
+		signal(SIGINT, sigint_handler_main);
 		signal(SIGQUIT, SIG_IGN);
 		rl = readline("\033[1;36m<3 \033[0;37m");
 		if (!rl)
@@ -190,25 +199,24 @@ int	main(int argc, char **argv, char **envp)
 		}
 		if (rl[0])
 		{
+			add_history(rl);
 			if (parsing(rl, &da) == 1)
 			{
-				add_history(rl);
-				free(rl);
 				free_struct(&da);
 			}
 			else
 			{
 				if (!(heredoc_replace(&da, 0) == -1))
 				{
-					signal(SIGINT, sigint_handler);
-					print_args(0, da.pnum, &da);
-					add_history(rl);
-					free(rl);
+					signal(SIGINT, sigint_handler_main);
+					//print_args(0, da.pnum, &da);
 					if (da.args[0][0])
 						main_exec(&da, envp);
 					//free_struct(&da);
 				}
 			}
+			free(rl);
+			del_tmpfiles(&da, 0);
 		}
 	}
 	return (0);

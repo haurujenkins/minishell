@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 11:49:04 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/14 11:09:40 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/14 15:43:14 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,12 +163,10 @@ void	del_tmpfiles(t_data *da, int index)
 {
 	int	i;
 
-	if (da->in_tab == NULL || da->in_tab[index][0] == NULL)
-		return ;
 	while (index < da->pnum)
 	{
 		i = 0;
-		while (da->in_tab[index][i] != NULL)
+		while (da->in_tab[index][i] != NULL && da->delim_tab[index][i] != NULL)
 		{
 			if (da->delim_tab[index][i][0] == '1')
 				unlink(da->in_tab[index][i]);
