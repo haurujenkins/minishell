@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 11:10:09 by abolea            #+#    #+#             */
-/*   Updated: 2024/05/13 18:24:18 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/14 12:55:13 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -180,7 +180,7 @@ int	main(int argc, char **argv, char **envp)
 		rl = readline("\033[1;36m<3 \033[0;37m");
 		if (!rl)
 		{
-			free_struct(&da);
+			//free_struct(&da);
 			break ;
 		}
 		if (check_error(rl))

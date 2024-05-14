@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 11:49:04 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/13 16:03:42 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/14 11:09:40 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,6 +183,5 @@ int	main_exec(t_data *da, char **envp)
 	set_pipe(da);
 	if (check_extern_builtins(da, envp, 0) == 0)
 		exec_recur(da, envp, 0);
-	del_tmpfiles(da, 0);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 13:57:06 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/13 15:59:05 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/14 12:57:16 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,10 @@ void	count_delim(t_data *da, int index)
 	int	i;
 
 	i = 0;
+	da->mysignal.nb_delim = 0;
 	while (da->in_tab[index][i])
 	{
-		if (da->delim_tab[index][i] != NULL && \
-		da->delim_tab[index][i][0] != '0')
+		if (da->delim_tab[index][i][0] == '1')
 			da->mysignal.nb_delim++;
 		i++;
 	}
@@ -139,22 +139,24 @@ void	heredoc_replace(t_data *da, int index)
 {
 	int			i;
 	char		*tmpfile;
+	int			nb_delim;
+	int			j;
 
 	while (index < da->pnum)
 	{
 		count_delim(da, index);
 		i = 0;
-		while (da->in_tab[index][i])
+		j = 0;
+		nb_delim = da->mysignal.nb_delim;
+		printf("nb_delim = %d\n", nb_delim);
+		while (j < nb_delim)
 		{
-			if (da->delim_tab[index][i] == NULL || \
-			da->delim_tab[index][i][0] == '0')
-				i++ ;
-			else
+			if (da->delim_tab[index][i][0] == '1')
 			{
 				tmpfile = read_until_delimiter(da->in_tab[index][i], da);
 				free(da->in_tab[index][i]);
 				da->in_tab[index][i] = ft_strdup(tmpfile);
-				da->mysignal.nb_delim--;
+				j++;
 			}
 			i++;
 		}

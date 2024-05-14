@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 11:12:16 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/13 16:54:26 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/14 11:08:19 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,11 @@ void	my_pwd(void)
 	char	*pwd;
 
 	pwd = getcwd(NULL, 0);
+	if (!pwd)
+	{
+		write(2, "Error: pwd failed\n", 19);
+		exit(1);
+	}
 	if (pwd)
 	{
 		printf("%s\n", pwd);
