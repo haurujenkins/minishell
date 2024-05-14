@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_main.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 11:10:09 by abolea            #+#    #+#             */
-/*   Updated: 2024/05/14 10:55:18 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/13 18:24:18 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -203,8 +203,8 @@ int	main(int argc, char **argv, char **envp)
 				print_args(0, da.pnum, &da);
 				add_history(rl);
 				free(rl);
-				// if (da.args[0][0])
-				// 	main_exec(&da, envp);
+				if (da.args[0][0])
+					main_exec(&da, envp);
 				free_struct(&da);
 			}
 		}
