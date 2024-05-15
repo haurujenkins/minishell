@@ -56,9 +56,9 @@ tmarx
 - [X] echo "$HOME"
 - [X] echo '$HOME'
 - [ ] export ; env # display is different for both commands
-- [ ] echo \$HOME
+- [X] echo \$HOME
 - [ ] > log echo coucou
-- [ ] echo hudifg d | | hugdfihd
+- [X] echo hudifg d | | hugdfihd
 - [X] echo
 - [X] echo simple
 - [x] echo -n simple
