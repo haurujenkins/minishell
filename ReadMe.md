@@ -68,8 +68,8 @@ tmarx
 - [ ] echo "\n \n \n"
 - [ ] echo "\n \\n \\\n"
 - [X] echo ;;
-- [ ] echo hi";" hihi
-- [ ] echo hi "   ;   " hihi
+- [X] echo hi";" hihi
+- [X] echo hi "   ;   " hihi
 - [X] cd
 - [x] cd .
 - [x] cd ~
