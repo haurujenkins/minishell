@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 11:12:16 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/14 11:08:19 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/15 10:59:36 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,11 @@ void	my_echo(char **cmd)
 {
 	bool	newline;
 	int		i;
+	int		j;
+	int 	flag;
 
 	i = 1;
+	flag = 0;
 	newline = true;
 	if (!cmd[1])
 	{
@@ -55,14 +58,37 @@ void	my_echo(char **cmd)
 	}
 	while (cmd[i])
 	{
-		if (ft_strchr(cmd[i], "-n") == 1 && i == 1)
-			newline = false;
+		if (ft_strchr(cmd[i], "-n") == 1)
+		{
+			j = 1;
+			while (cmd[i][j])
+			{
+				if (cmd[i][j] != 'n')
+				{
+					flag = 1;
+					if (i == 1)
+						newline = true;
+					break ;
+				}
+				else
+					if (i == 1)
+						newline = false;
+				j++;
+			}
+			if (flag && i > 1)
+			{
+				printf(" ");
+				printf("%s", cmd[i]);
+			}
+		}
 		else
 		{
 			if (newline && i > 1)
 				printf(" ");
 			printf("%s", cmd[i]);
-			newline = true;
+			if (i == 1)
+				newline = true;
+			flag = 1;
 		}
 		i++;
 	}

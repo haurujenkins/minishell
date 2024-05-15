@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 14:48:53 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/14 14:10:10 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/15 16:10:53 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,10 @@
 # include <stdbool.h>
 # include <sys/stat.h>
 # include "../libft/libft.h"
-#include <termios.h>
+# include <termios.h>
 # define MAX_INPUT_LENGTH 1024
+
+extern	volatile sig_atomic_t stop_execution;
 
 typedef struct s_signals
 {
@@ -35,7 +37,6 @@ typedef struct s_signals
 	int		exit;
 	int		heredoc;
 }			t_signals;
-
 
 typedef struct data_s
 {

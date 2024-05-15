@@ -6,11 +6,13 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 11:10:09 by abolea            #+#    #+#             */
-/*   Updated: 2024/05/14 16:02:10 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/15 16:11:31 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+volatile sig_atomic_t stop_execution = 0;
 
 int	check_error(char *rl)
 {
@@ -160,7 +162,7 @@ int	parsing(char *rl, t_data *da)
 		free(words[num_w]);
 	free(words);
 	words = NULL;
-	//print_args(i, da->pnum, da);
+	print_args(i, da->pnum, da);
 	return (0);
 }
 
@@ -171,12 +173,13 @@ void	sigint_handler_main(int signum)
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
+	stop_execution = 1;
 }
 
 int	main(int argc, char **argv, char **envp)
 {
-	char	*rl;
-	t_data	da;
+	char			*rl;
+	t_data			da;
 
 	(void)envp;
 	if (argc != 1 || argv[0][0] == '\0')
@@ -186,6 +189,12 @@ int	main(int argc, char **argv, char **envp)
 	{
 		signal(SIGINT, sigint_handler_main);
 		signal(SIGQUIT, SIG_IGN);
+		if (stop_execution == 1)
+		{
+			stop_execution = 0;
+			da.exit_status = 130;
+			continue ;
+		}
 		rl = readline("\033[1;36m<3 \033[0;37m");
 		if (!rl)
 		{

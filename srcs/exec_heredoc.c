@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 13:57:06 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/14 16:10:05 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/15 16:11:53 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 
 #define TMPFILE_NAME ".heredoc/minishell_heredoc_tmpfile"
 #define MAX_RANDOM_BYTES 8
-
-volatile sig_atomic_t stop_execution = 0;
 
 void	sigint_handler(int signum)
 {
