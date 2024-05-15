@@ -41,7 +41,7 @@ tmarx
 - [ ] export "test=ici"=coucou
 - [ ] c$var Makefile # with var=at
 - [ ] $LESS$VAR
-- [ ] /bin/echo bonjour
+- [X] /bin/echo bonjour
 - [ ] not_cmd
 - [ ] sleep 5 | exit
 - [ ] echo bonjour > $test w/ t
