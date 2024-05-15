@@ -78,16 +78,16 @@ tmarx
 - [X] cd a b c d
 - [X] pwd a
 - [X] pwd a b c d
-- [ ] export LOL=lala ROR=rara
+- [x] export LOL=lala ROR=rara
 - [ ] unset LOL ROR
 - [ ] export "HI= hi"
 - [ ] export "HI =hi"
-- [ ] /bin/ls
-- [ ] # write something the press ctrl+c
-- [ ] # write something then press ctrl+d
-- [ ] # write something then press ctrl+\
+- [x] /bin/ls
+- [x] # write something the press ctrl+c
+- [x] # write something then press ctrl+d
+- [x] # write something then press ctrl+\
 - [X] echo $?
-- [ ] l^Ds
+- [x] l^Ds
 - [X] echo |
 - [X] | echo
 - [X] sort | ls # check output order
