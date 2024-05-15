@@ -49,8 +49,8 @@ tmarx
 - [ ] minishell # binary not in path without "./" before
 - [ ] cat diufosgid # check exit code
 - [ ] exit # should return the last exit code value
-- [ ] exit -10
-- [ ] exit +10
+- [x] exit -10
+- [x] exit +10
 - [ ] ;
 - [ ] echo coucou | ;
 - [X] echo "$HOME"
@@ -98,5 +98,5 @@ tmarx
 - [X] echo > a Hello World!
 - [X] > a echo Hello World!
 - [X] cat < Makefile | grep gcc > output
-- [ ] exit 0 | exit 1
-- [ ] exit 1 | exit 0
+- [x] exit 0 | exit 1
+- [x] exit 1 | exit 0
