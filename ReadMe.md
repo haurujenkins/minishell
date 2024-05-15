@@ -8,7 +8,7 @@ tmarx
 
 - [X] echo bonjour | |
 - [X] |
-- [ ] cd $HOME/Documents
+- [X] cd $HOME/Documents
 - [ ] echo >
 - [x] echo -n -n -nnnn -nnnnm
 - [x] cat /dev/random | head -n 1 | cat -e
