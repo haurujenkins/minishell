@@ -80,8 +80,8 @@ tmarx
 - [X] pwd a b c d
 - [x] export LOL=lala ROR=rara
 - [ ] unset LOL ROR
-- [ ] export "HI= hi"
-- [ ] export "HI =hi"
+- [X] export "HI= hi"
+- [X] export "HI =hi"
 - [x] /bin/ls
 - [x] # write something the press ctrl+c
 - [x] # write something then press ctrl+d
