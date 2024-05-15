@@ -6,35 +6,32 @@ These tests are not all mines. Credits to vgoldman, mashar, and jecaudal.
 tmarx
 # Tests
 
-- [ ] echo bonjour ; |
 - [ ] echo bonjour | |
 - [ ] |
-- [ ] echo bonjour |;
-- [ ] echo bonjour \; ls
-- [ ] echo bonjour > test\ 1
 - [ ] cd $HOME/Documents
-- [ ] echo "\s" & echo "\\s"
-- [ ] echo \>
-- [ ] echo -n -n -nnnn -nnnnm
-- [ ] cat /dev/random | head -n 1 | cat -e
-- [ ] unset var1 # with undefined var1
-- [ ] export "" et unset ""
-- [ ] echo test > file test1
-- [ ] $
-- [ ] not_cmd bonjour > salut
-- [ ] env puis export puis env # vars aren't sorted
+- [ ] echo >
+- [x] echo -n -n -nnnn -nnnnm
+- [x] cat /dev/random | head -n 1 | cat -e
+- [x] unset var1 # with undefined var1
+- [ ] export ""
+- [x] unset ""
+- [x] echo test > file test1
+- [x] $
+- [ ] $?
+- [x] not_cmd bonjour > salut
+- [x] env puis export puis env # vars aren't sorted
 - [ ] cat Makefile | grep pr | head -n 5 | cd test (mybin) # check status code
 - [ ] cat Makefile | grep pr | head -n 5 | cat test (bin) # check status code
 - [ ] cat Makefile | grep pr | head -n 5 | hello (NA) # check status code
 - [ ] echo bonjour >>> test
 - [ ] echo bonjour > > out
-- [ ] echo 2 >> out1 > out2
-- [ ] echo 2 > out1 >> out2
-- [ ] cat < test # with non-existent test
-- [ ] export var; export var=test
+- [x] echo 2 >> out1 > out2
+- [x] echo 2 > out1 >> out2
+- [x] cat < test # with non-existent test
+- [x] export var; export var=test
 - [ ] echo bonjour > $test # with test not defined
-- [ ] file_name_in_current_dir
-- [ ] cd ../../../../../.. ; pwd
+- [x] file_name_in_current_dir
+- [x] cd ../../../../../.. ; pwd
 - [ ] ctrl-C . 130 sur bin(ex : sleep 10)&line vide
 - [ ] ctrl-\ .131 sur bin
 - [ ] echo "bip | bip ; coyotte > < \" "
