@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 13:33:51 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/13 16:57:33 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/15 17:39:45 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,9 @@ void	exit_free(t_data *da)
 int	check_extern_builtins(t_data *da, char **envp, int index)
 {
 	size_t	size;
+	int		i;
 
+	i = 0;
 	size = ft_strlen(da->args[0][0]);
 	if (size == 4 && ft_strchr(da->args[0][0], "exit") && da->pnum == 1)
 	{
@@ -72,7 +74,15 @@ int	check_extern_builtins(t_data *da, char **envp, int index)
 		if (da->args_tab[0][0] == NULL)
 			return (0);
 		else if (da->pnum == 1)
-			return (my_unset(da), 1);
+		{
+			get_args_builtins(da, 0);
+			while (da->cmd1[++i] != NULL)
+			{
+				printf("cmd1[%d] = %s\n", i, da->cmd1[i]);
+				my_unset(da, i);
+			}
+			return (1);
+		}
 	}
 	if (ft_strchr(da->args[0][0], "export") && size == 6 && \
 	da->pnum == 1 && da->args_tab[0][0] != NULL)
@@ -102,15 +112,22 @@ int	check_builtins(t_data *da)
 	size = ft_strlen(da->cmd1[0]);
 	if (size == 4 && ft_strchr(da->cmd1[0], "exit"))
 	{
+		if (da->cmd1[1] && da->cmd1[2] != NULL)
+		{
+			write(2, "minishell: exit: too many arguments\n", 36);
+			exit (1);
+		}
 		if (da->cmd1[1] != NULL)
-			return (write(2, "minishell: exit: too many arguments\n", 36), 1);
-		exit(0);
+			exit(ft_atoi(da->cmd1[1]));
+		exit(da->exit_status);
 	}
 	if (size == 5 && ft_strchr(da->cmd1[0], "unset"))
 	{
 		if (da->cmd1[1] == NULL)
 			return (1);
-		return (my_unset(da), 1);
+		if (da->pnum == 1)
+			return (my_unset(da, 1), 1);
+		return (1);
 	}
 	if (size == 6 && ft_strchr(da->cmd1[0], "export"))
 	{

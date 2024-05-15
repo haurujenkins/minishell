@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 11:49:04 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/14 16:10:46 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/15 16:31:06 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	exec_child(t_data *da, int index, char **envp)
 
 int	exec_recur(t_data *da, char **envp, int index)
 {
-	int	child_status;
+	int		child_status;
 
 	signal(SIGINT, sigint_handler_child);
 	signal(SIGQUIT, sigquit_handler_child);

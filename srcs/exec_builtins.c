@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 11:12:16 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/15 10:59:36 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/15 17:39:07 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,7 +152,7 @@ void	my_cd(char **cmd, char **envp, t_data *da)
 	da->exit_status = 0;
 }
 
-void	my_unset(t_data *da)
+void	my_unset(t_data *da, int k)
 {
 	int		i;
 	int		j;
@@ -167,10 +167,10 @@ void	my_unset(t_data *da)
 		write(2, "Error: malloc failed\n", 21);
 		return ;
 	}
-	get_args_builtins(da, 0);
+	// get_args_builtins(da, 0);
 	while (da->my_env[i] != NULL)
 	{
-		if (ft_strncmp(da->my_env[i], da->cmd1[1], ft_strlen(da->cmd1[1])) != 0)
+		if (ft_strncmp(da->my_env[i], da->cmd1[k], ft_strlen(da->cmd1[k])) != 0)
 		{
 			new_env[j] = ft_strdup(da->my_env[i]);
 			if (!new_env[j])

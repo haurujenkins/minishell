@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 14:48:53 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/15 16:10:53 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/15 17:39:54 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ void	my_pwd(void);
 void	my_echo(char **cmd);
 void	my_env(char **env, int num, int j);
 void	my_export(t_data *da);
-void	my_unset(t_data *da);
+void	my_unset(t_data *da, int k);
 void	sort_env(t_data *da);
 void	free_pipe(t_data *da);
 void	free_struct(t_data *da);
