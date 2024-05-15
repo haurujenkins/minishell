@@ -88,7 +88,7 @@ tmarx
 - [ ] # write something then press ctrl+\
 - [ ] echo $?
 - [ ] l^Ds
-- [ ] echo |
+- [X] echo |
 - [ ] | echo
 - [ ] sort | ls # check output order
 - [ ] cat < >
