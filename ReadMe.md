@@ -17,7 +17,7 @@ tmarx
 - [x] unset ""
 - [x] echo test > file test1
 - [x] $
-- [ ] $?
+- [X] $?
 - [x] not_cmd bonjour > salut
 - [x] env puis export puis env # vars aren't sorted
 - [ ] cat Makefile | grep pr | head -n 5 | cd test (mybin) # check status code
