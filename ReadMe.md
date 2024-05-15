@@ -71,15 +71,15 @@ tmarx
 - [ ] echo hi";" hihi
 - [ ] echo hi "   ;   " hihi
 - [X] cd
-- [ ] cd .
-- [ ] cd ~
-- [ ] cd /
+- [x] cd .
+- [x] cd ~
+- [x] cd /
 - [X] cd no_file
 - [X] cd a b c d
 - [X] pwd a
 - [X] pwd a b c d
 - [x] export LOL=lala ROR=rara
-- [ ] unset LOL ROR
+- [x] unset LOL ROR
 - [X] export "HI= hi"
 - [X] export "HI =hi"
 - [x] /bin/ls
