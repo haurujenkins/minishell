@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 14:48:53 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/14 16:52:18 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/15 16:42:54 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ typedef struct data_s
 	int			i_args;
 	int			pos_cmd;
 	char		**words;
+	int			nb_d;
 	t_signals	mysignal;
 }				t_data;
 
@@ -164,5 +165,8 @@ char	*dollar_negative_in_s_quote(char *s);
 char	**init_words(char **temp_args, int i);
 char	**init_temp_args(char *rl, t_data *da);
 int		init_malloc(char **temp_args, t_data *da);
+char	*new_temp_d(char *s);
+char	*sup_d_quotes_before_dollar(char *s);
+char	*sup_backslash_before_dollar(char *s);
 
 #endif

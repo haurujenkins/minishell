@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_dollar.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 16:20:22 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/14 13:09:40 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/15 16:35:48 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,11 +112,14 @@ char	*temp_without_dollar(t_data *da, char *temp_args)
 			while (temp_args[i] != '\0' && temp_args[i] != ' ')
 				i++;
 		}
-		j++;
-		i++;
+		else
+		{
+			j++;
+			i++;
+		}
 	}
 	len = (j + ft_strlen(new_args) + s_quote + 1);
-	res = malloc(len * sizeof(char));
+	res = malloc((len + 1) * sizeof(char));
 	if (res == NULL)
 	{
 		write(2, "Malloc failed\n", 14);
@@ -133,25 +136,16 @@ char	*temp_without_dollar(t_data *da, char *temp_args)
 		i++;
 		j++;
 	}
-	if (temp_args[0] == '$')
-	{
-		i++;
-		while (temp_args[i] != ' ' && temp_args[i] != '$')
-			i++;
-	}
 	while (new_args[k])
 	{
 		res[j] = new_args[k];
 		j++;
 		k++;
 	}
-	while (temp_args[i] != '$')
-	{
-		res[j] = temp_args[i];
+	i++;
+	if (temp_args[i] == '?')
 		i++;
-		j++;
-	}
-	while ((temp_args[i] != ' ' && temp_args[i]))
+	while (temp_args[i] != ' ' && temp_args[i] != '$' && ft_isalnum(temp_args[i]) == 1 && temp_args[i])
 		i++;
 	while (temp_args[i])
 	{

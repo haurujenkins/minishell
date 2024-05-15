@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 11:10:09 by abolea            #+#    #+#             */
-/*   Updated: 2024/05/14 16:51:14 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/15 16:01:51 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,16 @@ int	check_error(char *rl)
 			return (-1);
 		else if (rl[i] == '>' && rl[i + 1] == '<')
 			return (-1);
+		else if (rl[i] == '<' && rl[i + 1] == '<' && rl[i + 2] == '<')
+			return (-1);
+		else if (rl[i] == '>' && rl[i + 1] == '>' && rl[i + 2] == '>')
+			return (-1);
+		else if (rl[i] == '>' && rl[i + 2] == '>')
+			return (-1);
 		i++;
 	}
+	if (rl[i - 1] == '|' || rl[i - 1] == '>' || rl[i - 1] == '<')
+		return (-1);
 	return (0);
 }
 
@@ -139,8 +147,8 @@ int	main(int argc, char **argv, char **envp)
 					print_args(0, da.pnum, &da);
 					add_history(rl);
 					free(rl);
-					// if (da.args[0][0])
-					// 	main_exec(&da, envp);
+					if (da.args[0][0])
+						main_exec(&da, envp);
 					free_struct(&da);
 				}
 			}
