@@ -40,7 +40,7 @@ tmarx
 - [ ] export var ="cat Makefile | grep >"
 - [ ] export "test=ici"=coucou
 - [ ] c$var Makefile # with var=at
-- [ ] $LESS$VAR
+- [X] $LESS$VAR
 - [X] /bin/echo bonjour
 - [X] not_cmd
 - [ ] sleep 5 | exit
