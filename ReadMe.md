@@ -61,7 +61,7 @@ tmarx
 - [ ] echo hudifg d | | hugdfihd
 - [X] echo
 - [X] echo simple
-- [ ] echo -n simple
+- [x] echo -n simple
 - [X] echo '\'
 - [ ] echo "\"
 - [ ] echo "\\"
