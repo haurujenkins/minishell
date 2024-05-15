@@ -42,7 +42,7 @@ tmarx
 - [ ] c$var Makefile # with var=at
 - [ ] $LESS$VAR
 - [X] /bin/echo bonjour
-- [ ] not_cmd
+- [X] not_cmd
 - [ ] sleep 5 | exit
 - [ ] echo bonjour > $test w/ t
 - [ ] "exit retour a la ligne"
@@ -53,16 +53,16 @@ tmarx
 - [ ] exit +10
 - [ ] ;
 - [ ] echo coucou | ;
-- [ ] echo "$HOME"
-- [ ] echo '$HOME'
+- [X] echo "$HOME"
+- [X] echo '$HOME'
 - [ ] export ; env # display is different for both commands
 - [ ] echo \$HOME
 - [ ] > log echo coucou
 - [ ] echo hudifg d | | hugdfihd
-- [ ] echo
-- [ ] echo simple
+- [X] echo
+- [X] echo simple
 - [ ] echo -n simple
-- [ ] echo '\'
+- [X] echo '\'
 - [ ] echo "\"
 - [ ] echo "\\"
 - [ ] echo "\n \n \n"
@@ -70,14 +70,14 @@ tmarx
 - [ ] echo ;;
 - [ ] echo hi";" hihi
 - [ ] echo hi "   ;   " hihi
-- [ ] cd
+- [X] cd
 - [ ] cd .
 - [ ] cd ~
 - [ ] cd /
-- [ ] cd no_file
-- [ ] cd a b c d
-- [ ] pwd a
-- [ ] pwd a b c d
+- [X] cd no_file
+- [X] cd a b c d
+- [X] pwd a
+- [X] pwd a b c d
 - [ ] export LOL=lala ROR=rara
 - [ ] unset LOL ROR
 - [ ] export "HI= hi"
@@ -86,17 +86,17 @@ tmarx
 - [ ] # write something the press ctrl+c
 - [ ] # write something then press ctrl+d
 - [ ] # write something then press ctrl+\
-- [ ] echo $?
+- [X] echo $?
 - [ ] l^Ds
 - [X] echo |
-- [ ] | echo
-- [ ] sort | ls # check output order
+- [X] | echo
+- [X] sort | ls # check output order
 - [ ] cat < >
 - [ ] cat < <
 - [ ] cat > >
-- [ ] > a ls > b < Makefile
-- [ ] echo > a Hello World!
-- [ ] > a echo Hello World!
-- [ ] cat < Makefile | grep gcc > output
+- [X] > a ls > b < Makefile
+- [X] echo > a Hello World!
+- [X] > a echo Hello World!
+- [X] cat < Makefile | grep gcc > output
 - [ ] exit 0 | exit 1
 - [ ] exit 1 | exit 0
