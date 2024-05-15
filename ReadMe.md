@@ -67,7 +67,7 @@ tmarx
 - [ ] echo "\\"
 - [ ] echo "\n \n \n"
 - [ ] echo "\n \\n \\\n"
-- [ ] echo ;;
+- [X] echo ;;
 - [ ] echo hi";" hihi
 - [ ] echo hi "   ;   " hihi
 - [X] cd
