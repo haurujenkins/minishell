@@ -23,7 +23,7 @@ tmarx
 - [ ] cat Makefile | grep pr | head -n 5 | cd test (mybin) # check status code
 - [ ] cat Makefile | grep pr | head -n 5 | cat test (bin) # check status code
 - [ ] cat Makefile | grep pr | head -n 5 | hello (NA) # check status code
-- [ ] echo bonjour >>> test
+- [X] echo bonjour >>> test
 - [ ] echo bonjour > > out
 - [x] echo 2 >> out1 > out2
 - [x] echo 2 > out1 >> out2
