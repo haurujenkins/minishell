@@ -9,7 +9,7 @@ tmarx
 - [X] echo bonjour | |
 - [X] |
 - [X] cd $HOME/Documents
-- [ ] echo >
+- [X] echo >
 - [x] echo -n -n -nnnn -nnnnm
 - [x] cat /dev/random | head -n 1 | cat -e
 - [x] unset var1 # with undefined var1
