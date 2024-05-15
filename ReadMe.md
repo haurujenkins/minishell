@@ -32,7 +32,7 @@ tmarx
 - [ ] echo bonjour > $test # with test not defined
 - [x] file_name_in_current_dir
 - [x] cd ../../../../../.. ; pwd
-- [ ] ctrl-C . 130 sur bin(ex : sleep 10)&line vide
+- [x] ctrl-C . 130 sur bin(ex : sleep 10)&line vide
 - [ ] ctrl-\ .131 sur bin
 - [ ] echo "bip | bip ; coyotte > < \" "
 - [ ] cat | cat | cat | ls # check outputs order
