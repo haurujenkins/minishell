@@ -91,9 +91,9 @@ tmarx
 - [X] echo |
 - [X] | echo
 - [X] sort | ls # check output order
-- [ ] cat < >
-- [ ] cat < <
-- [ ] cat > >
+- [X] cat < >
+- [X] cat < <
+- [X] cat > >
 - [X] > a ls > b < Makefile
 - [X] echo > a Hello World!
 - [X] > a echo Hello World!
