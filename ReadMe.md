@@ -6,8 +6,8 @@ These tests are not all mines. Credits to vgoldman, mashar, and jecaudal.
 tmarx
 # Tests
 
-- [ ] echo bonjour | |
-- [ ] |
+- [X] echo bonjour | |
+- [X] |
 - [ ] cd $HOME/Documents
 - [ ] echo >
 - [x] echo -n -n -nnnn -nnnnm
