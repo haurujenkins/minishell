@@ -51,7 +51,7 @@ tmarx
 - [ ] exit # should return the last exit code value
 - [x] exit -10
 - [x] exit +10
-- [ ] ;
+- [X] ;
 - [ ] echo coucou | ;
 - [X] echo "$HOME"
 - [X] echo '$HOME'
