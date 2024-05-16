@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 11:49:04 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/15 16:31:06 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/16 13:49:39 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,10 @@ int	exec_recur(t_data *da, char **envp, int index)
 	else
 	{
 		if (index != da->pnum - 1)
+		{
 			close(da->pipefd[index][1]);
+		}
+		da->children[index] = da->pid1;
 		exec_recur(da, envp, index + 1);
 	}
 	waitpid(da->pid1, &child_status, 0);
@@ -176,10 +179,41 @@ void	del_tmpfiles(t_data *da, int index)
 	}
 }
 
-int	main_exec(t_data *da, char **envp)
+int main_exec(t_data *da, char **envp) 
 {
+	int	status;
+	int	i;
+
+	i = 0;
+	da->children = malloc(da->pnum * sizeof(pid_t));
+	if (da->children == NULL)
+	{
+		perror("malloc");
+		exit(EXIT_FAILURE);
+	}
+
 	set_pipe(da);
 	if (check_extern_builtins(da, envp, 0) == 0)
+	{
+		while (i < da->pnum)
+		{
+			da->children[i] = -1;
+			i++;
+		}
 		exec_recur(da, envp, 0);
+	}
+	i = 0;
+	while (i < da->pnum)
+	{
+		if (da->children[i] != -1)
+		{
+			waitpid(da->children[i], &status, 0);
+		}
+		i++;
+	}
+	del_tmpfiles(da, 0);
+	free(da->children);
+
 	return (0);
 }
+

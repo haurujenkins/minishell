@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 14:48:53 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/15 17:39:54 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/16 13:44:03 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ typedef struct data_s
 	int			i_args;
 	int			pos_cmd;
 	char		**words;
+	pid_t		*children;
 	t_signals	mysignal;
 }				t_data;
 
