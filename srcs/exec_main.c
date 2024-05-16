@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 11:49:04 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/16 13:49:39 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/16 14:44:10 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,13 @@
 void	sigint_handler_child()
 {
 	printf("\n");
+	stop_execution = 1;
 }
 
 void	sigquit_handler_child()
 {
 	printf("Quit (core dumped)\n");
+	stop_execution = 2;
 }
 
 void	exec_child(t_data *da, int index, char **envp)
@@ -79,6 +81,16 @@ int	exec_recur(t_data *da, char **envp, int index)
 	waitpid(da->pid1, &child_status, 0);
 	if (index == da->pnum - 1)
 		da->exit_status = WEXITSTATUS(child_status);
+	if (stop_execution == 2)
+	{
+		stop_execution = 0;
+		da->exit_status = 131;
+	}
+	if (stop_execution == 1)
+	{
+		stop_execution = 0;
+		da->exit_status = 130;
+	}
 	return (0);
 }
 

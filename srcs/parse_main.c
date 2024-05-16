@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 11:10:09 by abolea            #+#    #+#             */
-/*   Updated: 2024/05/15 17:47:52 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/16 14:52:40 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -189,13 +189,12 @@ int	main(int argc, char **argv, char **envp)
 	{
 		signal(SIGINT, sigint_handler_main);
 		signal(SIGQUIT, SIG_IGN);
+		rl = readline("\033[1;36m<3 \033[0;37m");
 		if (stop_execution == 1)
 		{
 			stop_execution = 0;
 			da.exit_status = 130;
-			continue ;
 		}
-		rl = readline("\033[1;36m<3 \033[0;37m");
 		if (!rl)
 		{
 			//free_struct(&da);
