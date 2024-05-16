@@ -37,18 +37,17 @@ tmarx
 - [ ] echo "bip | bip ; coyotte > < \" "
 - [ ] cat | cat | cat | ls # check outputs order
 - [X] $bla # with bla not defined
-- [ ] export var ="cat Makefile | grep >"
-- [ ] export "test=ici"=coucou
-- [ ] c$var Makefile # with var=at
+- [x] export var ="cat Makefile | grep >"
+- [x] export "test=ici"=coucou
+- [x] c$var Makefile # with var=at
 - [X] $LESS$VAR
 - [X] /bin/echo bonjour
 - [X] not_cmd
-- [ ] sleep 5 | exit
+- [x] sleep 5 | exit
 - [ ] echo bonjour > $test w/ t
-- [ ] "exit retour a la ligne"
-- [ ] minishell # binary not in path without "./" before
-- [ ] cat diufosgid # check exit code
-- [ ] exit # should return the last exit code value
+- [x] "exit retour a la ligne"
+- [x] minishell # binary not in path without "./" before
+- [x] cat diufosgid # check exit code
 - [x] exit -10
 - [x] exit +10
 - [X] ;
