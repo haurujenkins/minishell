@@ -13,7 +13,7 @@ tmarx
 - [x] echo -n -n -nnnn -nnnnm
 - [x] cat /dev/random | head -n 1 | cat -e
 - [x] unset var1 # with undefined var1
-- [ ] export ""
+- [x] export ""
 - [x] unset ""
 - [x] echo test > file test1
 - [x] $
@@ -33,7 +33,7 @@ tmarx
 - [x] file_name_in_current_dir
 - [x] cd ../../../../../.. ; pwd
 - [x] ctrl-C . 130 sur bin(ex : sleep 10)&line vide
-- [ ] ctrl-\ .131 sur bin
+- [x] ctrl-\ .131 sur bin
 - [ ] echo "bip | bip ; coyotte > < \" "
 - [ ] cat | cat | cat | ls # check outputs order
 - [X] $bla # with bla not defined
@@ -54,19 +54,13 @@ tmarx
 - [ ] echo coucou | ;
 - [X] echo "$HOME"
 - [X] echo '$HOME'
-- [ ] export ; env # display is different for both commands
+- [x] export ; env # display is different for both commands
 - [X] echo \$HOME
 - [X] > log echo coucou
 - [X] echo hudifg d | | hugdfihd
 - [X] echo
 - [X] echo simple
 - [x] echo -n simple
-- [X] echo '\'
-- [ ] echo "\"
-- [ ] echo "\\"
-- [ ] echo "\n \n \n"
-- [ ] echo "\n \\n \\\n"
-- [X] echo ;;
 - [X] echo hi";" hihi
 - [X] echo hi "   ;   " hihi
 - [X] cd
