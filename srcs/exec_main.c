@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 11:49:04 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/16 14:44:10 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/16 17:23:05 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	exec_child(t_data *da, int index, char **envp)
 	close_fd(da, index);
 	get_args(da, envp, index);
 	check_files(da, index);
-	exec_cmd(da, envp);
+	exec_cmd(da, envp, index);
 }
 
 int	exec_recur(t_data *da, char **envp, int index)
@@ -145,11 +145,11 @@ void	check_cmd(t_data *da, int i, char **envp)
 	}
 }
 
-void	exec_cmd(t_data *da, char **envp)
+void	exec_cmd(t_data *da, char **envp, int index)
 {
 	int			j;
 
-	if (check_builtins(da) == 1)
+	if (check_builtins(da, index) == 1)
 	{
 		free_struct(da);
 		j = -1;
@@ -228,4 +228,3 @@ int main_exec(t_data *da, char **envp)
 
 	return (0);
 }
-

@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 14:48:53 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/16 13:44:03 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/16 17:37:53 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,10 +87,10 @@ void	get_args(t_data *da, char **envp, int index);
 void	set_pipe(t_data *da);
 int		main_exec(t_data *da, char **envp);
 int		check_files(t_data *da, int index);
-void	exec_cmd(t_data *da, char **envp);
+void	exec_cmd(t_data *da, char **envp, int index);
 void	set_all(t_data *da, char **envp);
 void	free_data(t_data *da, char **envp);
-int		check_builtins(t_data *da);
+int		check_builtins(t_data *da, int index);
 int		check_extern_builtins(t_data *da, char **env, int index);
 char	*get_home(char **envp);
 void	close_fd(t_data *da, int index);
@@ -110,6 +110,7 @@ void	export_pwd(t_data *da, char *temp_value);
 void	infile_error(t_data *da, int index, int i);
 char	*read_until_delimiter(char *delimiter, t_data *da);
 void	outfile_error(t_data *da, int index, int i);
+int		outfile_extern_error(t_data *da, int index, int i);
 void	check_infile(t_data *da, int index);
 void	check_outfile(t_data *da, int index);
 void	exit_free(t_data *da);

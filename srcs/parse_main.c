@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 11:10:09 by abolea            #+#    #+#             */
-/*   Updated: 2024/05/16 14:52:40 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/16 15:09:05 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,7 +174,7 @@ void	sigint_handler_main(int signum)
 	rl_replace_line("", 0);
 	rl_redisplay();
 	stop_execution = 1;
-}
+} 
 
 int	main(int argc, char **argv, char **envp)
 {
