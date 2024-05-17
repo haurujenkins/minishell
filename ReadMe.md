@@ -51,7 +51,7 @@ tmarx
 - [x] exit -10
 - [x] exit +10
 - [X] ;
-- [ ] echo coucou | ;
+- [X] echo coucou | ;
 - [X] echo "$HOME"
 - [X] echo '$HOME'
 - [x] export ; env # display is different for both commands
