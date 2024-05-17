@@ -22,7 +22,7 @@ tmarx
 - [x] env puis export puis env # vars aren't sorted
 - [ ] cat Makefile | grep pr | head -n 5 | cd test (mybin) # check status code
 - [ ] cat Makefile | grep pr | head -n 5 | cat test (bin) # check status code
-- [ ] cat Makefile | grep pr | head -n 5 | hello (NA) # check status code
+- [X] cat Makefile | grep pr | head -n 5 | hello (NA) # check status code
 - [X] echo bonjour >>> test
 - [X] echo bonjour > > out
 - [x] echo 2 >> out1 > out2
