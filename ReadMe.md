@@ -34,7 +34,7 @@ tmarx
 - [x] cd ../../../../../.. ; pwd
 - [x] ctrl-C . 130 sur bin(ex : sleep 10)&line vide
 - [x] ctrl-\ .131 sur bin
-- [ ] echo "bip | bip ; coyotte > < \" "
+- [X] echo "bip | bip ; coyotte > < \" "
 - [ ] cat | cat | cat | ls # check outputs order
 - [X] $bla # with bla not defined
 - [x] export var ="cat Makefile | grep >"
