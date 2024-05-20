@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 16:20:22 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/15 16:35:48 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/17 16:39:54 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,62 @@ int	len_after_dollar(char *s)
 	return (j);
 }
 
+int	nb_after_dollar(char *s)
+{
+	int	i;
+
+	i = 0;
+	while (s[i])
+	{
+		if (ft_isdigit(s[i]) == 1)
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
+int	len_after_digit(char *s)
+{
+	int		i;
+	int		j;
+
+	i = 0;
+	j = 0;
+	while (ft_isdigit(s[i]) != 1)
+		i++;
+	i++;
+	while (s[i])
+	{
+		j++;
+		i++;
+	}
+	return (j);
+}
+
+char	*recup_after_digit(char *s)
+{
+	int		i;
+	int		j;
+	int		len;
+	char	*res;
+
+	i = 0;
+	j = 0;
+	len = len_after_digit(s);
+	res = malloc((len + 1) * sizeof(char));
+	while (ft_isdigit(s[i]) != 1)
+		i++;
+	i++;
+	while (s[i])
+	{
+		res[j] = s[i];
+		j++;
+		i++;
+	}
+	res[j] = '\0';
+	return (res);
+}
+
 char	*after_dollar(char *s)
 {
 	int		i;
@@ -65,7 +121,7 @@ char	*after_dollar(char *s)
 		return (write(2, "Malloc failed\n", 14), NULL);
 	while (s[i] != '$')
 		i++;
-	if (ft_isalnum(s[i + 1]) != 1 && s[i + 1] != '?')
+	if (ft_isalnum(s[i + 1]) != 1 && s[i + 1] != '?' && s[i + 1] != 34)
 		return (NULL);
 	if (s[i - 1] != 39)
 		i++;
@@ -97,28 +153,17 @@ char	*temp_without_dollar(t_data *da, char *temp_args)
 	before_args = after_dollar(temp_args);
 	if (before_args == NULL)
 		return (temp_args);
-	if (before_args[0] == '$')
-		s_quote = 2;
+	// if (before_args[0] == '$')
+	// 	s_quote = 2;
 	if (s_quote != 0)
 		return (cpy_args_without_s_quotes(temp_args));
-	if (before_args[0] == '?')
+	if (nb_after_dollar(before_args) == 1)
+		new_args = recup_after_digit(before_args);
+	else if (before_args[0] == '?')
 		new_args = ft_itoa(da->exit_status);
 	else
 		new_args = find_in_env(da, before_args);
-	while (temp_args[i])
-	{
-		if (temp_args[i] == '$' && temp_args[i + 1])
-		{
-			while (temp_args[i] != '\0' && temp_args[i] != ' ')
-				i++;
-		}
-		else
-		{
-			j++;
-			i++;
-		}
-	}
-	len = (j + ft_strlen(new_args) + s_quote + 1);
+	len = (ft_strlen(temp_args) - da->nb_d + ft_strlen(new_args) + s_quote + 1);
 	res = malloc((len + 1) * sizeof(char));
 	if (res == NULL)
 	{

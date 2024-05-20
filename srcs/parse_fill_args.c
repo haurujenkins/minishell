@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 15:37:45 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/15 16:43:22 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/20 11:24:46 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,22 +149,69 @@ char *sup_d_quotes_before_dollar(char *s)
 	return (res);
 }
 
+int	len_without_dollar_before_quotes(char *s)
+{
+	int		i;
+	int		j;
+
+	i = 0;
+	j = 0;
+	while(s[i])
+	{
+		if (s[i] == '$' && s[i + 1] == 34)
+			i++;
+		else
+		{
+			i++;
+			j++;
+		}
+	}
+	return (j);
+}
+
+char	*sup_dollar_before_quotes(char *s)
+{
+	char	*res;
+	int		i;
+	int		j;
+	int		len;
+
+	i = 0;
+	j = 0;
+	len = len_without_dollar_before_quotes(s);
+	res = malloc((len + 1) * sizeof(char));
+	while(s[i])
+	{
+		if (s[i] == '$' && s[i + 1] == 34)
+			i++;
+		else
+		{
+			res[j] = s[i];
+			i++;
+			j++;
+		}
+	}
+	res[j] = '\0';
+	return (res);
+}
+
 char	**new_temp_args(t_data *da, char **temp_args)
 {
 	int	i;
 
 	i = 0;
-	da->nb_d = nb_dollars(temp_args[i]);
 	while (i < da->pnum)
 	{
+		da->nb_d = nb_dollars(temp_args[i]);
 		temp_args[i] = sup_d_quotes_before_dollar(temp_args[i]);
 		temp_args[i] = dollar_negative_in_s_quote(temp_args[i]);
 		while (da->nb_d > 0)
-		{
+		{		
 			temp_args[i] = temp_without_dollar(da, temp_args[i]);
 			da->nb_d--;
 		}
 		temp_args[i] = all_positive(temp_args[i]);
+		temp_args[i] = sup_dollar_before_quotes(temp_args[i]);
 		if (temp_args[i] == NULL)
 		{
 			write(2, "Error: malloc failed\n", 21);
@@ -339,6 +386,7 @@ void	fill_args_tab(t_data *da, char **words, int i)
 	j = 0;
 	da->i_args = pos_args(da, words);
 	da->nb_args = ft_nb_args(da, words);
+	printf("nb = %d\n", da->nb_args);
 	da->args_tab[i] = malloc((da->nb_args + 1) * sizeof(char *));
 	if (da->nb_args == 0)
 		da->args_tab[i][j] = NULL;

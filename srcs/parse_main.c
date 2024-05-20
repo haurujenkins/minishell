@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 11:10:09 by abolea            #+#    #+#             */
-/*   Updated: 2024/05/15 16:01:51 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/17 15:05:26 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	check_error(char *rl)
 	int	i;
 
 	i = 0;
-	if (rl[i] == '|')
+	if (rl[i] == '|' || rl[i] == ';')
 		return (-1);
 	while (rl[i])
 	{
@@ -37,6 +37,16 @@ int	check_error(char *rl)
 			return (-1);
 		else if (rl[i] == '>' && rl[i + 2] == '>')
 			return (-1);
+		else if (rl[i] == '|')
+		{
+			i++;
+			while (rl[i] == ' ')
+			{
+				i++;
+				if (rl[i] == '|')
+					return (-1);
+			}
+		}
 		i++;
 	}
 	if (rl[i - 1] == '|' || rl[i - 1] == '>' || rl[i - 1] == '<')
@@ -128,6 +138,7 @@ int	main(int argc, char **argv, char **envp)
 		}
 		if (check_error(rl))
 		{
+			add_history(rl);
 			write(2, "parse error\n", 12);
 			continue ;
 		}
