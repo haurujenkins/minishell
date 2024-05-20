@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 16:20:22 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/17 16:39:54 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/20 15:52:13 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	nb_dollars(char *s)
 	d = 0;
 	while (s[i])
 	{
-		if (s[i] == '$' && (ft_isalnum(s[i + 1]) == 1 || s[i + 1] == '?'))
+		if (s[i] == '$' && (ft_isalnum(s[i + 1]) == 1 || s[i + 1] == '?' || s[i + 1] == 39))
 			d++;
 		i++;
 	}
@@ -53,9 +53,11 @@ int	nb_after_dollar(char *s)
 	int	i;
 
 	i = 0;
+	if (ft_isdigit(s[0]) == 1)
+		return (1);
 	while (s[i])
 	{
-		if (ft_isdigit(s[i]) == 1)
+		if (s[i] == 39)
 			return (1);
 		i++;
 	}
@@ -69,7 +71,17 @@ int	len_after_digit(char *s)
 
 	i = 0;
 	j = 0;
-	while (ft_isdigit(s[i]) != 1)
+	if (ft_isdigit(s[0]) == 1)
+	{
+		i++;
+		while (s[i])
+		{
+			j++;
+			i++;
+		}
+		return (j);	
+	}
+	while ( s[i] != 39)
 		i++;
 	i++;
 	while (s[i])
@@ -91,9 +103,22 @@ char	*recup_after_digit(char *s)
 	j = 0;
 	len = len_after_digit(s);
 	res = malloc((len + 1) * sizeof(char));
-	while (ft_isdigit(s[i]) != 1)
+	if (ft_isdigit(s[0]) == 1)
+	{
 		i++;
-	i++;
+		while (s[i])
+		{
+			res[j] = s[i];
+			j++;
+			i++;
+		}
+		res[j] = '\0';
+		return (res);	
+	}
+	while (s[i] != 39)
+		i++;
+	while (s[i] == 39)
+		i++;
 	while (s[i])
 	{
 		res[j] = s[i];
@@ -121,11 +146,11 @@ char	*after_dollar(char *s)
 		return (write(2, "Malloc failed\n", 14), NULL);
 	while (s[i] != '$')
 		i++;
-	if (ft_isalnum(s[i + 1]) != 1 && s[i + 1] != '?' && s[i + 1] != 34)
+	if (ft_isalnum(s[i + 1]) != 1 && s[i + 1] != '?' && s[i + 1] != 34 && s[i + 1] != 39)
 		return (NULL);
 	if (s[i - 1] != 39)
 		i++;
-	while (ft_isalnum(s[i]) == 1 || s[i] == '?')
+	while (ft_isalnum(s[i]) == 1 || s[i] == '?' || s[i] == 39)
 	{
 		tmp[j] = s[i];
 		i++;
@@ -190,7 +215,7 @@ char	*temp_without_dollar(t_data *da, char *temp_args)
 	i++;
 	if (temp_args[i] == '?')
 		i++;
-	while (temp_args[i] != ' ' && temp_args[i] != '$' && ft_isalnum(temp_args[i]) == 1 && temp_args[i])
+	while (temp_args[i] != ' ' && temp_args[i] != '$' && (ft_isalnum(temp_args[i]) == 1 || temp_args[i] == 39) && temp_args[i])
 		i++;
 	while (temp_args[i])
 	{
