@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 14:55:13 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/09 14:33:15 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/21 11:28:49 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,8 @@ void	fill_intab(t_data *da, char *temp_args, int i)
 	j = 0;
 	da->nb_redir_in = ft_nb_redir(temp_args, '<');
 	da->in_tab[i] = malloc((da->nb_redir_in + 1) * sizeof(char *));
+	// if (da->in_tab[i] == NULL)
+	// 	return (write(2, "Error: malloc failed\n", 21), 1);
 	if (da->nb_redir_in == 0)
 		da->in_tab[i][j] = NULL;
 	else

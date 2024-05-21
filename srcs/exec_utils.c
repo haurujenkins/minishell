@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 13:10:19 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/03 16:11:58 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/16 11:47:39 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ void	set_all(t_data *da, char **envp)
 	da->j = 0;
 	da->my_path = NULL;
 	da->pid1 = 0;
+	da->pid2 = 0;
 	da->point_path = NULL;
 	da->exit_status = 0;
 	da->pnum = 0;
@@ -126,28 +127,64 @@ void	free_double_tab(char ***tab, t_data *da)
 	tab = NULL;
 }
 
+void	free_args(int i, int pnum, t_data *da)
+{
+	int	d;
+	int	k;
+	int	l;
+	int	m;
+	int	n;
+
+	i = 0;
+	while (i < pnum)
+	{
+		//write(1, "free_args\n", 10);
+		d = 0;
+		while (da->args_tab[i][d])
+		{
+			//write(1, "args_tab\n", 9);
+			free(da->args_tab[i][d]);
+			d++;
+		}
+		free(da->args_tab[i]);
+		k = 0;
+		while (da->in_tab[i][k])
+		{
+			//write(1, "in_tab\n", 7);
+			free(da->in_tab[i][k]);
+			k++;
+		}
+		free(da->in_tab[i]);
+		l = 0;
+		while (da->out_tab[i][l])
+		{
+			//write(1, "out_tab\n", 8);
+			free(da->out_tab[i][l]);
+			l++;
+		}
+		free(da->out_tab[i]);
+		m = 0;
+		while (da->delim_tab[i][m])
+		{
+			//write(1, "delim_tab\n", 10);
+			free(da->delim_tab[i][m]);
+			m++;
+		}
+		free(da->delim_tab[i]);
+		n = 0;
+		while (da->append_tab[i][n])
+		{
+			//write(1, "append_tab\n", 11);
+			free(da->append_tab[i][n]);
+			n++;
+		}
+		free(da->append_tab[i]);
+		i++;
+	}
+}
+
 void	free_struct(t_data *da)
 {
-	return ;
-	if (da->args != NULL)
-		free_double_tab(da->args, da);
-	if (da->in_tab != NULL)
-		free_double_tab(da->in_tab, da);
-	if (da->out_tab != NULL)
-		free_double_tab(da->out_tab, da);
-	if (da->cmd1 != NULL)
-		free_tab(da->cmd1, da);
-	if (da->cmd != NULL)
-	{
-		free(da->cmd);
-		da->cmd = NULL;
-	}
-	if (da->delim_tab != NULL)
-		free_double_tab(da->delim_tab, da);
-	if (da->append_tab != NULL)
-		free_double_tab(da->append_tab, da);
-	if (da->my_path != NULL)
-		free_tab(da->my_path, da);
-	if (da->pipefd != NULL)
-		free_pipe(da);
+	del_tmpfiles(da, 0);
+	free_args(0, da->pnum, da);
 }

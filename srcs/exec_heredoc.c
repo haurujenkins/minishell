@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 13:57:06 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/13 15:59:05 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/14 16:10:05 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,16 +15,19 @@
 #define TMPFILE_NAME ".heredoc/minishell_heredoc_tmpfile"
 #define MAX_RANDOM_BYTES 8
 
-bool	stop_execution = false;
+volatile sig_atomic_t stop_execution = 0;
 
 void	sigint_handler(int signum)
 {
-	(void) signum;
-	write(1, "\n", 1);
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
-	stop_execution = true;
+	(void)signum;
+	stop_execution = 1;
+	rl_done = 1;
+}
+
+int	rl_hook_function(void)
+{
+	signal(SIGINT, sigint_handler);
+	return (0);
 }
 
 void	count_delim(t_data *da, int index)
@@ -32,10 +35,10 @@ void	count_delim(t_data *da, int index)
 	int	i;
 
 	i = 0;
-	while (da->in_tab[index][i])
+	da->mysignal.nb_delim = 0;
+	while (da->in_tab[index][i] && da->delim_tab[index][i])
 	{
-		if (da->delim_tab[index][i] != NULL && \
-		da->delim_tab[index][i][0] != '0')
+		if (da->delim_tab[index][i][0] == '1')
 			da->mysignal.nb_delim++;
 		i++;
 	}
@@ -91,7 +94,8 @@ char *generate_tmpfile_name(int i)
 	return (tmpfile_name);
 }
 
-char	*read_until_delimiter(char *delimiter, t_data *da)
+
+char *read_until_delimiter(char *delimiter, t_data *da)
 {
 	char	*line;
 	int		fd;
@@ -101,6 +105,7 @@ char	*read_until_delimiter(char *delimiter, t_data *da)
 	da->mysignal.exit = 0;
 	da->mysignal.endof = delimiter;
 	fd = open(tmpfile_name, O_WRONLY | O_CREAT | O_TRUNC, 0600);
+	rl_event_hook = rl_hook_function;
 	while (1)
 	{
 		if (da->mysignal.exit == 1)
@@ -108,10 +113,9 @@ char	*read_until_delimiter(char *delimiter, t_data *da)
 		rl_callback_handler_install("> ", NULL);
 		line = readline(NULL);
 		rl_callback_handler_remove();
-		if (stop_execution == true)
+		if (stop_execution == 1)
 		{
-			stop_execution = false;
-			return (printf("\nwsh"), tmpfile_name);
+			return (tmpfile_name);
 		}
 		if (!line)
 		{
@@ -135,29 +139,33 @@ char	*read_until_delimiter(char *delimiter, t_data *da)
 	return (tmpfile_name);
 }
 
-void	heredoc_replace(t_data *da, int index)
+int	heredoc_replace(t_data *da, int index)
 {
 	int			i;
 	char		*tmpfile;
+	int			nb_delim;
+	int			j;
 
 	while (index < da->pnum)
 	{
 		count_delim(da, index);
 		i = 0;
-		while (da->in_tab[index][i])
+		j = 0;
+		nb_delim = da->mysignal.nb_delim;
+		while (j < nb_delim)
 		{
-			if (da->delim_tab[index][i] == NULL || \
-			da->delim_tab[index][i][0] == '0')
-				i++ ;
-			else
+			if (da->delim_tab[index][i][0] == '1')
 			{
 				tmpfile = read_until_delimiter(da->in_tab[index][i], da);
 				free(da->in_tab[index][i]);
 				da->in_tab[index][i] = ft_strdup(tmpfile);
-				da->mysignal.nb_delim--;
+				if (stop_execution == 1)
+					return (stop_execution = 0, -1);
+				j++;
 			}
 			i++;
 		}
 		index++;
 	}
+	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 15:37:45 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/13 15:32:47 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/20 16:00:37 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,6 @@ char	*get_cmd(char *words)
 		i++;
 	}
 	args[i] = '\0';
-	if (ft_strncmp(args, "\\n", 2) == 0)
-		return (NULL);
 	return (args);
 }
 
@@ -151,50 +149,69 @@ char *sup_d_quotes_before_dollar(char *s)
 	return (res);
 }
 
-char	*dollar_negative_in_s_quote(char *s)
+int	len_without_dollar_before_quotes(char *s)
 {
-	int	i;
-	int	d_quotes;
+	int		i;
+	int		j;
 
 	i = 0;
-	d_quotes = 1;
-	while (s[i])
+	j = 0;
+	while(s[i])
 	{
-		if (s[i] == 34)
-			d_quotes *= -1;
-		if (s[i] == 39 && d_quotes > 0)
+		if (s[i] == '$' && s[i + 1] == 34)
+			i++;
+		else
 		{
 			i++;
-			while (s[i] != 39)
-			{
-				if (s[i] == '$')
-					s[i] *= -1;
-				i++;
-			}
+			j++;
 		}
-		i++;
 	}
-	s[i] = '\0';
-	return (s);
+	return (j);
+}
+
+char	*sup_dollar_before_quotes(char *s)
+{
+	char	*res;
+	int		i;
+	int		j;
+	int		len;
+
+	i = 0;
+	j = 0;
+	len = len_without_dollar_before_quotes(s);
+	res = malloc((len + 1) * sizeof(char));
+	while(s[i])
+	{
+		if (s[i] == '$' && s[i + 1] == 34)
+			i++;
+		else
+		{
+			res[j] = s[i];
+			i++;
+			j++;
+		}
+	}
+	res[j] = '\0';
+	return (res);
 }
 
 char	**new_temp_args(t_data *da, char **temp_args)
 {
 	int	i;
-	int	d;
 
 	i = 0;
-	d = nb_dollars(temp_args[i]);
 	while (i < da->pnum)
 	{
+		da->nb_d = nb_dollars(temp_args[i]);
 		temp_args[i] = sup_d_quotes_before_dollar(temp_args[i]);
 		temp_args[i] = dollar_negative_in_s_quote(temp_args[i]);
-		while (d > 0)
-		{
+		while (da->nb_d > 0)
+		{		
 			temp_args[i] = temp_without_dollar(da, temp_args[i]);
-			d--;
+			da->nb_d--;
 		}
 		temp_args[i] = all_positive(temp_args[i]);
+		temp_args[i] = sup_dollar_before_quotes(temp_args[i]);
 		if (temp_args[i] == NULL)
 		{
 			write(2, "Error: malloc failed\n", 21);

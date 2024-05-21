@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 14:48:53 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/14 10:52:24 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/21 12:56:39 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,10 @@
 # include <stdbool.h>
 # include <sys/stat.h>
 # include "../libft/libft.h"
-#include <termios.h>
+# include <termios.h>
 # define MAX_INPUT_LENGTH 1024
 
-extern volatile sig_atomic_t ctrl_c_flag;
+extern	volatile sig_atomic_t stop_execution;
 
 typedef struct s_signals
 {
@@ -37,7 +37,6 @@ typedef struct s_signals
 	int		exit;
 	int		heredoc;
 }			t_signals;
-
 
 typedef struct data_s
 {
@@ -80,17 +79,19 @@ typedef struct data_s
 	int			i_args;
 	int			pos_cmd;
 	char		**words;
+	pid_t		*children;
 	t_signals	mysignal;
+	int			nb_d;
 }				t_data;
 
 void	get_args(t_data *da, char **envp, int index);
 void	set_pipe(t_data *da);
 int		main_exec(t_data *da, char **envp);
 int		check_files(t_data *da, int index);
-void	exec_cmd(t_data *da, char **envp);
+void	exec_cmd(t_data *da, char **envp, int index);
 void	set_all(t_data *da, char **envp);
 void	free_data(t_data *da, char **envp);
-int		check_builtins(t_data *da);
+int		check_builtins(t_data *da, int index);
 int		check_extern_builtins(t_data *da, char **env, int index);
 char	*get_home(char **envp);
 void	close_fd(t_data *da, int index);
@@ -102,7 +103,7 @@ void	my_pwd(void);
 void	my_echo(char **cmd);
 void	my_env(char **env, int num, int j);
 void	my_export(t_data *da);
-void	my_unset(t_data *da);
+void	my_unset(t_data *da, int k);
 void	sort_env(t_data *da);
 void	free_pipe(t_data *da);
 void	free_struct(t_data *da);
@@ -110,12 +111,14 @@ void	export_pwd(t_data *da, char *temp_value);
 void	infile_error(t_data *da, int index, int i);
 char	*read_until_delimiter(char *delimiter, t_data *da);
 void	outfile_error(t_data *da, int index, int i);
+int		outfile_extern_error(t_data *da, int index, int i);
 void	check_infile(t_data *da, int index);
 void	check_outfile(t_data *da, int index);
 void	exit_free(t_data *da);
 void	sigint_handler(int signum);
 void	set_flag(void);
-void	heredoc_replace(t_data *da, int index);
+int		heredoc_replace(t_data *da, int index);
+void	del_tmpfiles(t_data *da, int index);
 
 void	print_args(int i, int pnum, t_data *da);
 void	loading(int p);
@@ -158,5 +161,13 @@ char	*cpy_args_without_s_quotes(char *s);
 char	*new_temp(char *s);
 int		nb_dollars(char *s);
 char	*all_positive(char *s);
+char	*negative_in_quotes(char *s);
+char	*dollar_negative_in_s_quote(char *s);
+char	**init_words(char **temp_args, int i);
+char	**init_temp_args(char *rl, t_data *da);
+int		init_malloc(char **temp_args, t_data *da);
+char	*new_temp_d(char *s);
+char	*sup_d_quotes_before_dollar(char *s);
+char	*sup_backslash_before_dollar(char *s);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 16:20:22 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/13 15:50:13 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/20 16:09:27 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,12 @@ int	nb_dollars(char *s)
 {
 	int	i;
 	int	d;
-	
+
 	i = 0;
 	d = 0;
 	while (s[i])
 	{
-		if (s[i] == '$' && (ft_isalnum(s[i + 1]) == 1 || s[i + 1] == '?'))
+		if (s[i] == '$' && (ft_isalnum(s[i + 1]) == 1 || s[i + 1] == '?' || s[i + 1] == 39))
 			d++;
 		i++;
 	}
@@ -48,6 +48,87 @@ int	len_after_dollar(char *s)
 	return (j);
 }
 
+int	nb_after_dollar(char *s)
+{
+	int	i;
+
+	i = 0;
+	if (ft_isdigit(s[0]) == 1)
+		return (1);
+	while (s[i])
+	{
+		if (s[i] == 39)
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
+int	len_after_digit(char *s)
+{
+	int		i;
+	int		j;
+
+	i = 0;
+	j = 0;
+	if (ft_isdigit(s[0]) == 1)
+	{
+		i++;
+		while (s[i])
+		{
+			j++;
+			i++;
+		}
+		return (j);	
+	}
+	while ( s[i] != 39)
+		i++;
+	i++;
+	while (s[i])
+	{
+		j++;
+		i++;
+	}
+	return (j);
+}
+
+char	*recup_after_digit(char *s)
+{
+	int		i;
+	int		j;
+	int		len;
+	char	*res;
+
+	i = 0;
+	j = 0;
+	len = len_after_digit(s);
+	res = malloc((len + 1) * sizeof(char));
+	if (ft_isdigit(s[0]) == 1)
+	{
+		i++;
+		while (s[i])
+		{
+			res[j] = s[i];
+			j++;
+			i++;
+		}
+		res[j] = '\0';
+		return (res);	
+	}
+	while (s[i] != 39)
+		i++;
+	while (s[i] == 39)
+		i++;
+	while (s[i])
+	{
+		res[j] = s[i];
+		j++;
+		i++;
+	}
+	res[j] = '\0';
+	return (res);
+}
+
 char	*after_dollar(char *s)
 {
 	int		i;
@@ -65,11 +146,11 @@ char	*after_dollar(char *s)
 		return (write(2, "Malloc failed\n", 14), NULL);
 	while (s[i] != '$')
 		i++;
-	if (ft_isalnum(s[i + 1]) != 1 && s[i + 1] != '?')
+	if (ft_isalnum(s[i + 1]) != 1 && s[i + 1] != '?' && s[i + 1] != 34 && s[i + 1] != 39)
 		return (NULL);
 	if (s[i - 1] != 39)
 		i++;
-	while (ft_isalnum(s[i]) == 1 || s[i] == '?')
+	while (ft_isalnum(s[i]) == 1 || s[i] == '?' || s[i] == 39)
 	{
 		tmp[j] = s[i];
 		i++;
@@ -97,26 +178,18 @@ char	*temp_without_dollar(t_data *da, char *temp_args)
 	before_args = after_dollar(temp_args);
 	if (before_args == NULL)
 		return (temp_args);
-	if (before_args[0] == '$')
-		s_quote = 2;
+	// if (before_args[0] == '$')
+	// 	s_quote = 2;
 	if (s_quote != 0)
 		return (cpy_args_without_s_quotes(temp_args));
-	if (before_args[0] == '?')
+	if (nb_after_dollar(before_args) == 1)
+		new_args = recup_after_digit(before_args);
+	else if (before_args[0] == '?')
 		new_args = ft_itoa(da->exit_status);
 	else
 		new_args = find_in_env(da, before_args);
-	while (temp_args[i])
-	{
-		if (temp_args[i] == '$' && temp_args[i + 1])
-		{
-			while (temp_args[i] != '\0' && temp_args[i] != ' ')
-				i++;
-		}
-		j++;
-		i++;
-	}
-	len = (j + ft_strlen(new_args) + s_quote + 1);
-	res = malloc(len * sizeof(char));
+	len = (ft_strlen(temp_args) - da->nb_d + ft_strlen(new_args) + s_quote + 1);
+	res = malloc((len + 1) * sizeof(char));
 	if (res == NULL)
 	{
 		write(2, "Malloc failed\n", 14);
@@ -133,25 +206,24 @@ char	*temp_without_dollar(t_data *da, char *temp_args)
 		i++;
 		j++;
 	}
-	if (temp_args[0] == '$')
-	{
-		i++;
-		while (temp_args[i] != ' ' && temp_args[i] != '$')
-			i++;
-	}
 	while (new_args[k])
 	{
 		res[j] = new_args[k];
 		j++;
 		k++;
 	}
-	while (temp_args[i] != '$')
+	i++;
+	if (temp_args[i] == '?')
 	{
-		res[j] = temp_args[i];
 		i++;
-		j++;
+		while (temp_args[i])
+		{
+			res[j] = temp_args[i];
+			i++;
+			j++;
+		}
 	}
-	while ((temp_args[i] != ' ' && temp_args[i]))
+	while (temp_args[i] != ' ' && temp_args[i] != '$' && (ft_isalnum(temp_args[i]) == 1 || temp_args[i] == 39) && temp_args[i])
 		i++;
 	while (temp_args[i])
 	{

@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 15:34:31 by abolea            #+#    #+#             */
-/*   Updated: 2024/05/09 11:48:02 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/21 11:43:22 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,7 @@ char *temp_with_space(char *s)
 	tmp[j] = '\0';
 	return (tmp);
 }
+
 
 char	*new_temp(char *s)
 {

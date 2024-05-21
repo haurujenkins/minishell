@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 13:37:46 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/03 15:42:16 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/16 14:26:46 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,6 +167,13 @@ void	my_export(t_data *da)
 				return ;
 			}
 			i++;
+		}
+		if ((da->cmd1[k][0] == '=' || da->cmd1[k][0] == '\0') && i == 0)
+		{
+			i++;
+			printf("export: %s: not a valid identifier\n", da->cmd1[k]);
+			da->exit_status = 0;
+			return ;
 		}
 		temp_cmd = malloc(sizeof(char) * (i + 1));
 		ft_strlcpy(temp_cmd, da->cmd1[k], i + 1);
