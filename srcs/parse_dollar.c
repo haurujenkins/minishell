@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 16:20:22 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/20 15:52:13 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/20 16:09:27 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -214,7 +214,15 @@ char	*temp_without_dollar(t_data *da, char *temp_args)
 	}
 	i++;
 	if (temp_args[i] == '?')
+	{
 		i++;
+		while (temp_args[i])
+		{
+			res[j] = temp_args[i];
+			i++;
+			j++;
+		}
+	}
 	while (temp_args[i] != ' ' && temp_args[i] != '$' && (ft_isalnum(temp_args[i]) == 1 || temp_args[i] == 39) && temp_args[i])
 		i++;
 	while (temp_args[i])

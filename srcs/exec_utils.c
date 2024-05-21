@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 13:10:19 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/14 13:02:24 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/16 11:47:39 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ void	set_all(t_data *da, char **envp)
 	da->j = 0;
 	da->my_path = NULL;
 	da->pid1 = 0;
+	da->pid2 = 0;
 	da->point_path = NULL;
 	da->exit_status = 0;
 	da->pnum = 0;

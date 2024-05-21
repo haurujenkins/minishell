@@ -6,11 +6,36 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 11:10:09 by abolea            #+#    #+#             */
-/*   Updated: 2024/05/17 15:05:26 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/21 13:01:22 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+int	check_rl(char *rl, int i)
+{
+	if (rl[i] == '<' && rl[i + 1] == '>')
+		return (-1);
+	else if (rl[i] == '>' && rl[i + 1] == '<')
+		return (-1);
+	else if (rl[i] == '<' && rl[i + 1] == '<' && rl[i + 2] == '<')
+		return (-1);
+	else if (rl[i] == '>' && rl[i + 1] == '>' && rl[i + 2] == '>')
+		return (-1);
+	else if (rl[i] == '>' && rl[i + 2] == '>')
+		return (-1);
+	else if (rl[i] == '|')
+	{
+		i++;
+		while (rl[i] == ' ')
+		{
+			i++;
+			if (rl[i] == '|')
+				return (-1);
+		}
+	}
+	return (0);
+}
 
 int	check_error(char *rl)
 {
@@ -21,32 +46,14 @@ int	check_error(char *rl)
 		return (-1);
 	while (rl[i])
 	{
-		if (rl[i] == 34)
+		if (rl[i] == 34 || rl[i] == 39)
 		{
 			i++;
-			while (rl[i] != 34 && rl[i])
+			while (rl[i] != 34 && rl[i] && rl[i] != 39)
 				i++;
 		}
-		if (rl[i] == '<' && rl[i + 1] == '>')
+		if (check_rl(rl, i) == -1)
 			return (-1);
-		else if (rl[i] == '>' && rl[i + 1] == '<')
-			return (-1);
-		else if (rl[i] == '<' && rl[i + 1] == '<' && rl[i + 2] == '<')
-			return (-1);
-		else if (rl[i] == '>' && rl[i + 1] == '>' && rl[i + 2] == '>')
-			return (-1);
-		else if (rl[i] == '>' && rl[i + 2] == '>')
-			return (-1);
-		else if (rl[i] == '|')
-		{
-			i++;
-			while (rl[i] == ' ')
-			{
-				i++;
-				if (rl[i] == '|')
-					return (-1);
-			}
-		}
 		i++;
 	}
 	if (rl[i - 1] == '|' || rl[i - 1] == '>' || rl[i - 1] == '<')
@@ -91,6 +98,7 @@ int	fill_all_tab(t_data *da, char **words, char **temp_args, int i)
 	return (0);
 }
 
+
 int	parsing(char *rl, t_data *da)
 {
 	char	**temp_args;
@@ -117,10 +125,20 @@ int	parsing(char *rl, t_data *da)
 	return (0);
 }
 
+void	sigint_handler_main(int signum)
+{
+	(void)signum;
+	write(1, "\n", 1);
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
+	stop_execution = 1;
+} 
+
 int	main(int argc, char **argv, char **envp)
 {
-	char	*rl;
-	t_data	da;
+	char			*rl;
+	t_data			da;
 
 	(void)envp;
 	if (argc != 1 || argv[0][0] == '\0')
@@ -128,41 +146,43 @@ int	main(int argc, char **argv, char **envp)
 	set_all(&da, envp);
 	while (1)
 	{
-		signal(SIGINT, sigint_handler);
+		signal(SIGINT, sigint_handler_main);
 		signal(SIGQUIT, SIG_IGN);
 		rl = readline("\033[1;36m<3 \033[0;37m");
+		if (stop_execution == 1)
+		{
+			stop_execution = 0;
+			da.exit_status = 130;
+		}
 		if (!rl)
 		{
 			//free_struct(&da);
 			break ;
-		}
+		}		
 		if (check_error(rl))
 		{
-			add_history(rl);
+			da.exit_status = 2;
 			write(2, "parse error\n", 12);
 			continue ;
 		}
 		if (rl[0])
 		{
+			add_history(rl);
 			if (parsing(rl, &da) == 1)
-			{
-				add_history(rl);
-				free(rl);
 				free_struct(&da);
-			}
 			else
 			{
 				if (!(heredoc_replace(&da, 0) == -1))
 				{
 					signal(SIGINT, sigint_handler);
 					print_args(0, da.pnum, &da);
-					add_history(rl);
-					free(rl);
 					if (da.args[0][0])
 						main_exec(&da, envp);
-					free_struct(&da);
+					// free_struct(&da);
 				}
 			}
+			free(rl);
+			del_tmpfiles(&da, 0);
 		}
 	}
 	return (0);

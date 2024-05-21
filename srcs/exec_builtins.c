@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 11:12:16 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/14 11:08:19 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/16 17:37:42 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,11 @@ void	my_echo(char **cmd)
 {
 	bool	newline;
 	int		i;
+	int		j;
+	int 	flag;
 
 	i = 1;
+	flag = 0;
 	newline = true;
 	if (!cmd[1])
 	{
@@ -55,14 +58,37 @@ void	my_echo(char **cmd)
 	}
 	while (cmd[i])
 	{
-		if (ft_strchr(cmd[i], "-n") == 1 && i == 1)
-			newline = false;
+		if (ft_strchr(cmd[i], "-n") == 1)
+		{
+			j = 1;
+			while (cmd[i][j])
+			{
+				if (cmd[i][j] != 'n')
+				{
+					flag = 1;
+					if (i == 1)
+						newline = true;
+					break ;
+				}
+				else
+					if (i == 1)
+						newline = false;
+				j++;
+			}
+			if (flag && i > 1)
+			{
+				printf(" ");
+				printf("%s", cmd[i]);
+			}
+		}
 		else
 		{
 			if (newline && i > 1)
 				printf(" ");
 			printf("%s", cmd[i]);
-			newline = true;
+			if (i == 1)
+				newline = true;
+			flag = 1;
 		}
 		i++;
 	}
@@ -126,7 +152,7 @@ void	my_cd(char **cmd, char **envp, t_data *da)
 	da->exit_status = 0;
 }
 
-void	my_unset(t_data *da)
+void	my_unset(t_data *da, int k)
 {
 	int		i;
 	int		j;
@@ -141,10 +167,10 @@ void	my_unset(t_data *da)
 		write(2, "Error: malloc failed\n", 21);
 		return ;
 	}
-	get_args_builtins(da, 0);
+	// get_args_builtins(da, 0);
 	while (da->my_env[i] != NULL)
 	{
-		if (ft_strncmp(da->my_env[i], da->cmd1[1], ft_strlen(da->cmd1[1])) != 0)
+		if (ft_strncmp(da->my_env[i], da->cmd1[k], ft_strlen(da->cmd1[k])) != 0)
 		{
 			new_env[j] = ft_strdup(da->my_env[i]);
 			if (!new_env[j])

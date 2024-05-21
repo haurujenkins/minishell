@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 11:49:04 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/14 16:10:46 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/16 17:23:05 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,13 @@
 void	sigint_handler_child()
 {
 	printf("\n");
+	stop_execution = 1;
 }
 
 void	sigquit_handler_child()
 {
 	printf("Quit (core dumped)\n");
+	stop_execution = 2;
 }
 
 void	exec_child(t_data *da, int index, char **envp)
@@ -43,12 +45,12 @@ void	exec_child(t_data *da, int index, char **envp)
 	close_fd(da, index);
 	get_args(da, envp, index);
 	check_files(da, index);
-	exec_cmd(da, envp);
+	exec_cmd(da, envp, index);
 }
 
 int	exec_recur(t_data *da, char **envp, int index)
 {
-	int	child_status;
+	int		child_status;
 
 	signal(SIGINT, sigint_handler_child);
 	signal(SIGQUIT, sigquit_handler_child);
@@ -70,12 +72,25 @@ int	exec_recur(t_data *da, char **envp, int index)
 	else
 	{
 		if (index != da->pnum - 1)
+		{
 			close(da->pipefd[index][1]);
+		}
+		da->children[index] = da->pid1;
 		exec_recur(da, envp, index + 1);
 	}
 	waitpid(da->pid1, &child_status, 0);
 	if (index == da->pnum - 1)
 		da->exit_status = WEXITSTATUS(child_status);
+	if (stop_execution == 2)
+	{
+		stop_execution = 0;
+		da->exit_status = 131;
+	}
+	if (stop_execution == 1)
+	{
+		stop_execution = 0;
+		da->exit_status = 130;
+	}
 	return (0);
 }
 
@@ -130,11 +145,11 @@ void	check_cmd(t_data *da, int i, char **envp)
 	}
 }
 
-void	exec_cmd(t_data *da, char **envp)
+void	exec_cmd(t_data *da, char **envp, int index)
 {
 	int			j;
 
-	if (check_builtins(da) == 1)
+	if (check_builtins(da, index) == 1)
 	{
 		free_struct(da);
 		j = -1;
@@ -176,10 +191,40 @@ void	del_tmpfiles(t_data *da, int index)
 	}
 }
 
-int	main_exec(t_data *da, char **envp)
+int main_exec(t_data *da, char **envp) 
 {
+	int	status;
+	int	i;
+
+	i = 0;
+	da->children = malloc(da->pnum * sizeof(pid_t));
+	if (da->children == NULL)
+	{
+		perror("malloc");
+		exit(EXIT_FAILURE);
+	}
+
 	set_pipe(da);
 	if (check_extern_builtins(da, envp, 0) == 0)
+	{
+		while (i < da->pnum)
+		{
+			da->children[i] = -1;
+			i++;
+		}
 		exec_recur(da, envp, 0);
+	}
+	i = 0;
+	while (i < da->pnum)
+	{
+		if (da->children[i] != -1)
+		{
+			waitpid(da->children[i], &status, 0);
+		}
+		i++;
+	}
+	del_tmpfiles(da, 0);
+	free(da->children);
+
 	return (0);
 }
