@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 11:10:09 by abolea            #+#    #+#             */
-/*   Updated: 2024/05/22 14:18:45 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/22 16:05:05 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,7 +176,7 @@ int	main(int argc, char **argv, char **envp)
 				if (!(heredoc_replace(&da, 0) == -1))
 				{
 					signal(SIGINT, sigint_handler);
-					print_args(0, da.pnum, &da);
+					//print_args(0, da.pnum, &da);
 					if (da.args[0][0])
 						main_exec(&da, envp);
 					// free_struct(&da);

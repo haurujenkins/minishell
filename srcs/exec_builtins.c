@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 11:12:16 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/22 15:30:58 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/22 16:01:38 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,7 @@ void	my_cd(char **cmd, char **envp, t_data *da)
 		if (!path)
 		{
 			da->exit_status = 1;
-			write(2, "Error: malloc failed\n", 21);
+			write(2, "cd: HOME not set\n", 17);
 			return ;
 		}
 	}
@@ -141,7 +141,7 @@ void	my_cd(char **cmd, char **envp, t_data *da)
 		if (!path)
 		{
 			da->exit_status = 1;
-			write(2, "Error: malloc failed\n", 21);
+			write(2, "cd: malloc failed\n", 18);
 			return ;
 		}
 	}

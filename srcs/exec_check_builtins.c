@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 13:33:51 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/22 15:01:01 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/22 16:30:36 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,13 +39,23 @@ void	exit_free(t_data *da)
 	if (i == j && i > 0 && j > 0)
 	{
 		i = ft_atoi(da->cmd1[1]);
+		if (j > 2 && i == 0)
+		{
+			write (2, "bash: exit: ", 12);
+			write (2, "numeric argument required\n", 27);
+			i = 2;
+		}
 		free_struct(da);
+		write(2, "exit\n", 5);
 		exit(i);
 	}
 	else
 	{
 		if (i > 0)
-			write(2, " numeric argument required\n", 27);
+		{
+			write(2, "exit\n", 5);
+			write(2, "minishell: exit: numeric argument required\n", 43);
+		}
 		free_struct(da);
 		exit(2);
 	}
@@ -170,6 +180,11 @@ int	check_builtins(t_data *da, int index)
 		}
 		outfile_error(da, index, 0);
 		return (my_env(da->my_env, 1, 0), 1);
+	}
+	if (size == 2 && ft_strchr(da->cmd1[0], "cd"))
+	{
+		outfile_error(da, index, 0);
+		return (1);
 	}
 	return (0);
 }
