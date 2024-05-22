@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 11:10:09 by abolea            #+#    #+#             */
-/*   Updated: 2024/05/21 13:01:22 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/22 16:07:10 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,10 @@ int	check_rl(char *rl, int i)
 	else if (rl[i] == '>' && rl[i + 1] == '>' && rl[i + 2] == '>')
 		return (-1);
 	else if (rl[i] == '>' && rl[i + 2] == '>')
+		return (-1);
+	else if (rl[i] == '<' && rl[i + 2] == '<')
+		return (-1);
+	else if (rl[i] == '|' && rl[i + 1] == '|' && rl[i + 2] == '|')
 		return (-1);
 	else if (rl[i] == '|')
 	{
@@ -42,7 +46,7 @@ int	check_error(char *rl)
 	int	i;
 
 	i = 0;
-	if (rl[i] == '|' || rl[i] == ';')
+	if (rl[i] == '|' || rl[i] == ':' || rl[i] == '!')
 		return (-1);
 	while (rl[i])
 	{

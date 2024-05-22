@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 15:37:45 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/20 16:00:37 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/22 16:02:58 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,10 @@ char	*fill_cmd(char **words)
 		args = get_cmd(words[i]);
 	if (args)
 		args = cpy_args_without_quotes(args);
+	// if (ft_strncmp(args, ":", 1) == 0)
+	// 	return (NULL);
+	// if (ft_strncmp(args, "!", 1) == 0)
+	// 	return (NULL);
 	return (args);
 }
 
@@ -89,6 +93,54 @@ int	pos_args(t_data *da, char **words)
 		j++;
 	}
 	return (-1);
+}
+
+int	s_quotes_dollar(char *s)
+{
+	int		i;
+	int		j;
+	int		s_quotes;
+
+	i = 0;
+	j = 0;
+	s_quotes = 0;
+	while (s[i])
+	{
+		if (s[i] == 39 && s[i + 1] == 39 && s[i + 2] == '$')
+		{
+			i += 2;
+			s_quotes += 2;
+		}
+		j++;
+		i++;
+	}
+	return (j);
+}
+
+char *sup_s_quotes_before_dollar(char *s)
+{
+	int		i;
+	int		j;
+	int		s_quotes;
+	char	*res;
+
+	i = 0;
+	j = 0;
+	s_quotes = 0;
+	res = malloc((s_quotes_dollar(s) + 1) * sizeof(char));
+	while (s[i])
+	{
+		if (s[i] == 39 && s[i + 1] == 39 && s[i + 2] == '$')
+		{
+			i += 2;
+			s_quotes += 2;
+		}
+		res[j] = s[i];
+		j++;
+		i++;
+	}
+	res[j] = '\0';
+	return (res);
 }
 
 int	d_quotes_dollar(char *s)
@@ -195,21 +247,75 @@ char	*sup_dollar_before_quotes(char *s)
 	return (res);
 }
 
+char *  dollar_after_heredoc(char *s)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (s[i] && s[i] != '$')
+		i++;
+	while (i > 1)
+	{
+		if (s[i] == '$')
+		{			
+			j = i;
+			while (j > 1 && !(s[j - 1] == '<' && s[j - 2] == '<'))
+				j--;
+			if (s[j - 1] == '<' && s[j - 2] == '<')
+			{
+				s[i] *= -1;
+ 				break ;
+			}
+		}
+		i--;
+	}
+    return (s);
+}
+
+void	heredoc_double_quotes(char *s, t_data *da)
+{
+	int	i;
+	
+	i = 1;
+	da->q_heredoc = 1;
+	while (s[i])
+	{
+		if (s[i] < 0)
+		{
+			if (s[i - 1] == 34)
+				da->q_heredoc = -1;
+		}
+		i++;
+	}
+}
+
 char	**new_temp_args(t_data *da, char **temp_args)
 {
 	int	i;
+	int	tmp_d;
 
 	i = 0;
 	while (i < da->pnum)
 	{
 		da->nb_d = nb_dollars(temp_args[i]);
-		temp_args[i] = sup_d_quotes_before_dollar(temp_args[i]);
+		tmp_d = da->nb_d;
 		temp_args[i] = dollar_negative_in_s_quote(temp_args[i]);
+		while (tmp_d > 0)
+		{
+			temp_args[i] = dollar_after_heredoc(temp_args[i]);
+			tmp_d--;
+		}
+		heredoc_double_quotes(temp_args[i], da);
 		while (da->nb_d > 0)
-		{		
+		{
+			// temp_args[i] = sup_d_quotes_before_dollar(temp_args[i]);
+			temp_args[i] = sup_s_quotes_before_dollar(temp_args[i]);
 			temp_args[i] = temp_without_dollar(da, temp_args[i]);
+
 			da->nb_d--;
 		}
+		temp_args[i] = sup_d_quotes_before_dollar(temp_args[i]);
 		temp_args[i] = all_positive(temp_args[i]);
 		temp_args[i] = sup_dollar_before_quotes(temp_args[i]);
 		if (temp_args[i] == NULL)
@@ -281,17 +387,8 @@ int ft_nb_args(t_data *da, char **words)
 				}
 				else
 				{
-					if (if_quotes(words[j], 0) == 1)
-					{
-						while ((words[j] && (words[j][0] != '<' && words[j][0] != '>')))
-							j++;
-						res++;
-					}
-					else
-					{
-						j++;
-						res++;
-					}
+					j++;
+					res++;
 				}
 			}
 		}

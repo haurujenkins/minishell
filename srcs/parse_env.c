@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_env.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 16:20:49 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/04/22 14:14:51 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/22 15:57:49 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,16 @@ int	len_env(t_data *da, char *s)
 	return (0);
 }
 
+int	len_before_equal(char *s)
+{
+	int	i;
+
+	i = 0;
+	while (s[i] != '=')
+		i++;
+	return (i);
+}
+
 char	*find_in_env(t_data *da, char *s)
 {
 	int		i;
@@ -56,7 +66,7 @@ char	*find_in_env(t_data *da, char *s)
 	res = malloc((len + 1) * sizeof(char));
 	while (da->my_env[i] != NULL)
 	{
-		if (ft_strncmp(da->my_env[i], s, ft_strlen(s)) == 0)
+		if (ft_strncmp(da->my_env[i], s, len_before_equal(da->my_env[i])) == 0)
 		{
 			while (da->my_env[i][j] != '=')
 			{
