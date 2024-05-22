@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 11:12:16 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/22 14:49:10 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/22 15:30:58 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,9 @@ void	my_pwd(void)
 
 void	my_cd(char **cmd, char **envp, t_data *da)
 {
-	char	*path;
+	char		*path;
+	struct stat	sb;
+	char		*cwd;
 
 	if (!cmd[1] || ft_strchr(cmd[1], "~") == 1)
 	{
@@ -143,15 +145,39 @@ void	my_cd(char **cmd, char **envp, t_data *da)
 			return ;
 		}
 	}
-	if (chdir(path) == -1)
+	if (stat(path, &sb) == 0 && S_ISDIR(sb.st_mode))
 	{
-		write(2, " No such file or directory\n", 27);
+		if (chdir(path) == -1)
+		{
+			perror("chdir");
+			free(path);
+			da->exit_status = 1;
+			return ;
+		}
+		else
+		{
+			cwd = getcwd(NULL, 0);
+			if (cwd)
+			{
+				export_pwd(da, cwd);
+				free(cwd);
+			}
+			else
+			{
+				perror("getcwd");
+				da->exit_status = 1;
+				free(path);
+				return ;
+			}
+		}
+	}
+	else
+	{
+		perror("stat");
 		free(path);
 		da->exit_status = 1;
 		return ;
 	}
-	else
-		export_pwd(da, getcwd(NULL, 0));
 	free(path);
 	da->exit_status = 0;
 }

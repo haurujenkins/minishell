@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 13:33:51 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/22 14:50:56 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/22 15:01:01 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,7 +154,11 @@ int	check_builtins(t_data *da, int index)
 	if (size == 3 && ft_strchr(da->cmd1[0], "pwd"))
 	{
 		outfile_error(da, index, 0);
-		return (my_pwd(), 1);
+		if (da->cmd1[1] && da->cmd1[1][0] == '-')
+			write(2, "pwd: invalid option\n", 20);
+		else
+			return (my_pwd(), 1);
+		return (1);
 	}
 	if (size == 3 && ft_strchr(da->cmd1[0], "env"))
 	{
