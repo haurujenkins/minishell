@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_main.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 11:10:09 by abolea            #+#    #+#             */
-/*   Updated: 2024/05/21 13:01:22 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/22 14:18:45 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void	free_words_and_temp_args(char **temp_args, char **words)
 {
 	int	i;
 	int	num_w;
-	
+
 	i = -1;
 	while (temp_args[++i] != NULL)
 		free(temp_args[i]);
@@ -121,7 +121,7 @@ int	parsing(char *rl, t_data *da)
 		i++;
 	}
 	free_words_and_temp_args(temp_args, words);
-	print_args(i, da->pnum, da);
+	//print_args(i, da->pnum, da);
 	return (0);
 }
 
@@ -156,6 +156,7 @@ int	main(int argc, char **argv, char **envp)
 		}
 		if (!rl)
 		{
+			write(1, "exit\n", 5);
 			//free_struct(&da);
 			break ;
 		}		

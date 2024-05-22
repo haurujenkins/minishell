@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 13:33:51 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/16 17:45:26 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/22 14:50:56 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,8 @@ int	check_extern_builtins(t_data *da, char **envp, int index)
 			get_args_builtins(da, 0);
 			while (da->cmd1[++i] != NULL)
 			{
-				my_unset(da, i);
+				if (check_unset(da, i) == 0)
+					my_unset(da, i);
 			}
 			return (1);
 		}

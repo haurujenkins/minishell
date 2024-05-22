@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 11:49:04 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/16 17:23:05 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/21 18:17:42 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,23 +98,27 @@ void	check_cmd_stat(t_data *da)
 {
 	struct stat	filestat;
 
-	if (stat(da->cmd1[0], &filestat) < 0)
+	if ((da->cmd1[0][0] == '.' && da->cmd1[0][1] == '/') || \
+	da->cmd1[0][0] == '/')
 	{
-		write(2, da->cmd1[0], ft_strlen(da->cmd1[0]));
-		write(2, ": No such file or directory\n", 29);
-		exit(127);
-	}
-	if (S_ISDIR(filestat.st_mode))
-	{
-		write(2, da->cmd1[0], ft_strlen(da->cmd1[0]));
-		write(2, ": Is a directory\n", 17);
-		exit(126);
-	}
-	if (!(filestat.st_mode & S_IXUSR))
-	{
-		write(2, da->cmd1[0], ft_strlen(da->cmd1[0]));
-		write(2, ": Permission denied\n", 21);
-		exit(126);
+		if (stat(da->cmd1[0], &filestat) < 0)
+		{
+			write(2, da->cmd1[0], ft_strlen(da->cmd1[0]));
+			write(2, ": No such file or directory\n", 29);
+			exit(127);
+		}
+		if (S_ISDIR(filestat.st_mode))
+		{
+			write(2, da->cmd1[0], ft_strlen(da->cmd1[0]));
+			write(2, ": Is a directory\n", 17);
+			exit(126);
+		}
+		if (!(filestat.st_mode & S_IXUSR))
+		{
+			write(2, da->cmd1[0], ft_strlen(da->cmd1[0]));
+			write(2, ": Permission denied\n", 21);
+			exit(126);
+		}
 	}
 	da->cmd = ft_strdup(da->cmd1[0]);
 }
@@ -197,6 +201,7 @@ int main_exec(t_data *da, char **envp)
 	int	i;
 
 	i = 0;
+	status = 0;
 	da->children = malloc(da->pnum * sizeof(pid_t));
 	if (da->children == NULL)
 	{

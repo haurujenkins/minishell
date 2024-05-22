@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 11:12:16 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/16 17:37:42 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/22 14:49:10 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ void	my_echo(char **cmd)
 	int 	flag;
 
 	i = 1;
+	j = 0;
 	flag = 0;
 	newline = true;
 	if (!cmd[1])
@@ -68,6 +69,7 @@ void	my_echo(char **cmd)
 					flag = 1;
 					if (i == 1)
 						newline = true;
+					j = 0;
 					break ;
 				}
 				else
@@ -75,16 +77,18 @@ void	my_echo(char **cmd)
 						newline = false;
 				j++;
 			}
-			if (flag && i > 1)
+			if (flag == 1)
 			{
-				printf(" ");
+				if (i > 1)
+					printf(" ");
 				printf("%s", cmd[i]);
 			}
 		}
 		else
 		{
-			if (newline && i > 1)
+			if (i > 1 && j == 0)
 				printf(" ");
+			j = 0;
 			printf("%s", cmd[i]);
 			if (i == 1)
 				newline = true;
@@ -150,6 +154,34 @@ void	my_cd(char **cmd, char **envp, t_data *da)
 		export_pwd(da, getcwd(NULL, 0));
 	free(path);
 	da->exit_status = 0;
+}
+
+int	check_unset(t_data *da, int k)
+{
+	int	i;
+
+	i = 0;
+	while (da->cmd1[k][i] != '\0')
+	{
+		if (da->cmd1[k][i] == ' ' || da->cmd1[k][i] == '-' || \
+		da->cmd1[k][i] == '+' || da->cmd1[k][i] == '%' || da->cmd1[k][i] \
+		== '!' || da->cmd1[k][i] == '@' || da->cmd1[k][i] == '#' || \
+		da->cmd1[k][i] == '^' || da->cmd1[k][i] == ':' || da->cmd1[k][i] \
+		== '?' || da->cmd1[k][i] == ',' || da->cmd1[k][i] == '.' || \
+		da->cmd1[k][i] == '/' || da->cmd1[k][i] == '\\' || da->cmd1[k][i] \
+		== '|' || da->cmd1[k][i] == '`' || da->cmd1[k][i] == '~' || \
+		da->cmd1[k][i] == '}' || da->cmd1[k][i] == '{' || \
+		da->cmd1[k][i] == '*')
+		{
+			write(2, "unset: `", 8);
+			write(2, da->cmd1[k], ft_strlen(da->cmd1[k]));
+			write(2, "' : not a valid identifier\n", 27);
+			da->exit_status = 0;
+			return (1);
+		}
+		i++;
+	}
+	return (0);
 }
 
 void	my_unset(t_data *da, int k)
