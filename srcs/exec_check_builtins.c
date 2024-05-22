@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 13:33:51 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/22 16:30:36 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/22 16:56:27 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,8 @@ int	check_extern_builtins(t_data *da, char **envp, int index)
 	int		i;
 
 	i = 0;
+	if (!da->args[0][0])
+		return (0);
 	size = ft_strlen(da->args[0][0]);
 	if (size == 4 && ft_strchr(da->args[0][0], "exit") && da->pnum == 1)
 	{

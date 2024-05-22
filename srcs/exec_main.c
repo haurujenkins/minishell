@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 11:49:04 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/21 18:17:42 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/22 17:00:29 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,11 @@ void	sigquit_handler_child()
 
 void	exec_child(t_data *da, int index, char **envp)
 {
+	if (da->args[index][0] == NULL)
+	{
+		check_files(da, index);
+		exit(EXIT_SUCCESS);
+	}
 	if (index != 0)
 	{
 		if (dup2(da->pipefd[index - 1][0], STDIN_FILENO) == -1)
@@ -208,7 +213,6 @@ int main_exec(t_data *da, char **envp)
 		perror("malloc");
 		exit(EXIT_FAILURE);
 	}
-
 	set_pipe(da);
 	if (check_extern_builtins(da, envp, 0) == 0)
 	{
