@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 11:10:09 by abolea            #+#    #+#             */
-/*   Updated: 2024/05/23 11:14:08 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/23 15:15:07 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,8 @@ int	check_error(char *rl)
 	int	i;
 
 	i = 0;
+	if (rl != NULL && *rl == '\0')
+		return (0);
 	if (rl[i] == '|' || rl[i] == ':' || rl[i] == '!')
 		return (-1);
 	while (rl[i])
@@ -168,11 +170,11 @@ int	main(int argc, char **argv, char **envp)
 		{
 			da.exit_status = 2;
 			write(2, "parse error\n", 12);
+			add_history(rl);
 			continue ;
 		}
-		if (rl[0])
+		if (rl && *rl != '\0')
 		{
-			add_history(rl);
 			if (parsing(rl, &da) == 1)
 				free_struct(&da);
 			else
@@ -180,15 +182,16 @@ int	main(int argc, char **argv, char **envp)
 				if (!(heredoc_replace(&da, 0) == -1))
 				{
 					signal(SIGINT, sigint_handler);
-					// print_args(0, da.pnum, &da);
+					print_args(0, da.pnum, &da);
 					if (da.pnum > 0)
 						main_exec(&da, envp);
-					// free_struct(&da);
+					//free_struct(&da);
 				}
 			}
-			free(rl);
+			add_history(rl);
 			del_tmpfiles(&da, 0);
 		}
+		free(rl);
 	}
 	return (0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_append.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 14:28:18 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/21 13:28:56 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/23 15:45:58 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,19 +135,14 @@ int	fill_append_tab(t_data *da, char **temp_args)
 		da->append_tab[i] = malloc((ft_nb_redir(temp_args[i], '>') - da->nb_append+ 1) * sizeof(char *));
 		if (da->append_tab[i] == NULL)
 			return (write(2, "Error: malloc failed\n", 21), 1);
-		if (da->nb_append == 0)
-			da->append_tab[i][j] = NULL;
-		else
+		while (j < ft_nb_redir(temp_args[i], '>') - da->nb_append)
 		{
-			while (j < ft_nb_redir(temp_args[i], '>') - da->nb_append)
-			{
-				da->append_tab[i][j] = fill_append(temp_args[i], da);
-				if (da->append_tab[i][j] == NULL)
-					return (1);
-				j++;
-			}
-			da->append_tab[i][j] = NULL;
+			da->append_tab[i][j] = fill_append(temp_args[i], da);
+			if (da->append_tab[i][j] == NULL)
+				return (1);
+			j++;
 		}
+		da->append_tab[i][j] = NULL;
 		i++;
 	}
 	return (0);

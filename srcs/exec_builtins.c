@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 11:12:16 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/22 16:01:38 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/23 16:01:48 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	my_echo(char **cmd)
 	bool	newline;
 	int		i;
 	int		j;
-	int 	flag;
+	int		flag;
 
 	i = 1;
 	j = 0;
@@ -173,7 +173,7 @@ void	my_cd(char **cmd, char **envp, t_data *da)
 	}
 	else
 	{
-		perror("stat");
+		write(2, "cd: not a directory \n", 21);
 		free(path);
 		da->exit_status = 1;
 		return ;

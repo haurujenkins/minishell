@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 11:49:04 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/23 11:13:47 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/23 11:43:40 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -222,8 +222,10 @@ int main_exec(t_data *da, char **envp)
 			i++;
 		}
 		exec_recur(da, envp, 0);
+		i = 0;
 	}
-	i = 0;
+	else
+		i = 1;
 	while (i < da->pnum)
 	{
 		if (da->children[i] != -1)
