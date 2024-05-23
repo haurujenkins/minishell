@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_dollar.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 16:20:22 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/23 16:11:27 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/23 17:38:00 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -225,7 +225,9 @@ char	*temp_without_dollar(t_data *da, char *temp_args)
 	s_quote = 0;
 	before_args = after_dollar(temp_args);
 	if (before_args == NULL)
+	{
 		return (temp_args);
+	}
 	// if (before_args[0] == '$')
 	// 	s_quote = 2;
 	if (s_quote != 0)

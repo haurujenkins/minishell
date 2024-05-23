@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 11:49:04 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/23 11:43:40 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/23 16:41:37 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,7 +160,7 @@ void	exec_cmd(t_data *da, char **envp, int index)
 
 	if (check_builtins(da, index) == 1)
 	{
-		free_struct(da);
+		//free_struct(da);
 		j = -1;
 		while (da->my_env[++j] != NULL)
 			free(da->my_env[j]);

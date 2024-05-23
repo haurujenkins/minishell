@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 11:10:09 by abolea            #+#    #+#             */
-/*   Updated: 2024/05/23 16:26:16 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/23 18:05:43 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -191,10 +191,9 @@ int	main(int argc, char **argv, char **envp)
 					print_args(0, da.pnum, &da);
 					if (da.pnum > 0)
 						main_exec(&da, envp);
-					//free_struct(&da);
 				}
 			}
-			del_tmpfiles(&da, 0);
+			free_struct(&da);
 			add_history(rl);
 		}
 		free(rl);
