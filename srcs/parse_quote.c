@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 14:58:08 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/14 15:55:51 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/22 16:47:01 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ int	if_quotes(char *s, int start)
 {
 	while (s[start] != ' ' && s[start])
 	{
-		if (s[start] == 34)
+		if (s[start] == 34 || s[start] == 39)
 			return (1);
 		start++;
 	}

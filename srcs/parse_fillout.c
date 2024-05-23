@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 14:53:14 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/21 11:28:42 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/22 16:57:19 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ char	*fill_output(char *temp_args, t_data *da)
 				args = cpy_until_char(temp_args, 34, da->io_nb);
 				while ((temp_args[da->io_nb] != 34 && temp_args[da->io_nb] != 39) && temp_args[da->io_nb])
 					da->io_nb++;
+				args = cpy_args_without_quotes(args);
 				return (args);
 			}
 			else
@@ -36,6 +37,7 @@ char	*fill_output(char *temp_args, t_data *da)
 				args = cpy_until_char(temp_args, ' ', da->io_nb);
 				while (temp_args[da->io_nb] != ' ' && temp_args[da->io_nb])
 					da->io_nb++;
+				args = cpy_args_without_quotes(args);
 				return (args);
 			}
 		}

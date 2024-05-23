@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_heredoc.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 13:57:06 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/14 16:10:05 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/21 14:00:22 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,6 +127,8 @@ char *read_until_delimiter(char *delimiter, t_data *da)
 			free(line);
 			break ;
 		}
+		if (da->q_heredoc == 1)
+			line = temp_without_dollar(da, line);
 		if (write(fd, line, strlen(line)) == -1)
 		{
 			perror("Erreur lors de l'écriture dans le fichier temporaire");

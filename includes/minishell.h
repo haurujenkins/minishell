@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 14:48:53 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/22 14:46:25 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/23 11:13:40 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ typedef struct data_s
 	pid_t		*children;
 	t_signals	mysignal;
 	int			nb_d;
+	int			q_heredoc;
 }				t_data;
 
 void	get_args(t_data *da, char **envp, int index);

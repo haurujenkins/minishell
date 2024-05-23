@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 14:31:09 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/13 14:13:49 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/22 17:00:44 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ char	*cpy_until_char(char *s, char c, int start)
 	tmp = malloc((len - start + 1) * sizeof(char));
 	if (!tmp)
 		return (write(2, "Malloc failed\n", 14), NULL);
-	while ((s[start] != 39 && s[start] != c) && start < len)
+	while (s[start] != c && start < len)
 	{
 		tmp[j] = s[start];
 		start++;
