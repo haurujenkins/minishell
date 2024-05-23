@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 16:20:22 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/23 15:51:06 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/23 16:11:27 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,6 +182,32 @@ char	*s_quotes_new_args_negative(char *s)
 	return (s);
 }
 
+char	*add_d_quotes_newargs(char *s)
+{
+	int		i;
+	int		j;
+	char	*res;
+
+	i = 0;
+	j = 0;
+	res = malloc(((int)ft_strlen(s) + 3) * sizeof(char));
+	while (s[i])
+	{
+		if (i == 0)
+		{
+			res[j] = 34;
+			j++;
+		}
+		res[j] = s[i];
+		j++;
+		i++;
+	}
+	res[j] = 34;
+	j++;
+	res[j] = '\0';
+	return (res);
+}
+
 char	*temp_without_dollar(t_data *da, char *temp_args)
 {
 	int		i;
@@ -210,7 +236,8 @@ char	*temp_without_dollar(t_data *da, char *temp_args)
 		new_args = ft_itoa(da->exit_status);
 	else
 		new_args = find_in_env(da, before_args);
-	// new_args = s_quotes_new_args_negative(new_args);
+	if (new_args[0] == 39)
+		new_args = add_d_quotes_newargs(new_args);
 	len = (ft_strlen(temp_args) - da->nb_d + ft_strlen(new_args) + s_quote + 1);
 	res = malloc((len + 1) * sizeof(char));
 	if (res == NULL)
