@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 11:12:16 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/16 17:37:42 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/22 16:01:38 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ void	my_echo(char **cmd)
 	int 	flag;
 
 	i = 1;
+	j = 0;
 	flag = 0;
 	newline = true;
 	if (!cmd[1])
@@ -68,6 +69,7 @@ void	my_echo(char **cmd)
 					flag = 1;
 					if (i == 1)
 						newline = true;
+					j = 0;
 					break ;
 				}
 				else
@@ -75,16 +77,18 @@ void	my_echo(char **cmd)
 						newline = false;
 				j++;
 			}
-			if (flag && i > 1)
+			if (flag == 1)
 			{
-				printf(" ");
+				if (i > 1)
+					printf(" ");
 				printf("%s", cmd[i]);
 			}
 		}
 		else
 		{
-			if (newline && i > 1)
+			if (i > 1 && j == 0)
 				printf(" ");
+			j = 0;
 			printf("%s", cmd[i]);
 			if (i == 1)
 				newline = true;
@@ -117,7 +121,9 @@ void	my_pwd(void)
 
 void	my_cd(char **cmd, char **envp, t_data *da)
 {
-	char	*path;
+	char		*path;
+	struct stat	sb;
+	char		*cwd;
 
 	if (!cmd[1] || ft_strchr(cmd[1], "~") == 1)
 	{
@@ -125,7 +131,7 @@ void	my_cd(char **cmd, char **envp, t_data *da)
 		if (!path)
 		{
 			da->exit_status = 1;
-			write(2, "Error: malloc failed\n", 21);
+			write(2, "cd: HOME not set\n", 17);
 			return ;
 		}
 	}
@@ -135,21 +141,73 @@ void	my_cd(char **cmd, char **envp, t_data *da)
 		if (!path)
 		{
 			da->exit_status = 1;
-			write(2, "Error: malloc failed\n", 21);
+			write(2, "cd: malloc failed\n", 18);
 			return ;
 		}
 	}
-	if (chdir(path) == -1)
+	if (stat(path, &sb) == 0 && S_ISDIR(sb.st_mode))
 	{
-		write(2, " No such file or directory\n", 27);
+		if (chdir(path) == -1)
+		{
+			perror("chdir");
+			free(path);
+			da->exit_status = 1;
+			return ;
+		}
+		else
+		{
+			cwd = getcwd(NULL, 0);
+			if (cwd)
+			{
+				export_pwd(da, cwd);
+				free(cwd);
+			}
+			else
+			{
+				perror("getcwd");
+				da->exit_status = 1;
+				free(path);
+				return ;
+			}
+		}
+	}
+	else
+	{
+		perror("stat");
 		free(path);
 		da->exit_status = 1;
 		return ;
 	}
-	else
-		export_pwd(da, getcwd(NULL, 0));
 	free(path);
 	da->exit_status = 0;
+}
+
+int	check_unset(t_data *da, int k)
+{
+	int	i;
+
+	i = 0;
+	while (da->cmd1[k][i] != '\0')
+	{
+		if (da->cmd1[k][i] == ' ' || da->cmd1[k][i] == '-' || \
+		da->cmd1[k][i] == '+' || da->cmd1[k][i] == '%' || da->cmd1[k][i] \
+		== '!' || da->cmd1[k][i] == '@' || da->cmd1[k][i] == '#' || \
+		da->cmd1[k][i] == '^' || da->cmd1[k][i] == ':' || da->cmd1[k][i] \
+		== '?' || da->cmd1[k][i] == ',' || da->cmd1[k][i] == '.' || \
+		da->cmd1[k][i] == '/' || da->cmd1[k][i] == '\\' || da->cmd1[k][i] \
+		== '|' || da->cmd1[k][i] == '`' || da->cmd1[k][i] == '~' || \
+		da->cmd1[k][i] == '}' || da->cmd1[k][i] == '{' || \
+		da->cmd1[k][i] == '*')
+		{
+			write(2, "unset: `", 8);
+			write(2, da->cmd1[k], ft_strlen(da->cmd1[k]));
+			write(2, "' : not a valid identifier\n", 27);
+			da->exit_status = 0;
+			return (1);
+		}
+		i++;
+	}
+	return (0);
 }
 
 void	my_unset(t_data *da, int k)

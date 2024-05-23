@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 15:37:45 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/22 16:02:58 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/22 16:51:33 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -283,7 +283,7 @@ void	heredoc_double_quotes(char *s, t_data *da)
 	{
 		if (s[i] < 0)
 		{
-			if (s[i - 1] == 34)
+			if (s[i - 1] == 34 || s[i - 1] == 39)
 				da->q_heredoc = -1;
 		}
 		i++;
@@ -312,7 +312,6 @@ char	**new_temp_args(t_data *da, char **temp_args)
 			// temp_args[i] = sup_d_quotes_before_dollar(temp_args[i]);
 			temp_args[i] = sup_s_quotes_before_dollar(temp_args[i]);
 			temp_args[i] = temp_without_dollar(da, temp_args[i]);
-
 			da->nb_d--;
 		}
 		temp_args[i] = sup_d_quotes_before_dollar(temp_args[i]);

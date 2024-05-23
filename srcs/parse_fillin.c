@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 14:55:13 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/22 14:44:03 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/23 10:51:47 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,7 @@ char	*fill_input(char *temp_args, t_data *da)
 				da->io_nb++;
 			if (temp_args[da->io_nb] == 34 || temp_args[da->io_nb] == 39)
 			{
-				da->io_nb++;
-				args = cpy_until_char(temp_args, 34, da->io_nb);
+				args = cpy_until_char(temp_args, ' ', da->io_nb);
 				while ((temp_args[da->io_nb] != 34 && temp_args[da->io_nb] != 39) && temp_args[da->io_nb])
 					da->io_nb++;
 				if (if_quotes(args, 0) == 1)
