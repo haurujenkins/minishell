@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 14:58:08 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/22 16:47:01 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/23 13:01:06 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ int	if_double_space(char *s)
 	return (j);
 }
 
-
 char	*cpy_args_without_quotes(char *s)
 {
 	int		i;
@@ -36,13 +35,15 @@ char	*cpy_args_without_quotes(char *s)
 	char	*tmp;
 	int		d_quotes;
 	int		s_quotes;
+	int		len;
 	
 	i = 0;
 	j = 0;
+	len = ft_strlen(s);
 	d_quotes = 0;
 	s_quotes = 0;
-	tmp = malloc((ft_strlen(s) - nb_quotes(s)- if_double_space(s) + 1) * sizeof(char));
-	while (s[i])
+	tmp = malloc(2 + (ft_strlen(s) - nb_quotes(s) - if_double_space(s)) * sizeof(char));
+	while (i < len)
 	{
 		while ((s[i] == 34 && s_quotes % 2 == 0) || (s[i] == 39 && d_quotes % 2 == 0))
 		{
@@ -173,55 +174,4 @@ int	double_quotes_close(char *temp_args)
 	if (d_quote % 2 != 0)
 		return (0);
 	return (1);
-}
-
-void	if_quotes_not_close(char **temp_args, int i)
-{
-	int	j;
-	int k;
-	int	d_quote;
-	int s_quote;
-
-	j = 0;
-	d_quote = 0;
-	s_quote = 0;
-	while (temp_args[i][j])
-	{
-		if (temp_args[i][j] == 39 || temp_args[i][j] == 34)
-		{
-			k = j + k;
-			if (temp_args[i][j] == 39 && d_quote % 2 == 0)
-			{
-				s_quote++;
-				while (temp_args[i][k])
-				{
-					if (temp_args[i][k] == 39)
-					{
-						s_quote++;
-						break ;
-					}
-					else if (temp_args[i][k] == 0)
-						exit(write(2, "Error : simple quote not close\n", 31));
-					k++;
-				}
-			}
-			else if (temp_args[i][j] == 34 && s_quote % 2 == 0)
-			{
-				d_quote++;
-				while (temp_args[i][k])
-				{
-					if (temp_args[i][k] == 34)
-					{
-						d_quote++;
-						break ;
-					}
-					else if (temp_args[i][k] == 0)
-						exit(write(2, "Error : double quote not close\n", 31));
-					k++;
-				}
-			}
-		}
-		j++;
-	}
-	return ;
 }

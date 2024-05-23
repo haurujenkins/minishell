@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 16:50:45 by abolea            #+#    #+#             */
-/*   Updated: 2024/05/21 13:30:42 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/23 15:51:13 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ char	**init_words(char **temp_args, int i)
 	int		j;
 	char	**words;
 	
-	if_quotes_not_close(temp_args, i);
 	temp_args[i] = new_temp(temp_args[i]);
 	temp_args[i] = negative_in_quotes(temp_args[i]);
 	words = ft_split(temp_args[i], ' ');

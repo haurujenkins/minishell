@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 14:48:53 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/22 16:34:59 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/23 11:44:36 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,5 +171,6 @@ int		init_malloc(char **temp_args, t_data *da);
 char	*new_temp_d(char *s);
 char	*sup_d_quotes_before_dollar(char *s);
 char	*sup_backslash_before_dollar(char *s);
+void	set_parse(t_data *da);
 
 #endif
