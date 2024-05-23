@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 16:20:22 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/22 14:16:41 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/23 16:11:27 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,11 @@ int	len_after_dollar(char *s)
 	j = 0;
 	while (s[i] != '$')
 		i++;
-	if (s[i - 1] != 39)
-		j++;
+	if (i > 1)
+	{
+		if (s[i - 1] != 39)
+			j++;
+	}
 	i++;
 	while (ft_isalnum(s[i]) == 1 || s[i] == '?')
 	{
@@ -81,7 +84,7 @@ int	len_after_digit(char *s)
 		}
 		return (j);	
 	}
-	while ( s[i] != 39)
+	while (s[i] != 39)
 		i++;
 	i++;
 	while (s[i])
@@ -140,15 +143,20 @@ char	*after_dollar(char *s)
 	j = 0;
 	if (if_dollar(s) == 0)
 		return (NULL);
-	len = len_after_dollar(s);
-	tmp = malloc((len + 1) * sizeof(char));
+	len = len_after_dollar(s) + 1;
+	tmp = malloc(len * sizeof(char));
 	if (tmp == NULL)
 		return (write(2, "Malloc failed\n", 14), NULL);
 	while (s[i] != '$')
 		i++;
 	if (ft_isalnum(s[i + 1]) != 1 && s[i + 1] != '?' && s[i + 1] != 34 && s[i + 1] != 39)
 		return (NULL);
-	if (s[i - 1] != 39)
+	if (i > 1)
+	{
+		if (s[i - 1] != 39)
+			i++;
+	}
+	if (i == 0)
 		i++;
 	while (ft_isalnum(s[i]) == 1 || s[i] == '?' || s[i] == 39)
 	{
@@ -158,6 +166,46 @@ char	*after_dollar(char *s)
 	}
 	tmp[j] = '\0';
 	return (tmp);
+}
+
+char	*s_quotes_new_args_negative(char *s)
+{
+	int	i;
+
+	i = 0;
+	while (s[i])
+	{
+		if (s[i] == 39)
+			s[i] *= -1;
+		i++;
+	}
+	return (s);
+}
+
+char	*add_d_quotes_newargs(char *s)
+{
+	int		i;
+	int		j;
+	char	*res;
+
+	i = 0;
+	j = 0;
+	res = malloc(((int)ft_strlen(s) + 3) * sizeof(char));
+	while (s[i])
+	{
+		if (i == 0)
+		{
+			res[j] = 34;
+			j++;
+		}
+		res[j] = s[i];
+		j++;
+		i++;
+	}
+	res[j] = 34;
+	j++;
+	res[j] = '\0';
+	return (res);
 }
 
 char	*temp_without_dollar(t_data *da, char *temp_args)
@@ -188,6 +236,8 @@ char	*temp_without_dollar(t_data *da, char *temp_args)
 		new_args = ft_itoa(da->exit_status);
 	else
 		new_args = find_in_env(da, before_args);
+	if (new_args[0] == 39)
+		new_args = add_d_quotes_newargs(new_args);
 	len = (ft_strlen(temp_args) - da->nb_d + ft_strlen(new_args) + s_quote + 1);
 	res = malloc((len + 1) * sizeof(char));
 	if (res == NULL)

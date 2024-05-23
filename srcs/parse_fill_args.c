@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 15:37:45 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/22 16:51:33 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/23 15:50:49 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ int	pos_cmd(char **words)
 	int	j;
 
 	j = 1;
+	if (!words[0])
+		return (-1);
 	if (words[0] && (words[0][0] != '<' && words[0][0] != '>'))
 		return (0);
 	while (words[j])
@@ -71,10 +73,6 @@ char	*fill_cmd(char **words)
 		args = get_cmd(words[i]);
 	if (args)
 		args = cpy_args_without_quotes(args);
-	// if (ft_strncmp(args, ":", 1) == 0)
-	// 	return (NULL);
-	// if (ft_strncmp(args, "!", 1) == 0)
-	// 	return (NULL);
 	return (args);
 }
 
@@ -247,7 +245,7 @@ char	*sup_dollar_before_quotes(char *s)
 	return (res);
 }
 
-char *  dollar_after_heredoc(char *s)
+char	*dollar_after_heredoc(char *s)
 {
 	int	i;
 	int	j;
@@ -315,7 +313,6 @@ char	**new_temp_args(t_data *da, char **temp_args)
 			da->nb_d--;
 		}
 		temp_args[i] = sup_d_quotes_before_dollar(temp_args[i]);
-		temp_args[i] = all_positive(temp_args[i]);
 		temp_args[i] = sup_dollar_before_quotes(temp_args[i]);
 		if (temp_args[i] == NULL)
 		{

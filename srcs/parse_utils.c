@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 14:31:09 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/22 17:00:44 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/23 11:42:44 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,4 +121,26 @@ int	if_finish_quotes(char *s)
 	if ((s[i - 1] == 34 || s[i - 1] == 39) && i > 0)
 		return (1);
 	return (0);
+}
+
+void	set_parse(t_data *da)
+{
+	da->delim_tab = NULL;
+	da->append_tab = NULL;
+	da->nb_redir_in = 0;
+	da->nb_redir_out = 0;
+	da->io_nb = 0;
+	da->i_in_quotes = 0;
+	da->o_in_quotes = 0;
+	da->nb_delim = 0;
+	da->in_delim = 0;
+	da->o_append = 0;
+	da->nb_append = 0;
+	da->args_tab = NULL;
+	da->nb_args = 0;
+	da->i_args = 0;
+	da->pos_cmd = 0;
+	da->words = NULL;
+	da->nb_d = 0;
+	da->q_heredoc = 0;
 }

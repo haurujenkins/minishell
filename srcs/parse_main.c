@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 11:10:09 by abolea            #+#    #+#             */
-/*   Updated: 2024/05/23 15:15:07 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/23 16:26:16 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,15 @@ int	check_error(char *rl)
 	i = 0;
 	if (rl != NULL && *rl == '\0')
 		return (0);
+	if ((rl[i] == '>' || rl[i] == '<') && !rl[i + 1])
+		return (-1);
 	if (rl[i] == '|' || rl[i] == ':' || rl[i] == '!')
 		return (-1);
+	while (rl[i])
+		i++;
+	if (rl[i - 1] == '>' || rl[i - 1] == '<' || rl[i - 1] == '|')
+		return (-1);
+	i = 0;
 	while (rl[i])
 	{
 		if (rl[i] == 34 || rl[i] == 39)
@@ -62,8 +69,6 @@ int	check_error(char *rl)
 			return (-1);
 		i++;
 	}
-	if (rl[i - 1] == '|' || rl[i - 1] == '>' || rl[i - 1] == '<')
-		return (-1);
 	return (0);
 }
 
@@ -83,7 +88,6 @@ void	free_words_and_temp_args(char **temp_args, char **words)
 	words = NULL;
 }
 
-
 int	fill_all_tab(t_data *da, char **words, char **temp_args, int i)
 {
 	int	num_w;
@@ -95,7 +99,8 @@ int	fill_all_tab(t_data *da, char **words, char **temp_args, int i)
 	if (da->args[i] == NULL)
 		return (1);
 	da->args[i][0] = fill_cmd(words);
-	da->args[i][1] = NULL;
+	if (da->args[i][0])
+		da->args[i][1] = NULL;
 	da->pos_cmd = pos_cmd(words);
 	da->io_nb = 0;
 	fill_args_tab(da, words, i);
@@ -150,6 +155,7 @@ int	main(int argc, char **argv, char **envp)
 	if (argc != 1 || argv[0][0] == '\0')
 		printf("ERROR\n");
 	set_all(&da, envp);
+	set_parse(&da);
 	while (1)
 	{
 		signal(SIGINT, sigint_handler_main);
@@ -188,8 +194,8 @@ int	main(int argc, char **argv, char **envp)
 					//free_struct(&da);
 				}
 			}
-			add_history(rl);
 			del_tmpfiles(&da, 0);
+			add_history(rl);
 		}
 		free(rl);
 	}
