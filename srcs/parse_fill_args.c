@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 15:37:45 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/23 17:39:33 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/24 15:45:51 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -231,9 +231,10 @@ char	*sup_dollar_before_quotes(char *s)
 	j = 0;
 	len = len_without_dollar_before_quotes(s);
 	res = malloc((len + 1) * sizeof(char));
+	printf("s = %s\n", s);
 	while(s[i])
 	{
-		if (s[i] == '$' && s[i + 1] == 34)
+		if (s[i - 1] > 0 && s[i] < 0 && s[i + 1] == 34)
 			i++;
 		else
 		{
@@ -247,7 +248,7 @@ char	*sup_dollar_before_quotes(char *s)
 	return (res);
 }
 
-char	*dollar_after_heredoc(char *s)
+char	*dollar_after_heredoc(char *s, t_data *da)
 {
 	int	i;
 	int	j;
@@ -264,6 +265,7 @@ char	*dollar_after_heredoc(char *s)
 				j--;
 			if (s[j - 1] == '<' && s[j - 2] == '<')
 			{
+				da->if_heredoc = 1;
 				s[i] *= -1;
  				break ;
 			}
@@ -296,6 +298,7 @@ char	**new_temp_args(t_data *da, char **temp_args)
 	int	tmp_d;
 
 	i = 0;
+	da->if_heredoc = 0;
 	while (i < da->pnum)
 	{
 		da->nb_d = nb_dollars(temp_args[i]);
@@ -303,17 +306,21 @@ char	**new_temp_args(t_data *da, char **temp_args)
 		temp_args[i] = dollar_negative_in_s_quote(temp_args[i]);
 		while (tmp_d > 0)
 		{
-			temp_args[i] = dollar_after_heredoc(temp_args[i]);
+			temp_args[i] = dollar_after_heredoc(temp_args[i], da);
 			tmp_d--;
 		}
 		heredoc_double_quotes(temp_args[i], da);
-		while (da->nb_d > 0)
+		if (da->if_heredoc == 0)
 		{
-			// temp_args[i] = sup_d_quotes_before_dollar(temp_args[i]);
-			temp_args[i] = sup_s_quotes_before_dollar(temp_args[i]);
-			temp_args[i] = temp_without_dollar(da, temp_args[i]);
-			da->nb_d--;
+			while (da->nb_d > 0)
+			{
+				// temp_args[i] = sup_d_quotes_before_dollar(temp_args[i]);
+				temp_args[i] = sup_s_quotes_before_dollar(temp_args[i]);
+				temp_args[i] = temp_without_dollar(da, temp_args[i]);
+				da->nb_d--;
+			}
 		}
+		printf("t = %s\n", temp_args[i]);
 		temp_args[i] = sup_d_quotes_before_dollar(temp_args[i]);
 		temp_args[i] = sup_dollar_before_quotes(temp_args[i]);
 		if (temp_args[i] == NULL)
