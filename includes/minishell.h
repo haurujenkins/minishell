@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 14:48:53 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/24 15:46:24 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/24 19:05:38 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,11 @@ int		outfile_extern_error(t_data *da, int index, int i);
 void	check_infile(t_data *da, int index);
 void	check_outfile(t_data *da, int index);
 void	exit_free(t_data *da);
+void	sigquit_handler_child(int signum);
+void	sigint_handler_child(int signum);
+void	sigint_handler_main(int signum);
 void	sigint_handler(int signum);
+void	sigquit_handler_doc(t_data *da);
 void	set_flag(void);
 int		heredoc_replace(t_data *da, int index);
 void	del_tmpfiles(t_data *da, int index);

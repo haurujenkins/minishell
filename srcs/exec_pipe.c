@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 14:52:20 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/24 15:46:11 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/24 18:35:41 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,8 @@ void	set_pipe(t_data *da)
 void	free_pipe(t_data *da)
 {
 	da->i = 0;
+	if (da->pipefd == NULL || da->pnum < 2)
+		return ;
 	while (da->i < da->pnum)
 	{
 		free(da->pipefd[da->i]);

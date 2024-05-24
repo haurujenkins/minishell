@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 15:37:45 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/24 15:45:51 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/24 16:42:17 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -231,7 +231,6 @@ char	*sup_dollar_before_quotes(char *s)
 	j = 0;
 	len = len_without_dollar_before_quotes(s);
 	res = malloc((len + 1) * sizeof(char));
-	printf("s = %s\n", s);
 	while(s[i])
 	{
 		if (s[i - 1] > 0 && s[i] < 0 && s[i + 1] == 34)
@@ -320,7 +319,6 @@ char	**new_temp_args(t_data *da, char **temp_args)
 				da->nb_d--;
 			}
 		}
-		printf("t = %s\n", temp_args[i]);
 		temp_args[i] = sup_d_quotes_before_dollar(temp_args[i]);
 		temp_args[i] = sup_dollar_before_quotes(temp_args[i]);
 		if (temp_args[i] == NULL)

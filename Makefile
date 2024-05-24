@@ -6,6 +6,7 @@ SRCS			=	parse_main.c \
 					exec_pipex.c \
 					exec_pipe.c \
 					exec_files.c \
+					exec_handlers.c \
 					exec_builtins.c \
 					exec_check_builtins.c \
 					exec_export.c \

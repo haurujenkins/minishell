@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 11:10:09 by abolea            #+#    #+#             */
-/*   Updated: 2024/05/24 15:45:40 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/24 19:04:00 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,19 +134,9 @@ int	parsing(char *rl, t_data *da)
 		i++;
 	}
 	free_words_and_temp_args(temp_args, words);
-	//print_args(i, da->pnum, da);
+	print_args(i, da->pnum, da);
 	return (0);
 }
-
-void	sigint_handler_main(int signum)
-{
-	(void)signum;
-	write(1, "\n", 1);
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
-	stop_execution = 1;
-} 
 
 int	main(int argc, char **argv, char **envp)
 {
@@ -173,7 +163,7 @@ int	main(int argc, char **argv, char **envp)
 			write(1, "exit\n", 5);
 			//free_struct(&da);
 			break ;
-		}		
+		}	
 		if (check_error(rl))
 		{
 			da.exit_status = 2;
@@ -189,8 +179,8 @@ int	main(int argc, char **argv, char **envp)
 			{
 				if (!(heredoc_replace(&da, 0) == -1))
 				{
-					signal(SIGINT, sigint_handler);
-					print_args(0, da.pnum, &da);
+					//signal(SIGINT, sigint_handler_main);
+					//print_args(0, da.pnum, &da);
 					if (da.pnum > 0)
 						main_exec(&da, envp);
 				}
