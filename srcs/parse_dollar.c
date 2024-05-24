@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 16:20:22 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/23 16:29:42 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/24 16:24:33 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,14 +151,8 @@ char	*after_dollar(char *s)
 		i++;
 	if (ft_isalnum(s[i + 1]) != 1 && s[i + 1] != '?' && s[i + 1] != 34 && s[i + 1] != 39)
 		return (NULL);
-	if (i > 1)
-	{
-		if (s[i - 1] != 39)
-			i++;
-	}
-	if (i == 0)
-		i++;
-	while (ft_isalnum(s[i]) == 1 || s[i] == '?' || s[i] == 39)
+	i++;
+	while (ft_isalnum(s[i]) == 1 || s[i] == '?')
 	{
 		tmp[j] = s[i];
 		i++;
@@ -225,7 +219,9 @@ char	*temp_without_dollar(t_data *da, char *temp_args)
 	s_quote = 0;
 	before_args = after_dollar(temp_args);
 	if (before_args == NULL)
+	{
 		return (temp_args);
+	}
 	// if (before_args[0] == '$')
 	// 	s_quote = 2;
 	if (s_quote != 0)

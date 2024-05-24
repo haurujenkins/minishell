@@ -6,11 +6,34 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 11:10:09 by abolea            #+#    #+#             */
-/*   Updated: 2024/05/24 14:20:50 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/24 15:56:13 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+int	check_quote_close(char	*rl)
+{
+	int	i;
+	int	d_quote;
+	int	s_quote;
+
+	i = 0;
+	d_quote = 1;
+	s_quote = 1;
+	while (rl[i])
+	{
+		if (rl[i] == 34 && s_quote > 0)
+			d_quote *= -1;
+		if (rl[i] == 39 && d_quote > 0)
+			s_quote *= -1;
+		i++;
+	}
+	if (d_quote < 0 || s_quote < 0)
+		return (-1);
+	else
+		return (0);
+}
 
 int	check_rl(char *rl, int i)
 {
@@ -50,6 +73,8 @@ int	check_error(char *rl)
 	i = 0;
 	if (rl != NULL && *rl == '\0')
 		return (0);
+	if (check_quote_close(rl) == -1)
+		return (-1);
 	if ((rl[i] == '>' || rl[i] == '<') && !rl[i + 1])
 		return (-1);
 	if (rl[i] == '|' || rl[i] == ':' || rl[i] == '!')
@@ -78,7 +103,7 @@ void	free_words_and_temp_args(char **temp_args, char **words)
 {
 	int	i;
 	int	num_w;
-	
+
 	i = -1;
 	while (temp_args[++i] != NULL)
 		free(temp_args[i]);
@@ -134,7 +159,7 @@ int	parsing(char *rl, t_data *da)
 		i++;
 	}
 	free_words_and_temp_args(temp_args, words);
-	print_args(i, da->pnum, da);
+	//print_args(i, da->pnum, da);
 	return (0);
 }
 
@@ -170,6 +195,7 @@ int	main(int argc, char **argv, char **envp)
 		}
 		if (!rl)
 		{
+			write(1, "exit\n", 5);
 			//free_struct(&da);
 			break ;
 		}		
@@ -180,7 +206,7 @@ int	main(int argc, char **argv, char **envp)
 			add_history(rl);
 			continue ;
 		}
-		if (rl[0])
+		if (rl && *rl != '\0')
 		{
 			if (parsing(rl, &da) == 1)
 				free_struct(&da);
@@ -190,13 +216,12 @@ int	main(int argc, char **argv, char **envp)
 				{
 					signal(SIGINT, sigint_handler);
 					print_args(0, da.pnum, &da);
-					if (da.args[0][0])
+					if (da.pnum > 0)
 						main_exec(&da, envp);
-					// free_struct(&da);
-					add_history(rl);
 				}
 			}
-			del_tmpfiles(&da, 0);
+			free_struct(&da);
+			add_history(rl);
 		}
 		free(rl);
 	}

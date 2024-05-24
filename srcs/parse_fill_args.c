@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 15:37:45 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/24 14:17:39 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/24 17:02:03 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,6 +196,7 @@ char *sup_d_quotes_before_dollar(char *s)
 		}
 	}
 	res[j] = '\0';
+	free(s);
 	return (res);
 }
 
@@ -230,10 +231,9 @@ char	*sup_dollar_before_quotes(char *s)
 	j = 0;
 	len = len_without_dollar_before_quotes(s);
 	res = malloc((len + 1) * sizeof(char));
-	printf("s = %s\n", s);
 	while(s[i])
 	{
-		if (s[i - 1] > 0 && s[i] < 0 && s[i + 1] == 34)
+		if (s[i - 1] > 0 && s[i] < 0 && (s[i + 1] == 34 || s[i + 1] == 39))
 			i++;
 		else
 		{
@@ -243,6 +243,7 @@ char	*sup_dollar_before_quotes(char *s)
 		}
 	}
 	res[j] = '\0';
+	free(s);
 	return (res);
 }
 
@@ -290,6 +291,37 @@ void	heredoc_double_quotes(char *s, t_data *da)
 	}
 }
 
+char	*add_s_quote(char *s)
+{
+	int		i;
+	int		j;
+	int		len;
+	char	*tmp;
+
+	i = 0;
+	j = 0;
+	while (ft_isalnum(s[i]) != 1)
+		i++;
+	len = i;
+	if (s[i - 1] != 39)
+		return (s);
+	i = 0;
+	tmp = malloc((ft_strlen(s) + 2) * sizeof(char));
+	while (s[i])
+	{
+		if (i > len && s[i] == 34)
+		{
+			tmp[j] = 39;
+			j++;
+		}
+		tmp[j] = s[i];
+		j++;
+		i++;
+	}
+	tmp[i] = '\0';
+	return (tmp);
+}
+
 char	**new_temp_args(t_data *da, char **temp_args)
 {
 	int	i;
@@ -315,10 +347,10 @@ char	**new_temp_args(t_data *da, char **temp_args)
 				// temp_args[i] = sup_d_quotes_before_dollar(temp_args[i]);
 				temp_args[i] = sup_s_quotes_before_dollar(temp_args[i]);
 				temp_args[i] = temp_without_dollar(da, temp_args[i]);
+				temp_args[i] = add_s_quote(temp_args[i]);
 				da->nb_d--;
 			}
 		}
-		printf("t = %s\n", temp_args[i]);
 		temp_args[i] = sup_d_quotes_before_dollar(temp_args[i]);
 		temp_args[i] = sup_dollar_before_quotes(temp_args[i]);
 		if (temp_args[i] == NULL)
