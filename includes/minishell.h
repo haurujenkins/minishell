@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 14:48:53 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/23 11:44:36 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/24 14:16:19 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ typedef struct data_s
 	t_signals	mysignal;
 	int			nb_d;
 	int			q_heredoc;
+	int			if_heredoc;
 }				t_data;
 
 void	get_args(t_data *da, char **envp, int index);

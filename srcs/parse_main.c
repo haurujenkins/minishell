@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 11:10:09 by abolea            #+#    #+#             */
-/*   Updated: 2024/05/23 15:18:36 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/24 14:20:50 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 int	check_rl(char *rl, int i)
 {
+	if (rl[i] == '|' && rl[i + 1] == '|')
+		return (-1);
 	if (rl[i] == '<' && rl[i + 1] == '>')
 		return (-1);
 	else if (rl[i] == '>' && rl[i + 1] == '<')
@@ -191,10 +193,10 @@ int	main(int argc, char **argv, char **envp)
 					if (da.args[0][0])
 						main_exec(&da, envp);
 					// free_struct(&da);
+					add_history(rl);
 				}
 			}
 			del_tmpfiles(&da, 0);
-			add_history(rl);
 		}
 		free(rl);
 	}

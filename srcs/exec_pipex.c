@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 13:01:33 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/03 15:57:06 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/23 15:57:32 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,7 @@ void	get_args(t_data *da, char **envp, int index)
 	{
 		da->cmd1 = malloc(sizeof(char *) * 2);
 		da->cmd1[0] = ft_strdup(da->args[index][0]);
+		da->cmd1[1] = NULL;
 	}
 	else
 	{
