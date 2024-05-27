@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_append.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 14:28:18 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/24 15:46:04 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/27 14:56:54 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,8 @@ char	*sup_append(char *s)
 	in_quotes = 1;
 	len = len_without_append(s);
 	tmp = malloc((len + 1) * sizeof(char));
+	if (!tmp)
+		return (NULL);
 	while (s[i])
 	{
 		if (s[i] == 34 || s[i] == 39)

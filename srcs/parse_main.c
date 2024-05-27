@@ -6,34 +6,11 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 11:10:09 by abolea            #+#    #+#             */
-/*   Updated: 2024/05/24 15:56:13 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/27 16:22:39 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-int	check_quote_close(char	*rl)
-{
-	int	i;
-	int	d_quote;
-	int	s_quote;
-
-	i = 0;
-	d_quote = 1;
-	s_quote = 1;
-	while (rl[i])
-	{
-		if (rl[i] == 34 && s_quote > 0)
-			d_quote *= -1;
-		if (rl[i] == 39 && d_quote > 0)
-			s_quote *= -1;
-		i++;
-	}
-	if (d_quote < 0 || s_quote < 0)
-		return (-1);
-	else
-		return (0);
-}
 
 int	check_rl(char *rl, int i)
 {
@@ -73,8 +50,6 @@ int	check_error(char *rl)
 	i = 0;
 	if (rl != NULL && *rl == '\0')
 		return (0);
-	if (check_quote_close(rl) == -1)
-		return (-1);
 	if ((rl[i] == '>' || rl[i] == '<') && !rl[i + 1])
 		return (-1);
 	if (rl[i] == '|' || rl[i] == ':' || rl[i] == '!')
@@ -108,6 +83,7 @@ void	free_words_and_temp_args(char **temp_args, char **words)
 	while (temp_args[++i] != NULL)
 		free(temp_args[i]);
 	free(temp_args);
+	temp_args = NULL;
 	num_w = -1;
 	while (words[++num_w] != NULL)
 		free(words[num_w]);
@@ -150,28 +126,55 @@ int	parsing(char *rl, t_data *da)
 	if (temp_args == NULL)
 		return (printf ("Error: malloc failed\n"), 1);
 	if (init_malloc(temp_args, da) == 1)
+	{
+		free_words_and_temp_args(temp_args, words);
 		return (1);
+	}
 	while (i < da->pnum)
 	{
+		temp_args[i] = sup_tab(temp_args[i]);
+		if (!temp_args[i])
+			return (1);
 		words = init_words(temp_args, i);
+		if (!words)
+			return (1);
 		if (fill_all_tab(da, words, temp_args, i) == 1)
 			return (printf("Error: malloc failed\n"), 1);
 		i++;
 	}
 	free_words_and_temp_args(temp_args, words);
-	//print_args(i, da->pnum, da);
+	print_args(i, da->pnum, da);
 	return (0);
 }
 
-void	sigint_handler_main(int signum)
+void	if_sig(t_data *da)
 {
-	(void)signum;
-	write(1, "\n", 1);
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
-	stop_execution = 1;
-} 
+	signal(SIGINT, sigint_handler_main);
+	signal(SIGQUIT, SIG_IGN);
+	if (stop_execution == 1)
+	{
+		stop_execution = 0;
+		da->exit_status = 130;
+	}
+}
+
+void	if_rl(char *rl, t_data *da, char **envp)
+{
+	if (parsing(rl, da) == 1)
+		free_struct(da);
+	else
+	{
+		if (!(heredoc_replace(da, 0) == -1))
+		{
+			//signal(SIGINT, sigint_handler_main);
+			//print_args(0, da.pnum, &da);
+			if (da->pnum > 0)
+				main_exec(da, envp);
+		}
+	}
+	free_struct(da);
+	add_history(rl);
+}
 
 int	main(int argc, char **argv, char **envp)
 {
@@ -185,20 +188,14 @@ int	main(int argc, char **argv, char **envp)
 	set_parse(&da);
 	while (1)
 	{
-		signal(SIGINT, sigint_handler_main);
-		signal(SIGQUIT, SIG_IGN);
+		if_sig(&da);
 		rl = readline("\033[1;36m<3 \033[0;37m");
-		if (stop_execution == 1)
-		{
-			stop_execution = 0;
-			da.exit_status = 130;
-		}
 		if (!rl)
 		{
 			write(1, "exit\n", 5);
-			//free_struct(&da);
+			// free_struct(&da);
 			break ;
-		}		
+		}	
 		if (check_error(rl))
 		{
 			da.exit_status = 2;
@@ -207,22 +204,7 @@ int	main(int argc, char **argv, char **envp)
 			continue ;
 		}
 		if (rl && *rl != '\0')
-		{
-			if (parsing(rl, &da) == 1)
-				free_struct(&da);
-			else
-			{
-				if (!(heredoc_replace(&da, 0) == -1))
-				{
-					signal(SIGINT, sigint_handler);
-					print_args(0, da.pnum, &da);
-					if (da.pnum > 0)
-						main_exec(&da, envp);
-				}
-			}
-			free_struct(&da);
-			add_history(rl);
-		}
+			if_rl(rl, &da, envp);
 		free(rl);
 	}
 	return (0);

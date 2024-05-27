@@ -6,23 +6,11 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 11:49:04 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/24 15:46:17 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/24 19:06:46 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-void	sigint_handler_child()
-{
-	printf("\n");
-	stop_execution = 1;
-}
-
-void	sigquit_handler_child()
-{
-	printf("Quit (core dumped)\n");
-	stop_execution = 2;
-}
 
 void	exec_child(t_data *da, int index, char **envp)
 {

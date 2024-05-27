@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 11:12:16 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/23 16:01:48 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/24 16:34:23 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,24 @@
 void	my_env(char **env, int num, int j)
 {
 	int	i;
+	int	k;
 
 	i = -1;
 	if (num == 1)
+	{
 		while (env[++i] != NULL)
-			printf("%s\n", env[i]);
+		{
+			k = 0;
+			while (env[i][k])
+			{
+				if (env[i][k] == '=')
+					break ;
+				k++;
+			}
+			if (env[i][k] == '=')
+				printf("%s\n", env[i]);
+		}
+	}
 	else
 	{
 		while (env[++i] != NULL)

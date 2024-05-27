@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_heredoc.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 13:57:06 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/21 14:00:22 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/24 19:05:11 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,6 @@
 #define MAX_RANDOM_BYTES 8
 
 volatile sig_atomic_t stop_execution = 0;
-
-void	sigint_handler(int signum)
-{
-	(void)signum;
-	stop_execution = 1;
-	rl_done = 1;
-}
 
 int	rl_hook_function(void)
 {
@@ -42,15 +35,6 @@ void	count_delim(t_data *da, int index)
 			da->mysignal.nb_delim++;
 		i++;
 	}
-}
-
-void	sigquit_handler_doc(t_data *da)
-{
-	da->mysignal.nb_delim--;
-	printf("bash: warning: here-document delimited by end-of-file (wanted `%s')\n", da->mysignal.endof);
-	if (da->mysignal.nb_delim == 0)
-		return ;
-	da->mysignal.exit = 1;
 }
 
 char *generate_tmpfile_name(int i)
@@ -105,23 +89,33 @@ char *read_until_delimiter(char *delimiter, t_data *da)
 	da->mysignal.exit = 0;
 	da->mysignal.endof = delimiter;
 	fd = open(tmpfile_name, O_WRONLY | O_CREAT | O_TRUNC, 0600);
+	if (fd == -1)
+	{
+		perror("open");
+		return (NULL);
+	}
 	rl_event_hook = rl_hook_function;
 	while (1)
 	{
 		if (da->mysignal.exit == 1)
-			return (tmpfile_name);
+			return (rl_event_hook = NULL, tmpfile_name);
 		rl_callback_handler_install("> ", NULL);
 		line = readline(NULL);
 		rl_callback_handler_remove();
 		if (stop_execution == 1)
 		{
-			return (tmpfile_name);
+			close(fd);
+			da->exit_status = 130;
+			return (rl_event_hook = NULL, tmpfile_name);
 		}
 		if (!line)
 		{
+			close(fd);
 			sigquit_handler_doc(da);
-			return (tmpfile_name);
+			return (rl_event_hook = NULL, tmpfile_name);
 		}
+		if (line[0] == '\0')
+			printf("> \n");
 		if (strcmp(line, delimiter) == 0)
 		{
 			free(line);
@@ -132,12 +126,13 @@ char *read_until_delimiter(char *delimiter, t_data *da)
 		if (write(fd, line, strlen(line)) == -1)
 		{
 			perror("Erreur lors de l'écriture dans le fichier temporaire");
-			exit(EXIT_FAILURE);
+			return (rl_event_hook = NULL, NULL);
 		}
 		write(fd, "\n", 1);
 		free(line);
 	}
 	close(fd);
+	rl_event_hook = NULL;
 	return (tmpfile_name);
 }
 

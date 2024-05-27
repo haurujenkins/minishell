@@ -6,75 +6,11 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 15:37:45 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/24 17:02:03 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/27 16:29:45 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-int	pos_cmd(char **words)
-{
-	int	j;
-
-	j = 1;
-	if (!words[0])
-		return (-1);
-	if (words[0] && (words[0][0] != '<' && words[0][0] != '>'))
-		return (0);
-	while (words[j])
-	{
-		if ((words[j - 1][0] != '<' && words[j - 1][0] != '>') && \
-		(words[j][0] != '>' && words[j][0] != '<'))
-			return (j);
-		j++;
-	}
-	return (-1);
-}
-
-int	len_cmd(char *words)
-{
-	int		i;
-
-	i = 0;
-	while ((words[i] != '>' && words[i] != '<') && words[i])
-		i++;
-	return (i);
-}
-
-char	*get_cmd(char *words)
-{
-	char	*args;
-	int		i;
-	int		len;
-
-	i = 0;
-	len = len_cmd(words);
-	args = malloc((len + 1) * sizeof(char));
-	if (!args)
-		return (NULL);
-	while ((words[i] != '>' && words[i] != '<') && words[i])
-	{
-		args[i] = words[i];
-		i++;
-	}
-	args[i] = '\0';
-	return (args);
-}
-
-char	*fill_cmd(char **words)
-{
-	char	*args;
-	int		i;
-
-	i = pos_cmd(words);
-	if (i == -1)
-		args = NULL;
-	else
-		args = get_cmd(words[i]);
-	if (args)
-		args = cpy_args_without_quotes(args);
-	return (args);
-}
 
 int	pos_args(t_data *da, char **words)
 {
@@ -138,6 +74,7 @@ char *sup_s_quotes_before_dollar(char *s)
 		i++;
 	}
 	res[j] = '\0';
+	free (s);
 	return (res);
 }
 
@@ -209,8 +146,16 @@ int	len_without_dollar_before_quotes(char *s)
 	j = 0;
 	while(s[i])
 	{
-		if (s[i] == '$' && s[i + 1] == 34)
-			i++;
+		if (i > 1 && (int)ft_strlen(s) > i)
+		{
+			if (s[i - 1] > 0 && s[i] < 0 && (s[i + 1] == 34 || s[i + 1] == 39))
+				i++;
+			else
+			{
+				i++;
+				j++;
+			}
+		}
 		else
 		{
 			i++;
@@ -233,8 +178,17 @@ char	*sup_dollar_before_quotes(char *s)
 	res = malloc((len + 1) * sizeof(char));
 	while(s[i])
 	{
-		if (s[i - 1] > 0 && s[i] < 0 && (s[i + 1] == 34 || s[i + 1] == 39))
-			i++;
+		if (i > 1 && (int)ft_strlen(s) > i)
+		{
+			if (s[i - 1] > 0 && s[i] < 0 && (s[i + 1] == 34 || s[i + 1] == 39))
+				i++;
+			else
+			{
+				res[j] = s[i];
+				i++;
+				j++;
+			}
+		}
 		else
 		{
 			res[j] = s[i];
@@ -243,7 +197,7 @@ char	*sup_dollar_before_quotes(char *s)
 		}
 	}
 	res[j] = '\0';
-	free(s);
+	free (s);
 	return (res);
 }
 
@@ -303,8 +257,11 @@ char	*add_s_quote(char *s)
 	while (ft_isalnum(s[i]) != 1)
 		i++;
 	len = i;
-	if (s[i - 1] != 39)
-		return (s);
+	if (i > 1)
+	{
+		if (s[i - 1] != 39)
+			return (s);
+	}
 	i = 0;
 	tmp = malloc((ft_strlen(s) + 2) * sizeof(char));
 	while (s[i])
@@ -319,10 +276,11 @@ char	*add_s_quote(char *s)
 		i++;
 	}
 	tmp[i] = '\0';
+	free (s);
 	return (tmp);
 }
 
-char	**new_temp_args(t_data *da, char **temp_args)
+void	new_temp_args(t_data *da, char **temp_args)
 {
 	int	i;
 	int	tmp_d;
@@ -351,28 +309,30 @@ char	**new_temp_args(t_data *da, char **temp_args)
 				da->nb_d--;
 			}
 		}
-		temp_args[i] = sup_d_quotes_before_dollar(temp_args[i]);
-		temp_args[i] = sup_dollar_before_quotes(temp_args[i]);
+		if (nb_dollars(temp_args[i]) != 0)
+		{
+			temp_args[i] = sup_d_quotes_before_dollar(temp_args[i]);
+			temp_args[i] = sup_dollar_before_quotes(temp_args[i]);
+		}
 		if (temp_args[i] == NULL)
 		{
 			write(2, "Error: malloc failed\n", 21);
-			return (NULL);
+			return ;
 		}
 		temp_args[i] = sup_delim(temp_args[i]);
 		if (temp_args[i] == NULL)
 		{
 			write(2, "Error: malloc failed\n", 21);
-			return (NULL);
+			return ;
 		}
 		temp_args[i] = sup_append(temp_args[i]);
 		if (temp_args[i] == NULL)
 		{
 			write(2, "Error: malloc failed\n", 21);
-			return (NULL);
+			return ;
 		}
 		i++;
 	}
-	return (temp_args);
 }
 
 int ft_nb_args(t_data *da, char **words)

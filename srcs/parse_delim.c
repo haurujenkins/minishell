@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 14:38:28 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/21 13:30:17 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/27 14:57:22 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,8 @@ char	*sup_delim(char *s)
 	in_quotes = 1;
 	len = len_without_delim(s);
 	tmp = malloc((len + 1) * sizeof(char));
+	if (!tmp)
+		return (NULL);
 	while (s[i])
 	{
 		if (s[i] == 34 || s[i] == 39)
