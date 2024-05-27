@@ -3,10 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   parse_fill_args.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 15:37:45 by lle-pier          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2024/05/27 16:29:45 by abolea           ###   ########.fr       */
+=======
+/*   Updated: 2024/05/24 16:42:17 by lle-pier         ###   ########.fr       */
+>>>>>>> main
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,7 +201,11 @@ char	*sup_dollar_before_quotes(char *s)
 		}
 	}
 	res[j] = '\0';
+<<<<<<< HEAD
 	free (s);
+=======
+	free(s);
+>>>>>>> main
 	return (res);
 }
 
