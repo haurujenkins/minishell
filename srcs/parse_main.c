@@ -6,11 +6,34 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 11:10:09 by abolea            #+#    #+#             */
-/*   Updated: 2024/05/27 16:38:13 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/27 17:45:37 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+int	check_quote_close(char	*rl)
+{
+	int	i;
+	int	d_quote;
+	int	s_quote;
+
+	i = 0;
+	d_quote = 1;
+	s_quote = 1;
+	while (rl[i])
+	{
+		if (rl[i] == 34 && s_quote > 0)
+			d_quote *= -1;
+		if (rl[i] == 39 && d_quote > 0)
+			s_quote *= -1;
+		i++;
+	}
+	if (d_quote < 0 || s_quote < 0)
+		return (-1);
+	else
+		return (0);
+}
 
 int	check_rl(char *rl, int i)
 {
@@ -50,6 +73,8 @@ int	check_error(char *rl)
 	i = 0;
 	if (rl != NULL && *rl == '\0')
 		return (0);
+	if (check_quote_close(rl) == -1)
+		return (-1);
 	if ((rl[i] == '>' || rl[i] == '<') && !rl[i + 1])
 		return (-1);
 	if (rl[i] == '|' || rl[i] == ':' || rl[i] == '!')
@@ -112,6 +137,33 @@ int	fill_all_tab(t_data *da, char **words, char **temp_args, int i)
 	return (0);
 }
 
+void	free_words(char **words)
+{
+	int	j;
+
+	j = 0;
+	while (words[j])
+	{
+		free (words[j]);
+		j++;
+	}
+	free (words);
+	words = NULL;
+}
+
+void	free_temp_args(char **temp_args)
+{
+	int	j;
+
+	j = 0;
+	while (temp_args[j])
+	{
+		free (temp_args[j]);
+		j++;
+	}
+	free (temp_args);
+	temp_args = NULL;
+}
 
 int	parsing(char *rl, t_data *da)
 {
@@ -140,10 +192,11 @@ int	parsing(char *rl, t_data *da)
 			return (1);
 		if (fill_all_tab(da, words, temp_args, i) == 1)
 			return (printf("Error: malloc failed\n"), 1);
+		free_words(words);
 		i++;
 	}
-	free_words_and_temp_args(temp_args, words);
-	print_args(i, da->pnum, da);
+	free_temp_args(temp_args);
+	// print_args(i, da->pnum, da);
 	return (0);
 }
 
