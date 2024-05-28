@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_check_builtins.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 13:33:51 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/23 16:04:07 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/28 12:44:50 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,7 @@ int	check_extern_builtins(t_data *da, char **envp, int index)
 				if (check_unset(da, i) == 0)
 					my_unset(da, i);
 			}
+			free_cmd(da);
 			return (1);
 		}
 	}

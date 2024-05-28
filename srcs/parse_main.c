@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 11:10:09 by abolea            #+#    #+#             */
-/*   Updated: 2024/05/28 11:42:46 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/28 12:44:00 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -237,8 +237,9 @@ void	if_rl(char *rl, t_data *da, char **envp)
 
 int	main(int argc, char **argv, char **envp)
 {
-	char			*rl;
-	t_data			da;
+	char	*rl;
+	t_data	da;
+	int		i;
 
 	(void)envp;
 	if (argc != 1 || argv[0][0] == '\0')
@@ -252,7 +253,10 @@ int	main(int argc, char **argv, char **envp)
 		if (!rl)
 		{
 			write(1, "exit\n", 5);
-			// free_struct(&da);
+			i = -1;
+			while (da.my_env[++i] != NULL)
+				free(da.my_env[i]);
+			free(da.my_env);
 			break ;
 		}	
 		if (check_error(rl))
