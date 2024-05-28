@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 15:37:45 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/27 16:38:33 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/28 12:34:02 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,8 @@ char *sup_s_quotes_before_dollar(char *s)
 	j = 0;
 	s_quotes = 0;
 	res = malloc((s_quotes_dollar(s) + 1) * sizeof(char));
+	if (!res)
+		return (NULL);
 	while (s[i])
 	{
 		if (s[i] == 39 && s[i + 1] == 39 && s[i + 2] == '$')
@@ -116,6 +118,8 @@ char *sup_d_quotes_before_dollar(char *s)
 	j = 0;
 	d_quotes = 0;
 	res = malloc((d_quotes_dollar(s) + 1) * sizeof(char));
+	if (!res)
+		return (NULL);
 	while (s[i])
 	{
 		if (s[i] == 34 && s[i + 1] == '$')
@@ -176,6 +180,8 @@ char	*sup_dollar_before_quotes(char *s)
 	j = 0;
 	len = len_without_dollar_before_quotes(s);
 	res = malloc((len + 1) * sizeof(char));
+	if (!res)
+		return (NULL);
 	while(s[i])
 	{
 		if (i > 1 && (int)ft_strlen(s) > i)
@@ -264,6 +270,8 @@ char	*add_s_quote(char *s)
 	}
 	i = 0;
 	tmp = malloc((ft_strlen(s) + 2) * sizeof(char));
+	if (!tmp)
+		return (NULL);
 	while (s[i])
 	{
 		if (i > len && s[i] == 34)
@@ -280,7 +288,7 @@ char	*add_s_quote(char *s)
 	return (tmp);
 }
 
-void	new_temp_args(t_data *da, char **temp_args)
+int	new_temp_args(t_data *da, char **temp_args)
 {
 	int	i;
 	int	tmp_d;
@@ -304,35 +312,46 @@ void	new_temp_args(t_data *da, char **temp_args)
 			{
 				// temp_args[i] = sup_d_quotes_before_dollar(temp_args[i]);
 				temp_args[i] = sup_s_quotes_before_dollar(temp_args[i]);
+				if (!temp_args)
+					return (1);
 				temp_args[i] = temp_without_dollar(da, temp_args[i]);
+				if (!temp_args)
+					return (1);
 				temp_args[i] = add_s_quote(temp_args[i]);
+				if (!temp_args)
+					return (1);
 				da->nb_d--;
 			}
 		}
 		if (nb_dollars(temp_args[i]) != 0)
 		{
 			temp_args[i] = sup_d_quotes_before_dollar(temp_args[i]);
+			if (!temp_args)
+					return (1);
 			temp_args[i] = sup_dollar_before_quotes(temp_args[i]);
+			if (!temp_args)
+					return (1);
 		}
-		if (temp_args[i] == NULL)
+		if (!temp_args[i])
 		{
-			write(2, "Error: malloc failed\n", 21);
-			return ;
+			// write(2, "Error: malloc failed\n", 21);
+			return (1);
 		}
 		temp_args[i] = sup_delim(temp_args[i]);
 		if (temp_args[i] == NULL)
 		{
-			write(2, "Error: malloc failed\n", 21);
-			return ;
+			// write(2, "Error: malloc failed\n", 21);
+			return (1);
 		}
 		temp_args[i] = sup_append(temp_args[i]);
 		if (temp_args[i] == NULL)
 		{
-			write(2, "Error: malloc failed\n", 21);
-			return ;
+			// write(2, "Error: malloc failed\n", 21);
+			return (1);
 		}
 		i++;
 	}
+	return (0);
 }
 
 int ft_nb_args(t_data *da, char **words)
@@ -401,6 +420,8 @@ char	*fill_args(t_data *da, char **words, int i)
 	else
 	{
 		args = ft_strdup("");
+		if (!args)
+			return (NULL);
 		while (words[da->i_args])
 		{
 			if (da->i_args > 2)
@@ -415,7 +436,11 @@ char	*fill_args(t_data *da, char **words, int i)
 					while (words[da->i_args][0] != '<' && words[da->i_args ][0] != '>')
 					{
 						args = ft_strjoin_ori(args, words[da->i_args]);
+						if (!args)
+							return (NULL);
 						args = cpy_args_without_quotes(args);
+						if (!args)
+							return (NULL);
 						da->i_args++;
 						return (args);
 					}
@@ -425,7 +450,11 @@ char	*fill_args(t_data *da, char **words, int i)
 				else if ((words[da->i_args][0] != '<' && words[da->i_args][0] != '>') && (words[da->i_args - 1][0] != '<' && words[da->i_args - 1][0] != '>'))
 				{
 					args = ft_strjoin_ori(args, words[da->i_args]);
+					if (!args)
+						return (NULL);
 					args = cpy_args_without_quotes(args);
+					if (!args)
+						return (NULL);
 					da->i_args++;
 					return (args);
 				}
@@ -437,7 +466,11 @@ char	*fill_args(t_data *da, char **words, int i)
 				else if ((words[da->i_args][0] != '<' && words[da->i_args][0] != '>') && (words[da->i_args - 1][0] != '<' && words[da->i_args - 1][0] != '>'))
 				{
 						args = ft_strjoin_ori(args, words[da->i_args]);
+						if (!args)
+							return (NULL);
 						args = cpy_args_without_quotes(args);
+						if (!args)
+							return (NULL);
 						da->i_args++;
 						return (args);
 				}
@@ -448,19 +481,33 @@ char	*fill_args(t_data *da, char **words, int i)
 						while ((words[da->i_args] && (words[da->i_args][0] != '<' && words[da->i_args][0] != '>')))
 						{	
 							args = ft_strjoin_ori(args, words[da->i_args]);
+							if (!args)
+								return (NULL);
 							if (words[da->i_args + 1] && (words[da->i_args + 1][0] != '<' && words[da->i_args + 1][0] != '>'))
+							{
 								args = ft_strjoin_ori(args, " ");
+								if (!args)
+									return (NULL);
+							}
 							da->i_args++;
 						}
 						if (ft_strncmp(da->args[i][0], "export", 6) != 0)
+						{
 							args = cpy_args_without_quotes(args);
+							if (!args)
+								return (NULL);
+						}
 						da->i_args++;
 						return (args);
 					}
 					else
 					{
 						args = ft_strjoin_ori(args, words[da->i_args]);
+						if (!args)
+							return (NULL);
 						args = cpy_args_without_quotes(args);
+						if (!args)
+							return (NULL);
 						da->i_args++;
 						return (args);
 					}
@@ -471,7 +518,7 @@ char	*fill_args(t_data *da, char **words, int i)
 	return (NULL);
 }
 
-void	fill_args_tab(t_data *da, char **words, int i)
+int	fill_args_tab(t_data *da, char **words, int i)
 {
 	int	j;
 
@@ -479,6 +526,8 @@ void	fill_args_tab(t_data *da, char **words, int i)
 	da->i_args = pos_args(da, words);
 	da->nb_args = ft_nb_args(da, words);
 	da->args_tab[i] = malloc((da->nb_args + 1) * sizeof(char *));
+	if (!da->args_tab[i])
+		return (1);
 	if (da->nb_args == 0)
 		da->args_tab[i][j] = NULL;
 	else
@@ -486,9 +535,12 @@ void	fill_args_tab(t_data *da, char **words, int i)
 		while (j < da->nb_args)
 		{
 			da->args_tab[i][j] = fill_args(da, words, i);
+			if (!da->args_tab[i][j])
+				return (1);
 			if (da->args_tab[i][j])
 				j++;
 		}
 		da->args_tab[i][j] = NULL;
 	}
+	return (0);
 }

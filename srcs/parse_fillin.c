@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 14:55:13 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/23 11:12:43 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/28 11:39:40 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,21 +20,29 @@ char	*recup_args_in(char *temp_args, t_data *da, char *args)
 	if (temp_args[da->io_nb] == 34 || temp_args[da->io_nb] == 39)
 	{
 		args = cpy_until_char(temp_args, ' ', da->io_nb);
+		if (!args)
+			return (NULL);
 		while ((temp_args[da->io_nb] != 34 && temp_args[da->io_nb] != 39) && temp_args[da->io_nb])
 			da->io_nb++;
 		if (if_quotes(args, 0) == 1)
 			da->q_heredoc = -1;
 		args = cpy_args_without_quotes(args);
+		if (!args)
+			return (NULL);		
 		return (args);
 	}
 	else
 	{
 		args = cpy_until_char(temp_args, ' ', da->io_nb);
+		if (!args)
+			return (NULL);		
 		while (temp_args[da->io_nb] != ' ' && temp_args[da->io_nb])
 			da->io_nb++;
 		if (if_quotes(args, 0) == 1)
 			da->q_heredoc = -1;
 		args = cpy_args_without_quotes(args);
+		if (!args)
+			return (NULL);		
 		return (args);
 	}
 }
@@ -47,22 +55,27 @@ char	*fill_input(char *temp_args, t_data *da)
 	while (temp_args[da->io_nb])
 	{
 		if (temp_args[da->io_nb] == '<' && temp_args[da->io_nb + 2])
-			return (recup_args_in(temp_args, da, args));
+		{
+			if (recup_args_in(temp_args, da, args) == NULL)
+				return (NULL);
+			else
+				return (recup_args_in(temp_args, da, args));
+		}
 		else
 			da->io_nb++;
 	}
 	return (NULL);
 }
 
-void	fill_intab(t_data *da, char *temp_args, int i)
+int	fill_intab(t_data *da, char *temp_args, int i)
 {
 	int	j;
 
 	j = 0;
 	da->nb_redir_in = ft_nb_redir(temp_args, '<');
 	da->in_tab[i] = malloc((da->nb_redir_in + 1) * sizeof(char *));
-	// if (da->in_tab[i] == NULL)
-	// 	return (write(2, "Error: malloc failed\n", 21), 1);
+	if (da->in_tab[i] == NULL)
+		return (1);
 	if (da->nb_redir_in == 0)
 		da->in_tab[i][j] = NULL;
 	else
@@ -70,9 +83,12 @@ void	fill_intab(t_data *da, char *temp_args, int i)
 		while (j < da->nb_redir_in)
 		{
 			da->in_tab[i][j] = fill_input(temp_args, da);
+			if (!da->in_tab[i][j])
+				return (1);
 			if (da->in_tab[i][j])
 				j++;
 		}
 		da->in_tab[i][j] = NULL;
 	}
+	return (0);
 }

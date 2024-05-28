@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 15:34:31 by abolea            #+#    #+#             */
-/*   Updated: 2024/05/27 16:31:45 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/28 12:32:12 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,8 @@ char	*sup_double_space(char *s)
 	s_quotes = 1;
 	len = len_without_double_space(s);
 	tmp = malloc((len + 1) * sizeof(char));
+	if (!tmp)
+		return (NULL);
 	while (s[i])
 	{
 		if (s[i] == 34 && s_quotes > 0)
@@ -131,7 +133,7 @@ char *temp_with_space(char *s)
 	len  = ft_strlen(s);
 	tmp = (char *)malloc((2 * len + 1) * sizeof(char));
 	if (tmp == NULL) 
-		printf("Erreur d'allocation de mémoire\n");
+		return (NULL);
     i = 0;
     j = 0;
     in_quotes = 1;
@@ -164,6 +166,10 @@ char *temp_with_space(char *s)
 char	*new_temp(char *s)
 {
 	s = temp_with_space(s);
+	if (!s)
+		return (NULL);
 	s = sup_double_space(s);
+	if (!s)
+		return (NULL);
 	return (s);
 }

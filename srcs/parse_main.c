@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 11:10:09 by abolea            #+#    #+#             */
-/*   Updated: 2024/05/27 17:45:37 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/28 11:42:46 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,9 +131,12 @@ int	fill_all_tab(t_data *da, char **words, char **temp_args, int i)
 		da->args[i][1] = NULL;
 	da->pos_cmd = pos_cmd(words);
 	da->io_nb = 0;
-	fill_args_tab(da, words, i);
-	fill_intab(da, temp_args[i], i);
-	fill_outab(da, temp_args[i], i);
+	if (fill_args_tab(da, words, i) == 1)
+		return (1);
+	if (fill_intab(da, temp_args[i], i) == 1)
+		return (1);
+	if (fill_outab(da, temp_args[i], i) == 1)
+		return (1);
 	return (0);
 }
 
@@ -156,13 +159,16 @@ void	free_temp_args(char **temp_args)
 	int	j;
 
 	j = 0;
-	while (temp_args[j])
+	if (temp_args[j])
 	{
-		free (temp_args[j]);
-		j++;
+		while (temp_args[j])
+		{
+			free (temp_args[j]);
+			j++;
+		}
+		free (temp_args);
+		temp_args = NULL;
 	}
-	free (temp_args);
-	temp_args = NULL;
 }
 
 int	parsing(char *rl, t_data *da)

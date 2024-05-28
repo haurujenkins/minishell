@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 16:20:22 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/27 16:37:02 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/28 11:27:44 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,8 @@ char	*recup_after_digit(char *s)
 	j = 0;
 	len = len_after_digit(s);
 	res = malloc((len + 1) * sizeof(char));
+	if (!res)
+		return (NULL);
 	if (ft_isdigit(s[0]) == 1)
 	{
 		i++;
@@ -116,6 +118,7 @@ char	*recup_after_digit(char *s)
 			i++;
 		}
 		res[j] = '\0';
+		free (s);
 		return (res);	
 	}
 	while (s[i] != 39)
@@ -129,6 +132,7 @@ char	*recup_after_digit(char *s)
 		i++;
 	}
 	res[j] = '\0';
+	free (s);
 	return (res);
 }
 
@@ -159,6 +163,7 @@ char	*after_dollar(char *s)
 		j++;
 	}
 	tmp[j] = '\0';
+	free (s);
 	return (tmp);
 }
 
@@ -185,6 +190,8 @@ char	*add_d_quotes_newargs(char *s)
 	i = 0;
 	j = 0;
 	res = malloc(((int)ft_strlen(s) + 3) * sizeof(char));
+	if (!res)
+		return (NULL);
 	while (s[i])
 	{
 		if (i == 0)
@@ -199,6 +206,7 @@ char	*add_d_quotes_newargs(char *s)
 	res[j] = 34;
 	j++;
 	res[j] = '\0';
+	free (s);
 	return (res);
 }
 
@@ -218,22 +226,48 @@ char	*temp_without_dollar(t_data *da, char *temp_args)
 	k = 0;
 	s_quote = 0;
 	before_args = after_dollar(temp_args);
-	if (before_args == NULL)
-	{
+	if (before_args == NULL) // pb si il est nul a cause du malloc (faut trouver une solution)
 		return (temp_args);
-	}
 	// if (before_args[0] == '$')
 	// 	s_quote = 2;
 	if (s_quote != 0)
 		return (cpy_args_without_s_quotes(temp_args));
 	if (nb_after_dollar(before_args) == 1)
+	{
 		new_args = recup_after_digit(before_args);
+		if (!new_args)
+		{
+			free(before_args);
+			return (NULL);
+		}
+	}
 	else if (before_args[0] == '?')
+	{
 		new_args = ft_itoa(da->exit_status);
+		if (!new_args)
+		{
+			free(before_args);
+			return (NULL);
+		}
+	}
 	else
+	{
 		new_args = find_in_env(da, before_args);
+		if (!new_args)
+		{
+			free(before_args);
+			return (NULL);
+		}
+	}
 	if (new_args[0] == 39)
+	{
 		new_args = add_d_quotes_newargs(new_args);
+		if (!new_args)
+		{
+			free(before_args);
+			return (NULL);
+		}
+	}
 	len = (ft_strlen(temp_args) - da->nb_d + ft_strlen(new_args) + s_quote + 1);
 	res = malloc((len + 1) * sizeof(char));
 	if (res == NULL)

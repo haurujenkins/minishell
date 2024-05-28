@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 13:10:19 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/27 16:37:12 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/28 10:56:09 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -230,6 +230,5 @@ void	free_struct(t_data *da)
 		}
 		free(da->delim_tab);
 	}
-	i = 0;
 	free_pipe(da);
 }

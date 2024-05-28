@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 16:50:45 by abolea            #+#    #+#             */
-/*   Updated: 2024/05/27 16:36:33 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/28 12:34:36 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ char	**init_words(char **temp_args, int i)
 	char	**words;
 	
 	temp_args[i] = new_temp(temp_args[i]);
+	if (!temp_args[i])
+		return (NULL);
 	temp_args[i] = negative_in_quotes(temp_args[i]);
 	words = ft_split(temp_args[i], ' ');
 	if (!words)
@@ -61,8 +63,7 @@ int	init_malloc(char **temp_args, t_data *da)
 		return (1);
 	if (fill_append_tab(da, temp_args) == 1)
 		return (1);
-	new_temp_args(da, temp_args);
-	if (temp_args == NULL)
+	if (new_temp_args(da, temp_args) == 1)
 		return (1);
 	da->args_tab = malloc((da->pnum + 1)* sizeof(char **));
 	if (!da->args_tab)

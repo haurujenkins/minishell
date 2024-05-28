@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 15:03:54 by abolea            #+#    #+#             */
-/*   Updated: 2024/05/27 15:06:59 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/28 11:37:02 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,16 @@ char	*fill_cmd(char **words)
 	if (i == -1)
 		args = NULL;
 	else
+	{
 		args = get_cmd(words[i]);
+		if (!args)
+			return (NULL);
+	}
 	if (args)
+	{
 		args = cpy_args_without_quotes(args);
+		if (!args)
+			return (NULL);
+	}
 	return (args);
 }
