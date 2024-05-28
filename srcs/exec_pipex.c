@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 13:01:33 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/23 15:57:32 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/28 18:06:13 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,12 @@ void	get_path(t_data *da, char **envp)
 	else
 	{
 		da->my_path = malloc(sizeof(char *) * 2);
+		if (da->my_path == NULL)
+		{
+			free_data(da, envp);
+			perror("malloc");
+			exit(EXIT_FAILURE);
+		}
 		da->my_path[0] = ft_strdup("/usr/bin");
 		da->my_path[1] = NULL;
 	}
@@ -108,6 +114,12 @@ void	get_args(t_data *da, char **envp, int index)
 	if (da->args_tab[index][0] == NULL)
 	{
 		da->cmd1 = malloc(sizeof(char *) * 2);
+		if (da->cmd1 == NULL)
+		{
+			free_data(da, envp);
+			perror("malloc");
+			exit(EXIT_FAILURE);
+		}
 		da->cmd1[0] = ft_strdup(da->args[index][0]);
 		da->cmd1[1] = NULL;
 	}
@@ -115,6 +127,12 @@ void	get_args(t_data *da, char **envp, int index)
 	{
 		da->cmd1 = malloc(sizeof(char *) * \
 		(ft_tablen(da->args_tab[index]) + 2));
+		if (da->cmd1 == NULL)
+		{
+			free_data(da, envp);
+			perror("malloc");
+			exit(EXIT_FAILURE);
+		}
 		da->cmd1[0] = ft_strdup(da->args[index][0]);
 		while (da->args_tab[index][++i] != NULL)
 		{

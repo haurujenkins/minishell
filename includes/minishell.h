@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 14:48:53 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/28 16:40:44 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/28 17:22:30 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,16 +106,20 @@ int		ft_tablen(char **tab);
 char	**ft_realloc(char **tab, int size);
 int		get_args_builtins(t_data *da, int index);
 int		my_cd(char **cmd, char **envp, t_data *da);
+int		cd_error(char *path, t_data *da);
 void	my_pwd(void);
-void	my_echo(char **cmd);
-void	my_env(char **env, int num, int j);
+int		my_echo(char **cmd, int i, int j, int flag);
+void	echo_option(bool *newline, char **cmd, int i, int *flag);
+void	my_env(char **env, int num);
 void	my_export(t_data *da, int i, int k, int return_value);
+void	print_export(char **env, int i, int j);
 int		export_errors(t_data *da, int k);
 int		char_error_export(t_data *da, int k);
 int		while_not_equal(t_data *da, int k, int i);
 void	check_export_zero(t_data *da, int i, char *temp_cmd, char *temp_value);
 void	export_pwd(t_data *da, char *temp_value);
 int		my_unset(t_data *da, int k);
+int		check_unset(t_data *da, int k);
 void	sort_env(t_data *da);
 void	free_pipe(t_data *da);
 void	free_struct(t_data *da);

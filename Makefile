@@ -8,6 +8,7 @@ SRCS			=	parse_main.c \
 					exec_files.c \
 					exec_handlers.c \
 					exec_builtins.c \
+					exec_builtins_utils.c \
 					exec_check_builtins.c \
 					exec_export.c \
 					exec_export_errors.c \

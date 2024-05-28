@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 13:33:51 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/28 16:21:15 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/28 17:12:26 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,7 +162,7 @@ int	check_builtins(t_data *da, int index)
 	if (size == 4 && ft_strchr(da->cmd1[0], "echo"))
 	{
 		outfile_error(da, index, 0);
-		return (my_echo(da->cmd1), 1);
+		return (my_echo(da->cmd1, 1, 0 ,0), 1);
 	}
 	if (size == 3 && ft_strchr(da->cmd1[0], "pwd"))
 	{
@@ -182,7 +182,7 @@ int	check_builtins(t_data *da, int index)
 			return (write(2, "\n", 1), 1);
 		}
 		outfile_error(da, index, 0);
-		return (my_env(da->my_env, 1, 0), 1);
+		return (my_env(da->my_env, 1), 1);
 	}
 	if (size == 2 && ft_strchr(da->cmd1[0], "cd"))
 	{

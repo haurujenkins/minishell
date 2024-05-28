@@ -6,13 +6,13 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 11:12:16 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/28 16:46:56 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/28 17:22:07 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	my_env(char **env, int num, int j)
+void	my_env(char **env, int num)
 {
 	int	i;
 	int	k;
@@ -35,68 +35,21 @@ void	my_env(char **env, int num, int j)
 	}
 	else
 	{
-		while (env[++i] != NULL)
-		{
-			printf("declare -x ");
-			j = -1;
-			while (env[i][++j] && env[i][j] != '=')
-				printf("%c", env[i][j]);
-			if (env[i][j] == '=')
-			{
-				printf("=\"");
-				while (env[i][++j])
-					printf("%c", env[i][j]);
-				printf("\"\n");
-			}
-			else
-				printf("\n");
-		}
+		print_export(env, -1, -1);
 	}
 }
 
-void	my_echo(char **cmd)
+int	my_echo(char **cmd, int i, int j, int flag)
 {
 	bool	newline;
-	int		i;
-	int		j;
-	int		flag;
 
-	i = 1;
-	j = 0;
-	flag = 0;
 	newline = true;
 	if (!cmd[1])
-	{
-		printf("\n");
-		return ;
-	}
+		return (printf("\n"), 1);
 	while (cmd[i])
 	{
 		if (ft_strchr(cmd[i], "-n") == 1)
-		{
-			j = 1;
-			while (cmd[i][j])
-			{
-				if (cmd[i][j] != 'n')
-				{
-					flag = 1;
-					if (i == 1)
-						newline = true;
-					j = 0;
-					break ;
-				}
-				else
-					if (i == 1)
-						newline = false;
-				j++;
-			}
-			if (flag == 1)
-			{
-				if (i > 1)
-					printf(" ");
-				printf("%s", cmd[i]);
-			}
-		}
+			echo_option(&newline, cmd, i, &flag);
 		else
 		{
 			if (i > 1 && j == 0)
@@ -111,6 +64,7 @@ void	my_echo(char **cmd)
 	}
 	if (newline && !ft_strchr(cmd[1], "\n"))
 		printf("\n");
+	return (0);
 }
 
 void	my_pwd(void)
@@ -130,26 +84,6 @@ void	my_pwd(void)
 	}
 	else
 		printf("\n");
-}
-
-int	cd_error(char *path, t_data *da)
-{
-	char		*cwd;
-
-	if (chdir(path) == -1)
-		return (perror("chdir"), free(path), da->exit_status = 1, 1);
-	else
-	{
-		cwd = getcwd(NULL, 0);
-		if (cwd)
-		{
-			export_pwd(da, cwd);
-			free(cwd);
-		}
-		else
-			return (perror("getcwd"), free(path), da->exit_status = 1, 1);
-	}
-	return (0);
 }
 
 int	my_cd(char **cmd, char **envp, t_data *da)
@@ -178,34 +112,6 @@ int	my_cd(char **cmd, char **envp, t_data *da)
 		return (free(path), write(2, "cd: not a directory \n", 21), \
 		da->exit_status = 1, 1);
 	return (free(path), da->exit_status = 0, 0);
-}
-
-int	check_unset(t_data *da, int k)
-{
-	int	i;
-
-	i = 0;
-	while (da->cmd1[k][i] != '\0')
-	{
-		if (da->cmd1[k][i] == ' ' || da->cmd1[k][i] == '-' || \
-		da->cmd1[k][i] == '+' || da->cmd1[k][i] == '%' || da->cmd1[k][i] \
-		== '!' || da->cmd1[k][i] == '@' || da->cmd1[k][i] == '#' || \
-		da->cmd1[k][i] == '^' || da->cmd1[k][i] == ':' || da->cmd1[k][i] \
-		== '?' || da->cmd1[k][i] == ',' || da->cmd1[k][i] == '.' || \
-		da->cmd1[k][i] == '/' || da->cmd1[k][i] == '\\' || da->cmd1[k][i] \
-		== '|' || da->cmd1[k][i] == '`' || da->cmd1[k][i] == '~' || \
-		da->cmd1[k][i] == '}' || da->cmd1[k][i] == '{' || \
-		da->cmd1[k][i] == '*')
-		{
-			write(2, "unset: `", 8);
-			write(2, da->cmd1[k], ft_strlen(da->cmd1[k]));
-			write(2, "' : not a valid identifier\n", 27);
-			da->exit_status = 0;
-			return (1);
-		}
-		i++;
-	}
-	return (0);
 }
 
 int	my_unset(t_data *da, int k)

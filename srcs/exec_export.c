@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 13:37:46 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/28 16:16:29 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/28 17:26:46 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	sort_env(t_data *da)
 	}
 	dup_env[i] = NULL;
 	sort_tab(dup_env);
-	my_env(dup_env, 2, 0);
+	my_env(dup_env, 2);
 	i = -1;
 	while (dup_env[++i])
 		free(dup_env[i]);
