@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 11:10:09 by abolea            #+#    #+#             */
-/*   Updated: 2024/05/28 11:13:21 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/28 14:51:57 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -217,7 +217,7 @@ void	if_rl(char *rl, t_data *da, char **envp)
 		free_struct(da);
 	else
 	{
-		if (!(heredoc_replace(da, 0) == -1))
+		if (!(heredoc_replace(da, 0, 0) == -1))
 		{
 			//signal(SIGINT, sigint_handler_main);
 			//print_args(0, da.pnum, &da);

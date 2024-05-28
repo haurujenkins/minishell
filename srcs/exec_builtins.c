@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 11:12:16 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/24 16:34:23 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/28 16:46:56 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,67 +132,52 @@ void	my_pwd(void)
 		printf("\n");
 }
 
-void	my_cd(char **cmd, char **envp, t_data *da)
+int	cd_error(char *path, t_data *da)
+{
+	char		*cwd;
+
+	if (chdir(path) == -1)
+		return (perror("chdir"), free(path), da->exit_status = 1, 1);
+	else
+	{
+		cwd = getcwd(NULL, 0);
+		if (cwd)
+		{
+			export_pwd(da, cwd);
+			free(cwd);
+		}
+		else
+			return (perror("getcwd"), free(path), da->exit_status = 1, 1);
+	}
+	return (0);
+}
+
+int	my_cd(char **cmd, char **envp, t_data *da)
 {
 	char		*path;
 	struct stat	sb;
-	char		*cwd;
 
 	if (!cmd[1] || ft_strchr(cmd[1], "~") == 1)
 	{
 		path = get_home(envp);
 		if (!path)
-		{
-			da->exit_status = 1;
-			write(2, "cd: HOME not set\n", 17);
-			return ;
-		}
+			return (write(2, "cd: HOME not set\n", 17), da->exit_status = 1, 1);
 	}
 	else
 	{
 		path = ft_strdup(cmd[1]);
 		if (!path)
-		{
-			da->exit_status = 1;
-			write(2, "cd: malloc failed\n", 18);
-			return ;
-		}
+			return (write(2, "malloc fail\n", 13), da->exit_status = 134, 1);
 	}
 	if (stat(path, &sb) == 0 && S_ISDIR(sb.st_mode))
 	{
-		if (chdir(path) == -1)
-		{
-			perror("chdir");
-			free(path);
-			da->exit_status = 1;
-			return ;
-		}
-		else
-		{
-			cwd = getcwd(NULL, 0);
-			if (cwd)
-			{
-				export_pwd(da, cwd);
-				free(cwd);
-			}
-			else
-			{
-				perror("getcwd");
-				da->exit_status = 1;
-				free(path);
-				return ;
-			}
-		}
+		if (cd_error(path, da) == 1)
+			return (1);
 	}
 	else
-	{
-		write(2, "cd: not a directory \n", 21);
-		free(path);
-		da->exit_status = 1;
-		return ;
-	}
-	free(path);
-	da->exit_status = 0;
+		return (free(path), write(2, "cd: not a directory \n", 21), \
+		da->exit_status = 1, 1);
+	return (free(path), da->exit_status = 0, 0);
 }
 
 int	check_unset(t_data *da, int k)
@@ -223,7 +208,7 @@ int	check_unset(t_data *da, int k)
 	return (0);
 }
 
-void	my_unset(t_data *da, int k)
+int	my_unset(t_data *da, int k)
 {
 	int		i;
 	int		j;
@@ -233,23 +218,14 @@ void	my_unset(t_data *da, int k)
 	j = 0;
 	new_env = malloc(sizeof(char *) * (ft_tablen(da->my_env) + 1));
 	if (!new_env)
-	{
-		da->exit_status = 1;
-		write(2, "Error: malloc failed\n", 21);
-		return ;
-	}
-	// get_args_builtins(da, 0);
+		return (write(2, "malloc err\n", 11), da->exit_status = 134, 1);
 	while (da->my_env[i] != NULL)
 	{
 		if (ft_strncmp(da->my_env[i], da->cmd1[k], ft_strlen(da->cmd1[k])) != 0)
 		{
 			new_env[j] = ft_strdup(da->my_env[i]);
 			if (!new_env[j])
-			{
-				da->exit_status = 1;
-				write(2, "Error: malloc failed\n", 21);
-				return ;
-			}
+				return (write(2, "malloc err\n", 11), da->exit_status = 134, 1);
 			j++;
 		}
 		free(da->my_env[i]);
@@ -258,5 +234,5 @@ void	my_unset(t_data *da, int k)
 	new_env[j] = NULL;
 	free(da->my_env);
 	da->my_env = new_env;
-	da->exit_status = 0;
+	return (da->exit_status = 0, 0);
 }

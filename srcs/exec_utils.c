@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 13:10:19 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/28 11:25:21 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/28 15:12:05 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -231,5 +231,6 @@ void	free_struct(t_data *da)
 		free(da->delim_tab);
 	}
 	i = 0;
-	free_pipe(da);
+	if (da->pnum > 0 && da->exit_status != 130)
+		free_pipe(da);
 }

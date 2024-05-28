@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 13:33:51 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/28 11:26:47 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/28 16:21:15 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,20 +108,20 @@ int	check_extern_builtins(t_data *da, char **envp, int index)
 			return (1);
 		if (get_args_builtins(da, index) == 1)
 			return (1);
-		return (my_export(da), 1);
+		return (my_export(da, 0, 1, 0), 1);
 	}
 	if (ft_strchr(da->args[0][0], "cd") && size == 2 && da->pnum == 1)
 	{
 		if (outfile_extern_error(da, index, 0) == 1)
 			return (1);
 		if (get_args_builtins(da, index) == 1)
-			return (1);
+			return (free_cmd(da), 1);
 		if (da->cmd1[1] && da->cmd1[2] != NULL)
 		{
 			da->exit_status = 1;
 			return (write(2, " too many arguments\n", 20), 1);
 		}
-		return (my_cd(da->cmd1, envp, da), 1);
+		return (my_cd(da->cmd1, envp, da), free_cmd(da), 1);
 	}
 	return (0);
 }

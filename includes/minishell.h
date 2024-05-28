@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 14:48:53 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/28 11:28:17 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/28 16:40:44 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@
 # include "../libft/libft.h"
 # include <termios.h>
 # define MAX_INPUT_LENGTH 1024
+# define TMPFILE_NAME ".heredoc/minishell_heredoc_tmpfile"
+# define MAX_RANDOM_BYTES 8
 
 extern	volatile sig_atomic_t stop_execution;
 
@@ -91,6 +93,9 @@ void	set_pipe(t_data *da);
 int		main_exec(t_data *da, char **envp);
 int		check_files(t_data *da, int index);
 void	exec_cmd(t_data *da, char **envp, int index);
+void	check_cmd(t_data *da, int i, char **envp);
+void	check_cmd_stat(t_data *da);
+void	check_exec_exit(int index, t_data *da, int child_status);
 void	set_all(t_data *da, char **envp);
 void	free_data(t_data *da, char **envp);
 int		check_builtins(t_data *da, int index);
@@ -100,12 +105,17 @@ void	close_fd(t_data *da, int index);
 int		ft_tablen(char **tab);
 char	**ft_realloc(char **tab, int size);
 int		get_args_builtins(t_data *da, int index);
-void	my_cd(char **cmd, char **envp, t_data *da);
+int		my_cd(char **cmd, char **envp, t_data *da);
 void	my_pwd(void);
 void	my_echo(char **cmd);
 void	my_env(char **env, int num, int j);
-void	my_export(t_data *da);
-void	my_unset(t_data *da, int k);
+void	my_export(t_data *da, int i, int k, int return_value);
+int		export_errors(t_data *da, int k);
+int		char_error_export(t_data *da, int k);
+int		while_not_equal(t_data *da, int k, int i);
+void	check_export_zero(t_data *da, int i, char *temp_cmd, char *temp_value);
+void	export_pwd(t_data *da, char *temp_value);
+int		my_unset(t_data *da, int k);
 void	sort_env(t_data *da);
 void	free_pipe(t_data *da);
 void	free_struct(t_data *da);
@@ -123,7 +133,10 @@ void	sigint_handler_main(int signum);
 void	sigint_handler(int signum);
 void	sigquit_handler_doc(t_data *da);
 void	set_flag(void);
-int		heredoc_replace(t_data *da, int index);
+int		heredoc_replace(t_data *da, int index, int i);
+int		handler_while(t_data *da, char *line, char *delimiter, int fd);
+int		handler_callback(t_data *da, int fd, char *line);
+void	count_delim(t_data *da, int index);
 void	del_tmpfiles(t_data *da, int index);
 int		check_unset(t_data *da, int k);
 void	free_cmd(t_data *da);
