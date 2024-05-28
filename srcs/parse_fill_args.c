@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 15:37:45 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/28 12:34:02 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/28 14:51:42 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -310,7 +310,6 @@ int	new_temp_args(t_data *da, char **temp_args)
 		{
 			while (da->nb_d > 0)
 			{
-				// temp_args[i] = sup_d_quotes_before_dollar(temp_args[i]);
 				temp_args[i] = sup_s_quotes_before_dollar(temp_args[i]);
 				if (!temp_args)
 					return (1);

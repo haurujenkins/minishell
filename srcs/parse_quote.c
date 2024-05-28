@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 14:58:08 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/28 11:10:52 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/28 13:59:53 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ char	*cpy_args_without_quotes(char *s)
 	len = ft_strlen(s);
 	d_quotes = 0;
 	s_quotes = 0;
-	tmp = malloc(2 + (ft_strlen(s) - nb_quotes(s)) * sizeof(char));
+	tmp = malloc(1 + ((int)ft_strlen(s) - nb_quotes_in_quotes(s)) * sizeof(char));
 	if (!tmp)
 		return (NULL);
 	while (i < len)

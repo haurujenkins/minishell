@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 11:10:09 by abolea            #+#    #+#             */
-/*   Updated: 2024/05/28 12:44:00 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/28 13:40:53 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -220,7 +220,10 @@ void	if_sig(t_data *da)
 void	if_rl(char *rl, t_data *da, char **envp)
 {
 	if (parsing(rl, da) == 1)
+	{
+		da->exit_status = 134;
 		free_struct(da);
+	}
 	else
 	{
 		if (!(heredoc_replace(da, 0) == -1))
@@ -228,11 +231,13 @@ void	if_rl(char *rl, t_data *da, char **envp)
 			//signal(SIGINT, sigint_handler_main);
 			//print_args(0, da.pnum, &da);
 			if (da->pnum > 0)
-				main_exec(da, envp);
+			{
+				if (main_exec(da, envp) == -1)
+					da->exit_status = 134;
+			}
 		}
 	}
 	free_struct(da);
-	add_history(rl);
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -249,7 +254,7 @@ int	main(int argc, char **argv, char **envp)
 	while (1)
 	{
 		if_sig(&da);
-		rl = readline("\033[1;36m<3 \033[0;37m");
+		rl = readline("\001\033[1;36m\002<3 \001\033[0;37m\002");
 		if (!rl)
 		{
 			write(1, "exit\n", 5);
@@ -266,6 +271,8 @@ int	main(int argc, char **argv, char **envp)
 			add_history(rl);
 			continue ;
 		}
+		if (rl[0])
+			add_history(rl);
 		if (rl && *rl != '\0')
 			if_rl(rl, &da, envp);
 		free(rl);

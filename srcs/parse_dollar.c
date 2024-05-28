@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 16:20:22 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/28 11:27:44 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/28 14:53:40 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,7 +163,6 @@ char	*after_dollar(char *s)
 		j++;
 	}
 	tmp[j] = '\0';
-	free (s);
 	return (tmp);
 }
 
@@ -268,8 +267,8 @@ char	*temp_without_dollar(t_data *da, char *temp_args)
 			return (NULL);
 		}
 	}
-	len = (ft_strlen(temp_args) - da->nb_d + ft_strlen(new_args) + s_quote + 1);
-	res = malloc((len + 1) * sizeof(char));
+	len = (ft_strlen(temp_args) - ft_strlen(before_args) + ft_strlen(new_args) + s_quote + 1);
+	res = malloc((len) * sizeof(char));
 	if (res == NULL)
 	{
 		write(2, "Malloc failed\n", 14);

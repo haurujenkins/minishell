@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 14:48:53 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/28 12:45:29 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/28 13:57:12 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,6 +127,7 @@ int		heredoc_replace(t_data *da, int index);
 void	del_tmpfiles(t_data *da, int index);
 int		check_unset(t_data *da, int k);
 void	free_cmd(t_data *da);
+int		nb_quotes_in_quotes(char *s);
 
 void	print_args(int i, int pnum, t_data *da);
 void	loading(int p);

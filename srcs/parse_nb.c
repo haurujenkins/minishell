@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 16:03:17 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/23 13:02:42 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/28 13:59:27 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,28 @@ int		ft_nb_redir(char *temp_args, char c)
 		i++;
 	}
 	return (nb);
+}
+
+int	nb_quotes_in_quotes(char *s)
+{
+    int count;
+    int in_squote;
+    int in_dquote;
+	
+	count = 0;
+	in_squote = 0;
+	in_dquote = 0;
+	while (*s) 
+	{
+		if (*s == 39 && !in_dquote)
+			in_squote = !in_squote;
+		else if (*s == 34 && !in_squote)
+			in_dquote = !in_dquote;
+		else if ((*s == 39 || *s == 34) && !in_squote && !in_dquote)
+			count++;
+		s++;
+	}
+	return (count);
 }
 
 int	nb_quotes(char *s)
