@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 14:48:53 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/27 16:37:28 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/28 11:28:17 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,6 +126,7 @@ void	set_flag(void);
 int		heredoc_replace(t_data *da, int index);
 void	del_tmpfiles(t_data *da, int index);
 int		check_unset(t_data *da, int k);
+void	free_cmd(t_data *da);
 
 void	print_args(int i, int pnum, t_data *da);
 void	loading(int p);

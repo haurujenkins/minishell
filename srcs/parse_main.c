@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_main.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 11:10:09 by abolea            #+#    #+#             */
-/*   Updated: 2024/05/27 17:45:37 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/28 11:13:21 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -233,6 +233,7 @@ int	main(int argc, char **argv, char **envp)
 {
 	char			*rl;
 	t_data			da;
+	int				i;
 
 	(void)envp;
 	if (argc != 1 || argv[0][0] == '\0')
@@ -246,9 +247,12 @@ int	main(int argc, char **argv, char **envp)
 		if (!rl)
 		{
 			write(1, "exit\n", 5);
-			// free_struct(&da);
+			i = -1;
+			while (da.my_env[++i] != NULL)
+				free(da.my_env[i]);
+			free(da.my_env);
 			break ;
-		}	
+		}
 		if (check_error(rl))
 		{
 			da.exit_status = 2;

@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 11:49:04 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/24 19:06:46 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/28 11:23:17 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -224,6 +224,6 @@ int main_exec(t_data *da, char **envp)
 	}
 	del_tmpfiles(da, 0);
 	free(da->children);
-
+	i = -1;
 	return (0);
 }
