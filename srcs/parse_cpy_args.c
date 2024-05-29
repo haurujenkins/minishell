@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 15:14:05 by abolea            #+#    #+#             */
-/*   Updated: 2024/05/29 16:19:04 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/29 17:16:01 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,7 @@ char	*else_args_before_quotes(t_data *da, char **words, char *args, int i)
 	}
 	if (ft_strncmp(da->args[i][0], "export", 6) != 0)
 	{
-		if (da->s_args != 1)
-			args = cpy_args_without_quotes(args);
+		args = cpy_args_without_quotes(args);
 		if (!args)
 			return (NULL);
 	}

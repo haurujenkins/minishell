@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 14:48:53 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/29 16:15:56 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/29 17:15:37 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,7 @@ void	my_env(char **env, int num);
 void	my_export(t_data *da, int i, int k, int return_value);
 void	print_export(char **env, int i, int j);
 int		export_errors(t_data *da, int k);
-int		char_error_export(t_data *da, int k);
+int		char_error_export(t_data *da, int k, int i);
 int		while_not_equal(t_data *da, int k, int i);
 void	check_export_zero(t_data *da, int i, char *temp_cmd, char *temp_value);
 void	export_pwd(t_data *da, char *temp_value);
