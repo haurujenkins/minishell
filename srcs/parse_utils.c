@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 14:31:09 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/29 15:28:43 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/29 16:16:33 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ int	if_finish_quotes(char *s)
 
 void	set_parse(t_data *da)
 {
+	da->s_args = 0;
 	da->delim_tab = NULL;
 	da->append_tab = NULL;
 	da->nb_redir_in = 0;

@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 15:03:06 by abolea            #+#    #+#             */
-/*   Updated: 2024/05/29 15:04:17 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/29 16:09:41 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,28 +23,24 @@ char	*return_new_args(char *new_args, char *before_args, t_data *da)
 	if (nb_after_dollar(before_args) == 1)
 	{
 		new_args = recup_after_digit(before_args);
-		if (!new_args)
-			if_not_new_args(before_args);
+		return (new_args);
 	}
 	else if (before_args[0] == '?')
 	{
 		new_args = ft_itoa(da->exit_status);
-		if (!new_args)
-			if_not_new_args(before_args);
+		return (new_args);
 	}
 	else
 	{
 		new_args = find_in_env(da, before_args);
-		if (!new_args)
-			if_not_new_args(before_args);
+		return (new_args);
 	}
 	if (new_args[0] == 39)
 	{
 		new_args = add_d_quotes_newargs(new_args);
-		if (!new_args)
-			if_not_new_args(before_args);
+		return (new_args);
 	}
-	return (new_args);
+	return (NULL);
 }
 
 void	copy_until_dollar(char *res, char *temp_args, int *i, int *j)

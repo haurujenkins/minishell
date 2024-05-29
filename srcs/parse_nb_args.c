@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 15:16:36 by abolea            #+#    #+#             */
-/*   Updated: 2024/05/29 15:17:30 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/29 16:17:51 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,8 @@ char	*args_after(t_data *da, char **words, char *args)
 			args = ft_strjoin_ori(args, words[da->i_args]);
 			if (!args)
 				return (NULL);
-			args = cpy_args_without_quotes(args);
+			if (da->s_args != 1)
+				args = cpy_args_without_quotes(args);
 			if (!args)
 				return (NULL);
 			da->i_args++;
@@ -115,7 +116,8 @@ char	*else_args_after(t_data *da, char **words, char *args)
 		args = ft_strjoin_ori(args, words[da->i_args]);
 		if (!args)
 			return (NULL);
-		args = cpy_args_without_quotes(args);
+		if (da->s_args != 1)
+			args = cpy_args_without_quotes(args);
 		if (!args)
 			return (NULL);
 		da->i_args++;

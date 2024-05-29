@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 14:00:55 by abolea            #+#    #+#             */
-/*   Updated: 2024/05/29 14:02:44 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/29 16:23:23 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,26 +55,27 @@ char	*if_res_is_null(char *before_args, char *temp_args, char *new_args)
 
 char	*temp_without_dollar(t_data *da, char *temp_args)
 {
-	int		s_quote;
 	int		len;
 	char	*new_args;
 	char	*before_args;
 	char	*res;
 
 	new_args = NULL;
-	s_quote = 0;
 	before_args = after_dollar(temp_args);
 	if (before_args == NULL)
 		return (temp_args);
 	new_args = return_new_args(new_args, before_args, da);
-	if (s_quote != 0)
-		return (cpy_args_without_s_quotes(temp_args));
-	len = (ft_strlen(temp_args) - ft_strlen(before_args) + ft_strlen(new_args) + s_quote + 1);
+	if (!new_args)
+		if_not_new_args(before_args);
+	len = (ft_strlen(temp_args) - ft_strlen(before_args) + ft_strlen(new_args) + 1);
 	res = malloc((len) * sizeof(char));
 	if (res == NULL)
 		if_res_is_null(before_args, temp_args, new_args);
 	res = cpy_in_res(res, temp_args, new_args);
-	res = cpy_args_without_quotes(res);
+	if (new_args[0] == 39 && new_args[1] != '$' && new_args)
+		da->s_args = 1;
+	else if (new_args)
+		res = cpy_args_without_quotes(res);	
 	free(before_args);
 	free(temp_args);
 	free(new_args);

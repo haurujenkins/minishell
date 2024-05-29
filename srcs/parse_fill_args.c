@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 15:37:45 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/29 15:19:36 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/29 16:34:28 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,27 +74,22 @@ char	*fill_args(t_data *da, char **words, int i)
 {
 	char	*args;
 
-	if (da->nb_args == 0)
+	args = ft_strdup("");
+	if (!args)
 		return (NULL);
-	else
+	while (words[da->i_args])
 	{
-		args = ft_strdup("");
-		if (!args)
-			return (NULL);
-		while (words[da->i_args])
+		if (da->i_args > 2)
 		{
-			if (da->i_args > 2)
-			{
-				args = if_args_after_ok(da, words, args);
-				if (args)
-					return (args);
-			}
-			else
-			{
-				args = if_args_before_ok(da, words, args, i);
-				if (args)
-					return (args);
-			}
+			args = if_args_after_ok(da, words, args);
+			if (args)
+				return (args);
+		}
+		else
+		{
+			args = if_args_before_ok(da, words, args, i);
+			if (args)
+				return (args);
 		}
 	}
 	return (NULL);

@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 15:14:05 by abolea            #+#    #+#             */
-/*   Updated: 2024/05/29 15:15:22 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/29 16:19:04 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ char	*args_before(t_data *da, char **words, char *args)
 		args = ft_strjoin_ori(args, words[da->i_args]);
 		if (!args)
 			return (NULL);
-		args = cpy_args_without_quotes(args);
+		if (da->s_args != 1)
+			args = cpy_args_without_quotes(args);
 		if (!args)
 			return (NULL);
 		da->i_args++;
@@ -47,7 +48,8 @@ char	*else_args_before_quotes(t_data *da, char **words, char *args, int i)
 	}
 	if (ft_strncmp(da->args[i][0], "export", 6) != 0)
 	{
-		args = cpy_args_without_quotes(args);
+		if (da->s_args != 1)
+			args = cpy_args_without_quotes(args);
 		if (!args)
 			return (NULL);
 	}
@@ -60,7 +62,8 @@ char	*else_args_before(t_data *da, char **words, char *args)
 	args = ft_strjoin_ori(args, words[da->i_args]);
 	if (!args)
 		return (NULL);
-	args = cpy_args_without_quotes(args);
+	if (da->s_args != 1)
+		args = cpy_args_without_quotes(args);
 	if (!args)
 		return (NULL);
 	da->i_args++;
