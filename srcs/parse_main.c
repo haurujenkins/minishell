@@ -6,115 +6,11 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 11:10:09 by abolea            #+#    #+#             */
-/*   Updated: 2024/05/28 13:40:53 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/29 15:23:46 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-int	check_quote_close(char	*rl)
-{
-	int	i;
-	int	d_quote;
-	int	s_quote;
-
-	i = 0;
-	d_quote = 1;
-	s_quote = 1;
-	while (rl[i])
-	{
-		if (rl[i] == 34 && s_quote > 0)
-			d_quote *= -1;
-		if (rl[i] == 39 && d_quote > 0)
-			s_quote *= -1;
-		i++;
-	}
-	if (d_quote < 0 || s_quote < 0)
-		return (-1);
-	else
-		return (0);
-}
-
-int	check_rl(char *rl, int i)
-{
-	if (rl[i] == '|' && rl[i + 1] == '|')
-		return (-1);
-	if (rl[i] == '<' && rl[i + 1] == '>')
-		return (-1);
-	else if (rl[i] == '>' && rl[i + 1] == '<')
-		return (-1);
-	else if (rl[i] == '<' && rl[i + 1] == '<' && rl[i + 2] == '<')
-		return (-1);
-	else if (rl[i] == '>' && rl[i + 1] == '>' && rl[i + 2] == '>')
-		return (-1);
-	else if (rl[i] == '>' && rl[i + 2] == '>')
-		return (-1);
-	else if (rl[i] == '<' && rl[i + 2] == '<')
-		return (-1);
-	else if (rl[i] == '|' && rl[i + 1] == '|' && rl[i + 2] == '|')
-		return (-1);
-	else if (rl[i] == '|')
-	{
-		i++;
-		while (rl[i] == ' ')
-		{
-			i++;
-			if (rl[i] == '|')
-				return (-1);
-		}
-	}
-	return (0);
-}
-
-int	check_error(char *rl)
-{
-	int	i;
-
-	i = 0;
-	if (rl != NULL && *rl == '\0')
-		return (0);
-	if (check_quote_close(rl) == -1)
-		return (-1);
-	if ((rl[i] == '>' || rl[i] == '<') && !rl[i + 1])
-		return (-1);
-	if (rl[i] == '|' || rl[i] == ':' || rl[i] == '!')
-		return (-1);
-	while (rl[i])
-		i++;
-	if (rl[i - 1] == '>' || rl[i - 1] == '<' || rl[i - 1] == '|')
-		return (-1);
-	i = 0;
-	while (rl[i])
-	{
-		if (rl[i] == 34 || rl[i] == 39)
-		{
-			i++;
-			while (rl[i] != 34 && rl[i] && rl[i] != 39)
-				i++;
-		}
-		if (check_rl(rl, i) == -1)
-			return (-1);
-		i++;
-	}
-	return (0);
-}
-
-void	free_words_and_temp_args(char **temp_args, char **words)
-{
-	int	i;
-	int	num_w;
-
-	i = -1;
-	while (temp_args[++i] != NULL)
-		free(temp_args[i]);
-	free(temp_args);
-	temp_args = NULL;
-	num_w = -1;
-	while (words[++num_w] != NULL)
-		free(words[num_w]);
-	free(words);
-	words = NULL;
-}
 
 int	fill_all_tab(t_data *da, char **words, char **temp_args, int i)
 {
@@ -138,37 +34,6 @@ int	fill_all_tab(t_data *da, char **words, char **temp_args, int i)
 	if (fill_outab(da, temp_args[i], i) == 1)
 		return (1);
 	return (0);
-}
-
-void	free_words(char **words)
-{
-	int	j;
-
-	j = 0;
-	while (words[j])
-	{
-		free (words[j]);
-		j++;
-	}
-	free (words);
-	words = NULL;
-}
-
-void	free_temp_args(char **temp_args)
-{
-	int	j;
-
-	j = 0;
-	if (temp_args[j])
-	{
-		while (temp_args[j])
-		{
-			free (temp_args[j]);
-			j++;
-		}
-		free (temp_args);
-		temp_args = NULL;
-	}
 }
 
 int	parsing(char *rl, t_data *da)

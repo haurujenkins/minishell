@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 16:20:49 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/28 14:05:20 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/29 10:57:56 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,17 +51,41 @@ int	len_before_equal(char *s)
 	return (i);
 }
 
+char	*if_find(t_data *da, int i, char *res)
+{
+	int	l;
+	int	j;
+
+	l = 0;
+	j = 0;
+	while (da->my_env[i][j] != '=')
+	{
+		if (da->my_env[i][j] == '\0')
+			return ("\n");
+		j++;
+	}
+	j++;
+	while (da->my_env[i][j])
+	{
+		res[l] = da->my_env[i][j];
+		j++;
+		l++;
+	}
+	if (res)
+	{
+		res[l] = '\0';
+		return (res);
+	}
+	return (NULL);
+}
+
 char	*find_in_env(t_data *da, char *s)
 {
 	int		i;
-	int		j;
-	int		l;
 	int		len;
 	char	*res;
 
 	i = 0;
-	j = 0;
-	l = 0;
 	len = ft_tablen(da->my_env);
 	res = malloc((len + 1) * sizeof(char));
 	if (!res)
@@ -69,29 +93,9 @@ char	*find_in_env(t_data *da, char *s)
 	while (da->my_env[i] != NULL)
 	{
 		if (ft_strncmp(da->my_env[i], s, len_before_equal(da->my_env[i])) == 0)
-		{
-			while (da->my_env[i][j] != '=')
-			{
-				if (da->my_env[i][j] == '\0')
-					return ("\n");
-				j++;
-			}
-			j++;
-			while (da->my_env[i][j])
-			{
-				res[l] = da->my_env[i][j];
-				j++;
-				l++;
-			}
-			if (res)
-			{
-				res[l] = '\0';
-				return (res);
-			}
-		}
+			return (if_find(da, i, res));
 		i++;
 	}
 	res[0] = '\0';
-	// free (s);
 	return (res);
 }

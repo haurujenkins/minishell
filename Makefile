@@ -26,7 +26,20 @@ SRCS			=	parse_main.c \
 					parse_new_temp.c \
 					parse_modif_rl.c \
 					parse_init.c \
-					parse_fill_cmd.c
+					parse_fill_cmd.c \
+					parse_sup_space.c \
+					parse_quotes_dollar.c \
+					parse_nb_args.c \
+					parse_nb_append_delim.c \
+					parse_free.c \
+					parse_expand.c \
+					parse_expand_quotes.c \
+					parse_dollar_heredoc.c \
+					parse_cpy_expand.c \
+					parse_cpy_args.c \
+					parse_check_error.c \
+					parse_check_args.c \
+					parse_args_quotes.c
 
 
 OBJS			=	$(addprefix .build/, $(SRCS:.c=.o))

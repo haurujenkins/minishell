@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 14:48:53 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/28 13:57:12 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/29 15:32:22 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -180,5 +180,68 @@ char	*sup_d_quotes_before_dollar(char *s);
 char	*sup_backslash_before_dollar(char *s);
 void	set_parse(t_data *da);
 char	*sup_tab(char *s);
+int		len_without_append(char *s);
+int		ft_nb_append(char *s);
+int		len_without_delim(char *s);
+int		ft_nb_delim(char *s);
+char	*temp_without_dollar(t_data *da, char *temp_args);
+char	*if_res_is_null(char *before_args, char *temp_args, char *new_args);
+char	*cpy_in_res(char *res, char *temp_args, char *new_args);
+void	copy_remaining(char *res, char *temp_args, int *i, int *j);
+void	skip_chars_after_dollar(char *temp_args, int *i);
+void	cpy_interrogation(char *res, char *temp_args, int *i, int *j);
+void	copy_new_args(char *res, char *new_args, int *j);
+void	copy_until_dollar(char *res, char *temp_args, int *i, int *j);
+char	*return_new_args(char *new_args, char *before_args, t_data *da);
+char	*if_not_new_args(char *before_args);
+char	*recup_after_digit(char *s);
+char	*recup_after_dollar(char *s, char *tmp);
+char	*after_dollar(char *s);
+char	*s_quotes_new_args_negative(char *s);
+char	*add_d_quotes_newargs(char *s);
+int		s_quotes_dollar(char *s);
+char	*sup_s_quotes_before_dollar(char *s);
+int		d_quotes_dollar(char *s);
+char	*sup_d_quotes_before_dollar(char *s);
+int		len_without_dollar_before_quotes(char *s);
+char	*dollar_after_heredoc(char *s, t_data *da);
+void	heredoc_double_quotes(char *s, t_data *da);
+int		if_not_heredoc(t_data *da, char **temp_args, int i);
+char	*cpy_in_res_without_dollar_quotes(char *res, char *s, int i, int j);
+char	*sup_dollar_before_quotes(char *s);
+char	*args_before(t_data *da, char **words, char *args);
+char	*else_args_before_quotes(t_data *da, char **words, char *args, int i);
+char	*else_args_before(t_data *da, char **words, char *args);
+char	*if_args_before_ok(t_data *da, char **words, char *args, int i);
+char	*if_args_after_ok(t_data *da, char **words, char *args);
+int		if_args_after(char **words, int *j);
+int		if_args_before(char **words, int *j);
+int 	ft_nb_args(t_data *da, char **words);
+char	*args_after(t_data *da, char **words, char *args);
+char	*else_args_after(t_data *da, char **words, char *args);
+char	*cpy_in_res_without_d_quotes(char *res, char *s);
+char	*cpy_res_with_s_quotes(char *tmp, char *s, int i, int j);
+char	*add_s_quote(char *s);
+int		if_nb_dollar(char **temp_args, int i);
+int		sup_append_and_delim(char **temp_args, int i);
+int		check_quote_close(char	*rl);
+int		check_rl_two(char *rl, int i);
+int		check_rl(char *rl, int i);
+int		check_error_two(char *rl);
+int		check_error(char *rl);
+void	free_words_and_temp_args(char **temp_args, char **words);
+void	free_words(char **words);
+void	free_temp_args(char **temp_args);
+int		len_without_double_space(char *s);
+char	*cpy_without_double_spaces(char *s, char *tmp, int i);
+char	*sup_double_space(char *s);
+char	*cpy_tmp_with_space(char *s, char *tmp, int in_quotes, int i);
+char	*temp_with_space(char *s);
+int		pos_args(t_data *da, char **words);
+char	*cpy_after_digit(char *s, char *res);
+int		len_after_digit(char *s);
+int		nb_after_dollar(char *s);
+int		len_after_dollar(char *s);
+int		nb_dollars(char *s);
 
 #endif

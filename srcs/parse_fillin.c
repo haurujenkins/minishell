@@ -6,11 +6,41 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 14:55:13 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/28 13:20:43 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/29 11:05:15 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+char	*if_quotes_args_in(char *temp_args, t_data *da, char *args)
+{
+	args = cpy_until_char(temp_args, ' ', da->io_nb);
+	if (!args)
+		return (NULL);
+	while ((temp_args[da->io_nb] != 34 && temp_args[da->io_nb] != 39) && temp_args[da->io_nb])
+		da->io_nb++;
+	if (if_quotes(args, 0) == 1)
+		da->q_heredoc = -1;
+	args = cpy_args_without_quotes(args);
+	if (!args)
+		return (NULL);		
+	return (args);
+}
+
+char	*if_not_quotes_args_in(char *temp_args, t_data *da, char *args)
+{
+	args = cpy_until_char(temp_args, ' ', da->io_nb);
+	if (!args)
+		return (NULL);
+	while (temp_args[da->io_nb] != ' ' && temp_args[da->io_nb])
+		da->io_nb++;
+	if (if_quotes(args, 0) == 1)
+		da->q_heredoc = -1;
+	args = cpy_args_without_quotes(args);
+	if (!args)
+		return (NULL);		
+	return (args);
+}
 
 char	*recup_args_in(char *temp_args, t_data *da, char *args)
 {
@@ -19,31 +49,17 @@ char	*recup_args_in(char *temp_args, t_data *da, char *args)
 		da->io_nb++;
 	if (temp_args[da->io_nb] == 34 || temp_args[da->io_nb] == 39)
 	{
-		args = cpy_until_char(temp_args, ' ', da->io_nb);
+		args = if_quotes_args_in(temp_args, da, args);
 		if (!args)
 			return (NULL);
-		while ((temp_args[da->io_nb] != 34 && temp_args[da->io_nb] != 39) && temp_args[da->io_nb])
-			da->io_nb++;
-		if (if_quotes(args, 0) == 1)
-			da->q_heredoc = -1;
-		args = cpy_args_without_quotes(args);
-		if (!args)
-			return (NULL);		
 		return (args);
 	}
 	else
 	{
-		args = cpy_until_char(temp_args, ' ', da->io_nb);
+		args = if_not_quotes_args_in(temp_args, da, args);
 		if (!args)
 			return (NULL);
-		while (temp_args[da->io_nb] != ' ' && temp_args[da->io_nb])
-			da->io_nb++;
-		if (if_quotes(args, 0) == 1)
-			da->q_heredoc = -1;
-		args = cpy_args_without_quotes(args);
-		if (!args)
-			return (NULL);		
-		return (args);
+		return (args);	
 	}
 }
 
