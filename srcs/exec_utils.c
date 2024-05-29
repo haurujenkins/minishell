@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 13:10:19 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/28 11:25:21 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/29 15:56:50 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,11 +41,8 @@ char	**ft_realloc(char **tab, int size)
 	return (new_tab);
 }
 
-void	set_all(t_data *da, char **envp)
+void	set_all(t_data *da, char **envp, int i)
 {
-	int	i;
-
-	i = 0;
 	da->args = NULL;
 	da->cmd1 = NULL;
 	da->cmd = NULL;
@@ -69,167 +66,4 @@ void	set_all(t_data *da, char **envp)
 		i++;
 	}
 	da->my_env[i] = NULL;
-}
-
-void	free_data(t_data *da, char **envp)
-{
-	// close(da->pipefd[0]);
-	// close(da->pipefd[1]);
-	close(da->fd_input);
-	close(da->fd_output);
-	da->i = -1;
-	if (!(da->cmd1 == NULL))
-	{
-		while (da->cmd1[++da->i])
-			free(da->cmd1[da->i]);
-		free (da->cmd1);
-	}
-	da->i = -1;
-	if (!(envp[0] == NULL))
-	{
-		while (da->my_path[++da->i])
-			free(da->my_path[da->i]);
-		free(da->my_path);
-	}
-}
-
-void	free_tab(char **tab, t_data *da)
-{
-	int	i;
-
-	i = 0;
-	while (i < da->pnum)
-	{
-		free(tab[i]);
-		i++;
-	}
-	free(tab);
-	tab = NULL;
-}
-
-void	free_double_tab(char ***tab, t_data *da)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	while (i < da->pnum)
-	{
-		j = 0;
-		while (tab[i][j] != NULL)
-		{
-			free(tab[i][j]);
-			j++;
-		}
-		free(tab[i]);
-		i++;
-	}
-	free(tab);
-	tab = NULL;
-}
-
-void	free_struct(t_data *da)
-{
-	int	i;
-	int	j;
-
-	del_tmpfiles(da, 0);
-	i = 0;
-	if (da->args != NULL)
-	{
-		while (i < da->pnum)
-		{
-			j = 0;
-			while (da->args[i][j] != NULL)
-			{
-				free(da->args[i][j]);
-				j++;
-			}
-			free(da->args[i]);
-			i++;
-		}
-		free(da->args);
-	}
-	i = 0;
-	if (da->args_tab != NULL)
-	{
-		while (i < da->pnum)
-		{
-			j = 0;
-			while (da->args_tab[i][j] != NULL)
-			{
-				free(da->args_tab[i][j]);
-				j++;
-			}
-			free(da->args_tab[i]);
-			i++;
-		}
-		free(da->args_tab);
-	}
-	i = 0;
-	if (da->in_tab != NULL)
-	{
-		while (i < da->pnum)
-		{
-			j = 0;
-			while (da->in_tab[i][j] != NULL)
-			{
-				free(da->in_tab[i][j]);
-				j++;
-			}
-			free(da->in_tab[i]);
-			i++;
-		}
-		free(da->in_tab);
-	}
-	i = 0;
-	if (da->out_tab != NULL)
-	{
-		while (i < da->pnum)
-		{
-			j = 0;
-			while (da->out_tab[i][j] != NULL)
-			{
-				free(da->out_tab[i][j]);
-				j++;
-			}
-			free(da->out_tab[i]);
-			i++;
-		}
-		free(da->out_tab);
-	}
-	i = 0;
-	if (da->append_tab != NULL)
-	{
-		while (i < da->pnum)
-		{
-			j = 0;
-			while (da->append_tab[i][j] != NULL)
-			{
-				free(da->append_tab[i][j]);
-				j++;
-			}
-			free(da->append_tab[i]);
-			i++;
-		}
-		free(da->append_tab);
-	}
-	i = 0;
-	if (da->delim_tab != NULL)
-	{
-		while (i < da->pnum)
-		{
-			j = 0;
-			while (da->delim_tab[i][j] != NULL)
-			{
-				free(da->delim_tab[i][j]);
-				j++;
-			}
-			free(da->delim_tab[i]);
-			i++;
-		}
-		free(da->delim_tab);
-	}
-	i = 0;
-	free_pipe(da);
 }

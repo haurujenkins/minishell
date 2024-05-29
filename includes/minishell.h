@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 14:48:53 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/29 15:32:22 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/29 15:54:53 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,10 @@
 # include "../libft/libft.h"
 # include <termios.h>
 # define MAX_INPUT_LENGTH 1024
+# define TMPFILE_NAME ".heredoc/minishell_heredoc_tmpfile"
+# define MAX_RANDOM_BYTES 8
 
-extern	volatile sig_atomic_t stop_execution;
+extern	volatile sig_atomic_t	g_stop_execution;
 
 typedef struct s_signals
 {
@@ -91,21 +93,38 @@ void	set_pipe(t_data *da);
 int		main_exec(t_data *da, char **envp);
 int		check_files(t_data *da, int index);
 void	exec_cmd(t_data *da, char **envp, int index);
-void	set_all(t_data *da, char **envp);
+void	check_cmd(t_data *da, int i, char **envp);
+void	check_cmd_stat(t_data *da);
+void	check_exec_exit(int index, t_data *da, int child_status);
+void	set_all(t_data *da, char **envp, int i);
 void	free_data(t_data *da, char **envp);
 int		check_builtins(t_data *da, int index);
-int		check_extern_builtins(t_data *da, char **env, int index);
+int		check_extern_builtins(t_data *da, char **envp, int index);
+int		cd_case(t_data *da, int index, char **envp);
+int		export_case(t_data *da, int index);
+int		exit_case(t_data *da, int index);
+void	exit_number(t_data *da, int i, int j);
+int		unset_case(t_data *da, int index, int i);
 char	*get_home(char **envp);
 void	close_fd(t_data *da, int index);
 int		ft_tablen(char **tab);
 char	**ft_realloc(char **tab, int size);
 int		get_args_builtins(t_data *da, int index);
-void	my_cd(char **cmd, char **envp, t_data *da);
+int		my_cd(char **cmd, char **envp, t_data *da);
+int		cd_error(char *path, t_data *da);
 void	my_pwd(void);
-void	my_echo(char **cmd);
-void	my_env(char **env, int num, int j);
-void	my_export(t_data *da);
-void	my_unset(t_data *da, int k);
+int		my_echo(char **cmd, int i, int j, int flag);
+void	echo_option(bool *newline, char **cmd, int i, int *flag);
+void	my_env(char **env, int num);
+void	my_export(t_data *da, int i, int k, int return_value);
+void	print_export(char **env, int i, int j);
+int		export_errors(t_data *da, int k);
+int		char_error_export(t_data *da, int k);
+int		while_not_equal(t_data *da, int k, int i);
+void	check_export_zero(t_data *da, int i, char *temp_cmd, char *temp_value);
+void	export_pwd(t_data *da, char *temp_value);
+int		my_unset(t_data *da, int k);
+int		check_unset(t_data *da, int k);
 void	sort_env(t_data *da);
 void	free_pipe(t_data *da);
 void	free_struct(t_data *da);
@@ -113,8 +132,11 @@ void	export_pwd(t_data *da, char *temp_value);
 void	infile_error(t_data *da, int index, int i);
 char	*read_until_delimiter(char *delimiter, t_data *da);
 void	outfile_error(t_data *da, int index, int i);
+void	outfile_stat(t_data *da, int index, int i);
 int		outfile_extern_error(t_data *da, int index, int i);
+int		extern_outfile_stat(t_data *da, int index, int i);
 void	check_infile(t_data *da, int index);
+void	infile_stat(t_data *da, int index, int i);
 void	check_outfile(t_data *da, int index);
 void	exit_free(t_data *da);
 void	sigquit_handler_child(int signum);
@@ -123,7 +145,10 @@ void	sigint_handler_main(int signum);
 void	sigint_handler(int signum);
 void	sigquit_handler_doc(t_data *da);
 void	set_flag(void);
-int		heredoc_replace(t_data *da, int index);
+int		heredoc_replace(t_data *da, int index, int i);
+int		handler_while(t_data *da, char *line, char *delimiter, int fd);
+int		handler_callback(t_data *da, int fd, char *line);
+void	count_delim(t_data *da, int index);
 void	del_tmpfiles(t_data *da, int index);
 int		check_unset(t_data *da, int k);
 void	free_cmd(t_data *da);

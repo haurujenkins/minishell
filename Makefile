@@ -3,15 +3,23 @@ NAME			=	minishell
 SRCS			=	parse_main.c \
 					exec_main.c \
 					exec_utils.c \
-					exec_pipex.c \
+					exec_get_args.c \
 					exec_pipe.c \
 					exec_files.c \
 					exec_handlers.c \
 					exec_builtins.c \
+					exec_builtins_utils.c \
 					exec_check_builtins.c \
+					exec_builtins_cases.c \
 					exec_export.c \
+					exec_export_errors.c \
+					exec_export_oldpwd.c \
 					exec_check_files.c \
+					exec_check_stat.c \
 					exec_heredoc.c \
+					exec_heredoc_read.c \
+					exec_check_cmd.c \
+					exec_free.c \
 					parse_print.c \
 					parse_append.c \
 					parse_utils.c \
@@ -52,9 +60,14 @@ CC				=	cc
 
 CFLAGS			=	-Wall -Werror -Wextra
 
-.build/%.o: srcs/%.c
+HEREDOC_DIR		=	.heredoc
+
+.build/%.o: srcs/%.c | ${HEREDOC_DIR}
 					@mkdir -p .build
-					@$(CC) $(CFLAGS) $(HEAD) -c $< -o $@ 
+					@$(CC) $(CFLAGS) $(HEAD) -c $< -o $@
+
+${HEREDOC_DIR}:
+					@mkdir -p ${HEREDOC_DIR}
 
 $(NAME)			:	${OBJS}
 					@echo "\033[0;33m\nCOMPILING LIBFT...\n"
@@ -72,7 +85,7 @@ all				:	${NAME}
 					--show-reachable=yes \
 					--track-fds=yes \
 					--errors-for-leak-kinds=all \
-					--show-leak-kinds=all ./${NAME} ls -a
+					--show-leak-kinds=all ./${NAME}
 
 clean			:
 					@make clean -sC libft
@@ -83,6 +96,7 @@ fclean			:	clean
 					@make fclean -sC libft
 					@echo "\033[1;32mCLEANED !\n"
 					@rm -rf ${NAME}
+					@rm -rf ${HEREDOC_DIR}
 
 re				:	fclean all
 

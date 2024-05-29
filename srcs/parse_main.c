@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 11:10:09 by abolea            #+#    #+#             */
-/*   Updated: 2024/05/29 15:23:46 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/29 15:57:00 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,9 +75,9 @@ void	if_sig(t_data *da)
 {
 	signal(SIGINT, sigint_handler_main);
 	signal(SIGQUIT, SIG_IGN);
-	if (stop_execution == 1)
+	if (g_stop_execution == 1)
 	{
-		stop_execution = 0;
+		g_stop_execution = 0;
 		da->exit_status = 130;
 	}
 }
@@ -91,7 +91,7 @@ void	if_rl(char *rl, t_data *da, char **envp)
 	}
 	else
 	{
-		if (!(heredoc_replace(da, 0) == -1))
+		if (!(heredoc_replace(da, 0, 0) == -1))
 		{
 			//signal(SIGINT, sigint_handler_main);
 			//print_args(0, da.pnum, &da);
@@ -107,19 +107,24 @@ void	if_rl(char *rl, t_data *da, char **envp)
 
 int	main(int argc, char **argv, char **envp)
 {
-	char	*rl;
-	t_data	da;
-	int		i;
+	char			*rl;
+	t_data			da;
+	int				i;
 
 	(void)envp;
 	if (argc != 1 || argv[0][0] == '\0')
 		printf("ERROR\n");
-	set_all(&da, envp);
+	set_all(&da, envp, 0);
 	set_parse(&da);
 	while (1)
 	{
 		if_sig(&da);
-		rl = readline("\001\033[1;36m\002<3 \001\033[0;37m\002");
+		rl = readline("\033[1;36m<3 \033[0;37m");
+		if (g_stop_execution == 1)
+		{
+			g_stop_execution = 0;
+			da.exit_status = 130;
+		}
 		if (!rl)
 		{
 			write(1, "exit\n", 5);
@@ -128,7 +133,7 @@ int	main(int argc, char **argv, char **envp)
 				free(da.my_env[i]);
 			free(da.my_env);
 			break ;
-		}	
+		}
 		if (check_error(rl))
 		{
 			da.exit_status = 2;
