@@ -6,11 +6,25 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 13:24:11 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/28 13:36:43 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/29 11:29:15 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+void	free_cmd(t_data *da)
+{
+	int	i;
+
+	i = 0;
+	while (da->cmd1[i] != NULL)
+	{
+		free(da->cmd1[i]);
+		i++;
+	}
+	free(da->cmd1);
+	da->cmd1 = NULL;
+}
 
 void	check_cmd_stat(t_data *da)
 {
@@ -43,7 +57,6 @@ void	check_cmd_stat(t_data *da)
 
 void	check_cmd(t_data *da, int i, char **envp)
 {
-
 	while (da->my_path[i])
 	{
 		if (da->cmd1[0][0] != '/' && da->cmd1[0][0] != '.')
@@ -71,10 +84,10 @@ void	check_exec_exit(int index, t_data *da, int child_status)
 {
 	if (index == da->pnum - 1)
 		da->exit_status = WEXITSTATUS(child_status);
-	if (stop_execution == 2)
+	if (g_stop_execution == 2)
 		da->exit_status = 131;
-	if (stop_execution == 1)
+	if (g_stop_execution == 1)
 		da->exit_status = 130;
-	if (stop_execution == 1 || stop_execution == 2)
-		stop_execution = 0;
+	if (g_stop_execution == 1 || g_stop_execution == 2)
+		g_stop_execution = 0;
 }

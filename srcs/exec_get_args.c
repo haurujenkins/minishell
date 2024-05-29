@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 13:01:33 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/28 18:06:13 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/29 11:11:24 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,20 +59,6 @@ char	*get_home(char **envp)
 	return (home);
 }
 
-void	free_cmd(t_data *da)
-{
-	int	i;
-
-	i = 0;
-	while (da->cmd1[i] != NULL)
-	{
-		free(da->cmd1[i]);
-		i++;
-	}
-	free(da->cmd1);
-	da->cmd1 = NULL;
-}
-
 int	get_args_builtins(t_data *da, int index)
 {
 	int	i;
@@ -102,13 +88,32 @@ int	get_args_builtins(t_data *da, int index)
 	return (0);
 }
 
-void	get_args(t_data *da, char **envp, int index)
+void	alloc_cmd1(t_data *da, char **envp, int index)
 {
 	int	i;
 	int	j;
 
 	i = -1;
 	j = 1;
+	da->cmd1 = malloc(sizeof(char *) * \
+	(ft_tablen(da->args_tab[index]) + 2));
+	if (da->cmd1 == NULL)
+	{
+		free_data(da, envp);
+		perror("malloc");
+		exit(EXIT_FAILURE);
+	}
+	da->cmd1[0] = ft_strdup(da->args[index][0]);
+	while (da->args_tab[index][++i] != NULL)
+	{
+		da->cmd1[j] = ft_strdup(da->args_tab[index][i]);
+		j++;
+	}
+	da->cmd1[j] = NULL;
+}
+
+void	get_args(t_data *da, char **envp, int index)
+{
 	if (da->cmd1 != NULL)
 		free_cmd(da);
 	if (da->args_tab[index][0] == NULL)
@@ -124,22 +129,6 @@ void	get_args(t_data *da, char **envp, int index)
 		da->cmd1[1] = NULL;
 	}
 	else
-	{
-		da->cmd1 = malloc(sizeof(char *) * \
-		(ft_tablen(da->args_tab[index]) + 2));
-		if (da->cmd1 == NULL)
-		{
-			free_data(da, envp);
-			perror("malloc");
-			exit(EXIT_FAILURE);
-		}
-		da->cmd1[0] = ft_strdup(da->args[index][0]);
-		while (da->args_tab[index][++i] != NULL)
-		{
-			da->cmd1[j] = ft_strdup(da->args_tab[index][i]);
-			j++;
-		}
-		da->cmd1[j] = NULL;
-	}
+		alloc_cmd1(da, envp, index);
 	get_path(da, envp);
 }

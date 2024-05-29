@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 19:01:40 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/28 18:09:15 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/29 11:26:50 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,14 @@ void	sigint_handler_child(int signum)
 {
 	(void)signum;
 	printf("\n");
-	stop_execution = 1;
+	g_stop_execution = 1;
 }
 
 void	sigquit_handler_child(int signum)
 {
 	(void)signum;
 	printf("Quit (core dumped)\n");
-	stop_execution = 2;
+	g_stop_execution = 2;
 }
 
 void	sigint_handler_main(int signum)
@@ -33,14 +33,14 @@ void	sigint_handler_main(int signum)
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
-	stop_execution = 1;
+	g_stop_execution = 1;
 }
 
 void	sigint_handler(int signum)
 {
 	(void)signum;
 	write(1, "^C\n", 3);
-	stop_execution = 1;
+	g_stop_execution = 1;
 	rl_done = 1;
 }
 

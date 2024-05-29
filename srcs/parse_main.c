@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 11:10:09 by abolea            #+#    #+#             */
-/*   Updated: 2024/05/28 18:13:12 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/29 11:27:19 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -204,9 +204,9 @@ void	if_sig(t_data *da)
 {
 	signal(SIGINT, sigint_handler_main);
 	signal(SIGQUIT, SIG_IGN);
-	if (stop_execution == 1)
+	if (g_stop_execution == 1)
 	{
-		stop_execution = 0;
+		g_stop_execution = 0;
 		da->exit_status = 130;
 	}
 }
@@ -238,15 +238,15 @@ int	main(int argc, char **argv, char **envp)
 	(void)envp;
 	if (argc != 1 || argv[0][0] == '\0')
 		printf("ERROR\n");
-	set_all(&da, envp);
+	set_all(&da, envp, 0);
 	set_parse(&da);
 	while (1)
 	{
 		if_sig(&da);
 		rl = readline("\033[1;36m<3 \033[0;37m");
-		if (stop_execution == 1)
+		if (g_stop_execution == 1)
 		{
-			stop_execution = 0;
+			g_stop_execution = 0;
 			da.exit_status = 130;
 		}
 		if (!rl)

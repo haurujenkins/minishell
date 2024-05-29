@@ -6,13 +6,13 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 13:57:06 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/28 15:18:57 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/29 11:26:00 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-volatile sig_atomic_t stop_execution = 0;
+volatile sig_atomic_t	g_stop_execution = 0;
 
 int	rl_hook_function(void)
 {
@@ -106,8 +106,8 @@ int	heredoc_replace(t_data *da, int index, int i)
 				free(da->in_tab[index][i]);
 				da->in_tab[index][i] = ft_strdup(tmpfile);
 				free(tmpfile);
-				if (stop_execution == 1)
-					return (stop_execution = 0, -1);
+				if (g_stop_execution == 1)
+					return (g_stop_execution = 0, -1);
 			}
 			i++;
 		}

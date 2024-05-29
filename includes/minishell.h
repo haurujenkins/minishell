@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 14:48:53 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/28 17:22:30 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/29 11:26:33 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@
 # define TMPFILE_NAME ".heredoc/minishell_heredoc_tmpfile"
 # define MAX_RANDOM_BYTES 8
 
-extern	volatile sig_atomic_t stop_execution;
+extern	volatile sig_atomic_t	g_stop_execution;
 
 typedef struct s_signals
 {
@@ -96,10 +96,15 @@ void	exec_cmd(t_data *da, char **envp, int index);
 void	check_cmd(t_data *da, int i, char **envp);
 void	check_cmd_stat(t_data *da);
 void	check_exec_exit(int index, t_data *da, int child_status);
-void	set_all(t_data *da, char **envp);
+void	set_all(t_data *da, char **envp, int i);
 void	free_data(t_data *da, char **envp);
 int		check_builtins(t_data *da, int index);
-int		check_extern_builtins(t_data *da, char **env, int index);
+int		check_extern_builtins(t_data *da, char **envp, int index);
+int		cd_case(t_data *da, int index, char **envp);
+int		export_case(t_data *da, int index);
+int		exit_case(t_data *da, int index);
+void	exit_number(t_data *da, int i, int j);
+int		unset_case(t_data *da, int index, int i);
 char	*get_home(char **envp);
 void	close_fd(t_data *da, int index);
 int		ft_tablen(char **tab);
@@ -127,8 +132,11 @@ void	export_pwd(t_data *da, char *temp_value);
 void	infile_error(t_data *da, int index, int i);
 char	*read_until_delimiter(char *delimiter, t_data *da);
 void	outfile_error(t_data *da, int index, int i);
+void	outfile_stat(t_data *da, int index, int i);
 int		outfile_extern_error(t_data *da, int index, int i);
+int		extern_outfile_stat(t_data *da, int index, int i);
 void	check_infile(t_data *da, int index);
+void	infile_stat(t_data *da, int index, int i);
 void	check_outfile(t_data *da, int index);
 void	exit_free(t_data *da);
 void	sigquit_handler_child(int signum);

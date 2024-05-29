@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 14:44:30 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/28 15:19:10 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/29 11:26:58 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int	handler_while(t_data *da, char *line, char *delimiter, int fd)
 
 int	handler_callback(t_data *da, int fd, char *line)
 {
-	if (stop_execution == 1)
+	if (g_stop_execution == 1)
 	{
 		close(fd);
 		free(line);
