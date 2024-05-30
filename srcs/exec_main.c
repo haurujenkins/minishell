@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_main.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 11:49:04 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/29 15:56:10 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/30 15:39:38 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	exec_child(t_data *da, int index, char **envp)
 	if (da->args[index][0] == NULL)
 	{
 		check_files(da, index);
-		exit(EXIT_SUCCESS);
+		exit_child(da);
 	}
 	if (index != 0)
 	{
@@ -71,7 +71,7 @@ int	exec_recur(t_data *da, char **envp, int index)
 
 void	exec_cmd(t_data *da, char **envp, int index)
 {
-	int			j;
+	int	j;
 
 	if (check_builtins(da, index) == 1)
 	{
@@ -79,6 +79,7 @@ void	exec_cmd(t_data *da, char **envp, int index)
 		while (da->my_env[++j] != NULL)
 			free(da->my_env[j]);
 		free(da->my_env);
+		free_struct(da);
 		exit(EXIT_SUCCESS);
 	}
 	if (ft_strchr(da->cmd1[0], "$?") == 1)
@@ -88,12 +89,14 @@ void	exec_cmd(t_data *da, char **envp, int index)
 			da->cmd = ft_strjoin_ori(da->cmd, da->args[0][0] + 2);
 		write(2, da->cmd, ft_strlen(da->cmd));
 		write(2, ": command not found\n", 20);
+		free_cmd_notfound(da);
 		exit(127);
 	}
 	else
 		check_cmd(da, 0, envp);
 	write(2, da->cmd1[0], ft_strlen(da->cmd1[0]));
 	write(2, ": command not found\n", 20);
+	free_cmd_notfound(da);
 	exit(127);
 }
 
@@ -139,5 +142,6 @@ int	main_exec(t_data *da, char **envp)
 		if (da->children[i] != -1)
 			waitpid(da->children[i], &status, 0);
 	del_tmpfiles(da, 0);
-	return (free(da->children), 0);
+	free_struct(da);
+	return (0);
 }

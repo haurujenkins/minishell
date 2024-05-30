@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_export_errors.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 15:27:28 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/30 15:08:42 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/29 17:12:50 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,7 @@ int	char_error_export(t_data *da, int k, int i)
 	== '?' || da->cmd1[k][i] == ',' || da->cmd1[k][i] == '.' || \
 	da->cmd1[k][i] == '/' || da->cmd1[k][i] == '\\' || da->cmd1[k][i] \
 	== '|' || da->cmd1[k][i] == '`' || da->cmd1[k][i] == '~' || \
-	da->cmd1[k][i] == '}' || da->cmd1[k][i] == '{' ||
-	da->cmd1[k][i] == '*')
+	da->cmd1[k][i] == '}' || da->cmd1[k][i] == '{' || da->cmd1[k][i] == '*')
 	{
 		write(2, "export: `", 9);
 		write(2, da->cmd1[k], ft_strlen(da->cmd1[k]));

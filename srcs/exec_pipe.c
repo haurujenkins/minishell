@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_pipe.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 14:52:20 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/29 15:56:46 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/30 15:34:42 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	set_pipe(t_data *da)
 {
-	da->pipefd = (int **)malloc((da->pnum) * sizeof(int *));
+	da->pipefd = (int **)malloc((da->pnum + 1) * sizeof(int *));
 	if (da->pipefd == NULL)
 	{
 		perror ("malloc");
@@ -34,7 +34,24 @@ void	set_pipe(t_data *da)
 			perror("pipe");
 			exit(EXIT_FAILURE);
 		}
-		da->i ++;
+		da->i++;
+	}
+	da->pipefd[da->i] = NULL;
+}
+
+int	is_fd_open(int fd)
+{
+	int	result;
+
+	result = isatty(fd);
+	if (result != 0)
+		return (1);
+	else
+	{
+		if (errno != EBADF)
+			return (1);
+		else
+			return (0);
 	}
 }
 
@@ -43,10 +60,15 @@ void	free_pipe(t_data *da)
 	da->i = 0;
 	if (da->pipefd == NULL || da->pnum == 0 || da->pipefd[0] == NULL)
 		return ;
-	while (da->i < da->pnum)
+	while (da->pipefd[da->i] != NULL)
 	{
+		if (is_fd_open(da->pipefd[da->i][0]))
+			close(da->pipefd[da->i][0]);
+		if (is_fd_open(da->pipefd[da->i][1]))
+			close(da->pipefd[da->i][1]);
 		free(da->pipefd[da->i]);
 		da->i++;
 	}
 	free(da->pipefd);
+	da->pipefd = NULL;
 }

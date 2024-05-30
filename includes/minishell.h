@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 14:48:53 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/30 15:54:58 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/30 16:36:40 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@
 # include <sys/stat.h>
 # include "../libft/libft.h"
 # include <termios.h>
+# include <errno.h>
+# include <limits.h>
 # define MAX_INPUT_LENGTH 1024
 # define TMPFILE_NAME ".heredoc/minishell_heredoc_tmpfile"
 # define MAX_RANDOM_BYTES 8
@@ -54,6 +56,8 @@ typedef struct data_s
 	int			fd_input;
 	int			fd_output;
 	int			fail_pipe;
+	bool		freed;
+	bool		free_cd;
 	int			**pipefd;
 	pid_t		pid1;
 	pid_t		pid2;
@@ -80,13 +84,14 @@ typedef struct data_s
 	int			nb_args;
 	int			i_args;
 	int			pos_cmd;
+	int			s_args;
+
 	char		**words;
 	pid_t		*children;
 	t_signals	mysignal;
 	int			nb_d;
 	int			q_heredoc;
 	int			if_heredoc;
-	int			s_args;
 }				t_data;
 
 void	get_args(t_data *da, char **envp, int index);
@@ -104,7 +109,7 @@ int		check_extern_builtins(t_data *da, char **envp, int index);
 int		cd_case(t_data *da, int index, char **envp);
 int		export_case(t_data *da, int index);
 int		exit_case(t_data *da, int index);
-void	exit_number(t_data *da, int i, int j);
+void	exit_number(t_data *da, long long i, long long j);
 int		unset_case(t_data *da, int index, int i);
 char	*get_home(char **envp);
 void	close_fd(t_data *da, int index);
@@ -129,6 +134,7 @@ int		check_unset(t_data *da, int k);
 void	sort_env(t_data *da);
 void	free_pipe(t_data *da);
 void	free_struct(t_data *da);
+void	free_cmd_notfound(t_data *da);
 void	export_pwd(t_data *da, char *temp_value);
 void	infile_error(t_data *da, int index, int i);
 char	*read_until_delimiter(char *delimiter, t_data *da);
@@ -140,6 +146,7 @@ void	check_infile(t_data *da, int index);
 void	infile_stat(t_data *da, int index, int i);
 void	check_outfile(t_data *da, int index);
 void	exit_free(t_data *da);
+void	free_tab(char **tab);
 void	sigquit_handler_child(int signum);
 void	sigint_handler_child(int signum);
 void	sigint_handler_main(int signum);
@@ -154,11 +161,8 @@ void	del_tmpfiles(t_data *da, int index);
 int		check_unset(t_data *da, int k);
 void	free_cmd(t_data *da);
 int		nb_quotes_in_quotes(char *s);
+void	exit_child(t_data *da);
 
-void	print_args(int i, int pnum, t_data *da);
-void	loading(int p);
-void	print_title();
-void	print_all();
 int		ft_nb_redir(char *temp_args, char c);
 int		fill_append_tab(t_data *da, char **temp_args);
 char	*sup_append(char *s);
@@ -270,5 +274,14 @@ int		nb_after_dollar(char *s);
 int		len_after_dollar(char *s);
 int		nb_dollars(char *s);
 void	free_all(char *new_args, char *temp_args, char *before_args);
+int		fill_all_tab(t_data *da, char **words, char **temp_args, int i);
+int		parse_is_ok(t_data *da, char **temp_args, char **words);
+int		parsing(char *rl, t_data *da);
+void	if_rl(char *rl, t_data *da, char **envp);
+void	if_not_rl(t_data *da);
+void	if_error(t_data *da, char *rl);
+void	stop_g_exec(t_data *da);
+void	rl_ok(char *rl, t_data *da, char **envp);
+void	if_sig(t_data *da);
 
 #endif

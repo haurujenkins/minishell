@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 10:20:38 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/29 11:30:06 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/30 14:18:10 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,12 +72,12 @@ int	cd_case(t_data *da, int index, char **envp)
 	return (my_cd(da->cmd1, envp, da), 1);
 }
 
-void	exit_number(t_data *da, int i, int j)
+void	exit_number(t_data *da, long long i, long long j)
 {
 	if (i == j && i > 0 && j > 0)
 	{
 		i = ft_atoi(da->cmd1[1]);
-		if (j > 2 && i == 0)
+		if (i > INT_MAX || i < INT_MIN || (j > 2 && i == 0))
 		{
 			write (2, "bash: exit: ", 12);
 			write (2, "numeric argument required\n", 27);
@@ -96,7 +96,7 @@ void	exit_number(t_data *da, int i, int j)
 		}
 		else
 			write(2, "exit\n", 5);
-		free_struct(da);
+		free_cmd_notfound(da);
 		exit(2);
 	}
 }

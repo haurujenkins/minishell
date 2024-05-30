@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec_pipex.c                                       :+:      :+:    :+:   */
+/*   exec_get_args.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 13:01:33 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/29 11:11:24 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/30 13:07:14 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,7 @@ void	get_args(t_data *da, char **envp, int index)
 		{
 			free_data(da, envp);
 			perror("malloc");
-			exit(EXIT_FAILURE);
+			exit_child(da);
 		}
 		da->cmd1[0] = ft_strdup(da->args[index][0]);
 		da->cmd1[1] = NULL;
