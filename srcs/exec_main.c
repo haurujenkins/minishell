@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 11:49:04 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/30 15:39:38 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/30 17:18:36 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,6 +142,5 @@ int	main_exec(t_data *da, char **envp)
 		if (da->children[i] != -1)
 			waitpid(da->children[i], &status, 0);
 	del_tmpfiles(da, 0);
-	free_struct(da);
 	return (0);
 }

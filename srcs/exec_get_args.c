@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 13:01:33 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/30 13:07:14 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/30 17:19:17 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,44 +59,16 @@ char	*get_home(char **envp)
 	return (home);
 }
 
-int	get_args_builtins(t_data *da, int index)
-{
-	int	i;
-	int	j;
-
-	i = -1;
-	j = 1;
-	if (da->cmd1 != NULL)
-		free_cmd(da);
-	if (da->args_tab[0] == NULL)
-	{
-		da->cmd1 = malloc(sizeof(char *) * 2);
-		da->cmd1[0] = ft_strdup(da->args[index][0]);
-	}
-	else
-	{
-		da->cmd1 = malloc(sizeof(char *) * \
-		(ft_tablen(da->args_tab[index]) + 2));
-		da->cmd1[0] = ft_strdup(da->args[index][0]);
-		while (da->args_tab[index][++i] != NULL)
-		{
-			da->cmd1[j] = ft_strdup(da->args_tab[index][i]);
-			j++;
-		}
-		da->cmd1[j] = NULL;
-	}
-	return (0);
-}
-
 void	alloc_cmd1(t_data *da, char **envp, int index)
 {
 	int	i;
 	int	j;
+	int len;
 
 	i = -1;
 	j = 1;
-	da->cmd1 = malloc(sizeof(char *) * \
-	(ft_tablen(da->args_tab[index]) + 2));
+	len = ft_tablen(da->args_tab[index]);
+	da->cmd1 = malloc(sizeof(char *) * (len + 2));
 	if (da->cmd1 == NULL)
 	{
 		free_data(da, envp);
@@ -112,10 +84,32 @@ void	alloc_cmd1(t_data *da, char **envp, int index)
 	da->cmd1[j] = NULL;
 }
 
+int	get_args_builtins(t_data *da, int index, char **envp)
+{
+	int	i;
+	int	j;
+
+	i = -1;
+	j = 1;
+	// if (da->cmd1 != NULL && da->cmd1[0] != NULL)
+	// 	free_cmd(da);
+	if (da->args_tab[0] == NULL)
+	{
+		da->cmd1 = malloc(sizeof(char *) * 2);
+		da->cmd1[0] = ft_strdup(da->args[index][0]);
+		da->cmd1[1] = NULL;
+	}
+	else
+	{
+		alloc_cmd1(da, envp, index);
+	}
+	return (0);
+}
+
 void	get_args(t_data *da, char **envp, int index)
 {
-	if (da->cmd1 != NULL)
-		free_cmd(da);
+	// if (da->cmd1 != NULL)
+	// 	free_cmd(da);
 	if (da->args_tab[index][0] == NULL)
 	{
 		da->cmd1 = malloc(sizeof(char *) * 2);

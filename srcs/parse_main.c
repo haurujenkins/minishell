@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 11:10:09 by abolea            #+#    #+#             */
-/*   Updated: 2024/05/30 15:53:57 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/30 17:20:14 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,14 +87,13 @@ void	if_rl(char *rl, t_data *da, char **envp)
 	if (parsing(rl, da) == 1)
 	{
 		da->exit_status = 134;
-		free_struct(da);
 	}
 	else
 	{
 		if (!(heredoc_replace(da, 0, 0) == -1))
 		{
 			//signal(SIGINT, sigint_handler_main);
-			//print_args(0, da.pnum, &da);
+			print_args(0, da->pnum, da);
 			if (da->pnum > 0)
 			{
 				if (main_exec(da, envp) == -1)
@@ -134,6 +133,13 @@ int	main(int argc, char **argv, char **envp)
 			while (da.my_env[++i] != NULL)
 				free(da.my_env[i]);
 			free(da.my_env);
+			i = -1;
+			if (da.cmd1)
+			{
+				while (da.cmd1[++i] != NULL)
+					free(da.cmd1[i]);
+				free(da.cmd1);
+			}
 			break ;
 		}
 		if (check_error(rl))

@@ -6,13 +6,13 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 10:20:38 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/30 14:18:10 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/30 17:34:43 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	unset_case(t_data *da, int index, int i)
+int	unset_case(t_data *da, int index, int i, char **envp)
 {
 	if (outfile_extern_error(da, index, 0) == 1)
 		return (1);
@@ -20,7 +20,7 @@ int	unset_case(t_data *da, int index, int i)
 		return (0);
 	else if (da->pnum == 1)
 	{
-		get_args_builtins(da, 0);
+		get_args_builtins(da, 0, envp);
 		while (da->cmd1[++i] != NULL)
 		{
 			if (check_unset(da, i) == 0)
@@ -32,11 +32,11 @@ int	unset_case(t_data *da, int index, int i)
 	return (1);
 }
 
-int	exit_case(t_data *da, int index)
+int	exit_case(t_data *da, int index, char **envp)
 {
 	if (outfile_extern_error(da, index, 0) == 1)
 		return (1);
-	if (get_args_builtins(da, index) == 1)
+	if (get_args_builtins(da, index, envp) == 1)
 		return (1);
 	if (da->cmd1[1] && da->cmd1[2] != NULL)
 	{
@@ -48,11 +48,11 @@ int	exit_case(t_data *da, int index)
 	return (1);
 }
 
-int	export_case(t_data *da, int index)
+int	export_case(t_data *da, int index, char **envp)
 {
 	if (outfile_extern_error(da, index, 0) == 1)
 		return (1);
-	if (get_args_builtins(da, index) == 1)
+	if (get_args_builtins(da, index, envp) == 1)
 		return (1);
 	return (my_export(da, 0, 1, 0), 1);
 }
@@ -61,7 +61,7 @@ int	cd_case(t_data *da, int index, char **envp)
 {
 	if (outfile_extern_error(da, index, 0) == 1)
 		return (1);
-	if (get_args_builtins(da, index) == 1)
+	if (get_args_builtins(da, index, envp) == 1)
 		return (1);
 	if (da->cmd1[1] && da->cmd1[2] != NULL)
 	{

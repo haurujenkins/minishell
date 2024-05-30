@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 13:33:51 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/30 14:10:53 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/30 17:32:20 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ void	exit_free(t_data *da)
 			i++;
 		}
 	}
+	free_cmd(da);
 	exit_number(da, i, j);
 }
 
@@ -49,14 +50,14 @@ int	check_extern_builtins(t_data *da, char **envp, int index)
 		return (0);
 	size = ft_strlen(da->args[0][0]);
 	if (size == 4 && ft_strchr(da->args[0][0], "exit") && da->pnum == 1)
-		if (exit_case(da, index) == 1)
+		if (exit_case(da, index, envp) == 1)
 			return (1);
 	if (size == 5 && ft_strchr(da->args[0][0], "unset"))
-		if (unset_case(da, index, i) == 1)
+		if (unset_case(da, index, i, envp) == 1)
 			return (1);
 	if (ft_strchr(da->args[0][0], "export") && size == 6 && \
 	da->pnum == 1 && da->args_tab[0][0] != NULL)
-		if (export_case(da, index) == 1)
+		if (export_case(da, index, envp) == 1)
 			return (1);
 	if (ft_strchr(da->args[0][0], "cd") && size == 2 && da->pnum == 1)
 		if (cd_case(da, index, envp) == 1)
@@ -72,20 +73,20 @@ int	check_unset_echo_export(t_data *da, int index, size_t size)
 		if (da->cmd1[1] == NULL)
 			return (1);
 		if (da->pnum == 1)
-			return (my_unset(da, 1), 1);
+			return (my_unset(da, 1), free_cmd(da), 1);
 		return (1);
 	}
 	if (size == 6 && ft_strchr(da->cmd1[0], "export"))
 	{
 		outfile_error(da, index, 0);
 		if (da->cmd1[1] == NULL)
-			return (sort_env(da), 1);
+			return (sort_env(da), free_cmd(da), 1);
 		return (1);
 	}
 	if (size == 4 && ft_strchr(da->cmd1[0], "echo"))
 	{
 		outfile_error(da, index, 0);
-		return (my_echo(da->cmd1, 1, 0, 0), 1);
+		return (my_echo(da->cmd1, 1, 0, 0), free_cmd(da), 1);
 	}
 	return (0);
 }
@@ -98,7 +99,7 @@ int	check_more_builtins(t_data *da, int index, size_t size)
 		if (da->cmd1[1] && da->cmd1[1][0] == '-')
 			write(2, "pwd: invalid option\n", 20);
 		else
-			return (my_pwd(), 1);
+			return (my_pwd(), free_cmd(da), 1);
 		return (1);
 	}
 	if (size == 3 && ft_strchr(da->cmd1[0], "env"))
@@ -110,7 +111,7 @@ int	check_more_builtins(t_data *da, int index, size_t size)
 			return (write(2, "\n", 1), 1);
 		}
 		outfile_error(da, index, 0);
-		return (my_env(da->my_env, 1), 1);
+		return (my_env(da->my_env, 1), free_cmd(da), 1);
 	}
 	if (size == 2 && ft_strchr(da->cmd1[0], "cd"))
 		return (outfile_error(da, index, 0), 1);
