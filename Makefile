@@ -83,6 +83,7 @@ all				:	${NAME}
 
 					valgrind \
 					--leak-check=full --tool=memcheck \
+					--suppressions=readline.supp \
 					--show-reachable=yes \
 					--track-fds=yes \
 					--errors-for-leak-kinds=all \

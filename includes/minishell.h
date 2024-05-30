@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 14:48:53 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/30 16:36:40 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/30 17:12:22 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ typedef struct data_s
 	int			i_args;
 	int			pos_cmd;
 	int			s_args;
-
+	int			parse_error;
 	char		**words;
 	pid_t		*children;
 	t_signals	mysignal;
@@ -279,7 +279,7 @@ int		parse_is_ok(t_data *da, char **temp_args, char **words);
 int		parsing(char *rl, t_data *da);
 void	if_rl(char *rl, t_data *da, char **envp);
 void	if_not_rl(t_data *da);
-void	if_error(t_data *da, char *rl);
+void	if_error(t_data *da);
 void	stop_g_exec(t_data *da);
 void	rl_ok(char *rl, t_data *da, char **envp);
 void	if_sig(t_data *da);

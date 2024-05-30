@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 16:34:31 by abolea            #+#    #+#             */
-/*   Updated: 2024/05/30 16:37:53 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/30 17:24:38 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,11 @@ void	if_not_rl(t_data *da)
 	free(da->my_env);
 }
 
-void	if_error(t_data *da, char *rl)
+void	if_error(t_data *da)
 {
 	da->exit_status = 2;
-	write(2, "parse error\n", 12);
-	add_history(rl);
+	da->parse_error = 1;
+	write(2, "Syntax error\n", 13);
 }
 
 void	stop_g_exec(t_data *da)
@@ -39,11 +39,12 @@ void	stop_g_exec(t_data *da)
 void	rl_ok(char *rl, t_data *da, char **envp)
 {
 	if (check_error(rl))
-		if_error(da, rl);
+		if_error(da);
 	if (rl[0])
 		add_history(rl);
-	if (rl && *rl != '\0')
+	if (rl && *rl != '\0' && da->parse_error != 1)
 		if_rl(rl, da, envp);
+	da->parse_error = 0;
 }
 
 void	if_sig(t_data *da)
