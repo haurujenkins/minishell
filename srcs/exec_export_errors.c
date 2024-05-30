@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 15:27:28 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/28 16:15:00 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/29 17:12:50 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,30 +35,22 @@ int	export_errors(t_data *da, int k)
 	return (1);
 }
 
-int	char_error_export(t_data *da, int k)
+int	char_error_export(t_data *da, int k, int i)
 {
-	int	i;
-
-	i = 0;
-	while (da->cmd1[k][i] != '\0')
+	if (da->cmd1[k][i] == ' ' || da->cmd1[k][i] == '-' || \
+	da->cmd1[k][i] == '+' || da->cmd1[k][i] == '%' || da->cmd1[k][i] \
+	== '!' || da->cmd1[k][i] == '@' || da->cmd1[k][i] == '#' || \
+	da->cmd1[k][i] == '^' || da->cmd1[k][i] == ':' || da->cmd1[k][i] \
+	== '?' || da->cmd1[k][i] == ',' || da->cmd1[k][i] == '.' || \
+	da->cmd1[k][i] == '/' || da->cmd1[k][i] == '\\' || da->cmd1[k][i] \
+	== '|' || da->cmd1[k][i] == '`' || da->cmd1[k][i] == '~' || \
+	da->cmd1[k][i] == '}' || da->cmd1[k][i] == '{' || da->cmd1[k][i] == '*')
 	{
-		if (da->cmd1[k][i] == ' ' || da->cmd1[k][i] == '-' || \
-		da->cmd1[k][i] == '+' || da->cmd1[k][i] == '%' || da->cmd1[k][i] \
-		== '!' || da->cmd1[k][i] == '@' || da->cmd1[k][i] == '#' || \
-		da->cmd1[k][i] == '^' || da->cmd1[k][i] == ':' || da->cmd1[k][i] \
-		== '?' || da->cmd1[k][i] == ',' || da->cmd1[k][i] == '.' || \
-		da->cmd1[k][i] == '/' || da->cmd1[k][i] == '\\' || da->cmd1[k][i] \
-		== '|' || da->cmd1[k][i] == '`' || da->cmd1[k][i] == '~' || \
-		da->cmd1[k][i] == '}' || da->cmd1[k][i] == '{' || \
-		da->cmd1[k][i] == '*')
-		{
-			write(2, "export: `", 9);
-			write(2, da->cmd1[k], ft_strlen(da->cmd1[k]));
-			write(2, "' : not a valid identifier\n", 27);
-			da->exit_status = 0;
-			return (1);
-		}
-		i++;
+		write(2, "export: `", 9);
+		write(2, da->cmd1[k], ft_strlen(da->cmd1[k]));
+		write(2, "' : not a valid identifier\n", 27);
+		da->exit_status = 0;
+		return (1);
 	}
 	return (0);
 }
@@ -80,7 +72,7 @@ int	while_not_equal(t_data *da, int k, int i)
 	}
 	else if (da->cmd1[k][i] == '\0')
 		return (1);
-	else if (char_error_export(da, k) == 1)
+	else if (char_error_export(da, k, i) == 1)
 		return (0);
 	return (2);
 }

@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 13:33:51 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/29 10:31:30 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/30 14:10:53 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 void	exit_free(t_data *da)
 {
-	size_t	i;
-	size_t	j;
+	long long	i;
+	long long	j;
 
 	i = 0;
 	j = 0;

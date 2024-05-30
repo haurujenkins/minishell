@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 14:48:53 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/29 11:26:33 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/30 15:55:49 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@
 # include <sys/stat.h>
 # include "../libft/libft.h"
 # include <termios.h>
+# include <errno.h>
+# include <limits.h>
 # define MAX_INPUT_LENGTH 1024
 # define TMPFILE_NAME ".heredoc/minishell_heredoc_tmpfile"
 # define MAX_RANDOM_BYTES 8
@@ -54,6 +56,8 @@ typedef struct data_s
 	int			fd_input;
 	int			fd_output;
 	int			fail_pipe;
+	bool		freed;
+	bool		free_cd;
 	int			**pipefd;
 	pid_t		pid1;
 	pid_t		pid2;
@@ -80,6 +84,7 @@ typedef struct data_s
 	int			nb_args;
 	int			i_args;
 	int			pos_cmd;
+
 	char		**words;
 	pid_t		*children;
 	t_signals	mysignal;
@@ -103,7 +108,7 @@ int		check_extern_builtins(t_data *da, char **envp, int index);
 int		cd_case(t_data *da, int index, char **envp);
 int		export_case(t_data *da, int index);
 int		exit_case(t_data *da, int index);
-void	exit_number(t_data *da, int i, int j);
+void	exit_number(t_data *da, long long i, long long j);
 int		unset_case(t_data *da, int index, int i);
 char	*get_home(char **envp);
 void	close_fd(t_data *da, int index);
@@ -119,7 +124,7 @@ void	my_env(char **env, int num);
 void	my_export(t_data *da, int i, int k, int return_value);
 void	print_export(char **env, int i, int j);
 int		export_errors(t_data *da, int k);
-int		char_error_export(t_data *da, int k);
+int		char_error_export(t_data *da, int k, int i);
 int		while_not_equal(t_data *da, int k, int i);
 void	check_export_zero(t_data *da, int i, char *temp_cmd, char *temp_value);
 void	export_pwd(t_data *da, char *temp_value);
@@ -128,6 +133,7 @@ int		check_unset(t_data *da, int k);
 void	sort_env(t_data *da);
 void	free_pipe(t_data *da);
 void	free_struct(t_data *da);
+void	free_cmd_notfound(t_data *da);
 void	export_pwd(t_data *da, char *temp_value);
 void	infile_error(t_data *da, int index, int i);
 char	*read_until_delimiter(char *delimiter, t_data *da);
@@ -139,6 +145,7 @@ void	check_infile(t_data *da, int index);
 void	infile_stat(t_data *da, int index, int i);
 void	check_outfile(t_data *da, int index);
 void	exit_free(t_data *da);
+void	free_tab(char **tab);
 void	sigquit_handler_child(int signum);
 void	sigint_handler_child(int signum);
 void	sigint_handler_main(int signum);
@@ -152,6 +159,8 @@ void	count_delim(t_data *da, int index);
 void	del_tmpfiles(t_data *da, int index);
 int		check_unset(t_data *da, int k);
 void	free_cmd(t_data *da);
+int		nb_quotes_in_quotes(char *s);
+void	exit_child(t_data *da);
 
 void	print_args(int i, int pnum, t_data *da);
 void	loading(int p);
@@ -166,15 +175,15 @@ char	*sup_delim(char *s);
 char	*cpy_until_char(char *s, char c, int start);
 int		if_finish_quotes(char *s);
 int		if_finish_squotes(char *s);
-void	fill_outab(t_data *da, char *temp_args, int i);
-void	fill_intab(t_data *da, char *temp_args, int i);
+int		fill_outab(t_data *da, char *temp_args, int i);
+int		fill_intab(t_data *da, char *temp_args, int i);
 void	if_quotes_not_close(char **temp_args, int i);
 int		if_io_before_last_quotes(char *s, char c, int start);
 int		if_quotes(char *s, int start);
 char	*cpy_args_without_quotes(char *s);
 char	*fill_args(t_data *da, char **words, int i);
 char	*fill_cmd(char **words);
-void	new_temp_args(t_data *da, char **temp_args);
+int		new_temp_args(t_data *da, char **temp_args);
 int		nb_pipe(char *rl);
 int		nb_io(char *s);
 int		nb_quotes(char *s);
@@ -188,7 +197,7 @@ int		len_cmd(char *words);
 int		double_quotes_close(char *temp_args);
 char	*cpy_for_args(char *s, int start);
 int		len_for_args(char *s, int start);
-void	fill_args_tab(t_data *da, char **temp_args, int i);
+int		fill_args_tab(t_data *da, char **temp_args, int i);
 int		pos_cmd(char **words);
 char	*cpy_args_without_s_quotes(char *s);
 char	*new_temp(char *s);
@@ -204,5 +213,68 @@ char	*sup_d_quotes_before_dollar(char *s);
 char	*sup_backslash_before_dollar(char *s);
 void	set_parse(t_data *da);
 char	*sup_tab(char *s);
+int		len_without_append(char *s);
+int		ft_nb_append(char *s);
+int		len_without_delim(char *s);
+int		ft_nb_delim(char *s);
+char	*temp_without_dollar(t_data *da, char *temp_args);
+char	*if_res_is_null(char *before_args, char *temp_args, char *new_args);
+char	*cpy_in_res(char *res, char *temp_args, char *new_args);
+void	copy_remaining(char *res, char *temp_args, int *i, int *j);
+void	skip_chars_after_dollar(char *temp_args, int *i);
+void	cpy_interrogation(char *res, char *temp_args, int *i, int *j);
+void	copy_new_args(char *res, char *new_args, int *j);
+void	copy_until_dollar(char *res, char *temp_args, int *i, int *j);
+char	*return_new_args(char *new_args, char *before_args, t_data *da);
+char	*if_not_new_args(char *before_args);
+char	*recup_after_digit(char *s);
+char	*recup_after_dollar(char *s, char *tmp);
+char	*after_dollar(char *s);
+char	*s_quotes_new_args_negative(char *s);
+char	*add_d_quotes_newargs(char *s);
+int		s_quotes_dollar(char *s);
+char	*sup_s_quotes_before_dollar(char *s);
+int		d_quotes_dollar(char *s);
+char	*sup_d_quotes_before_dollar(char *s);
+int		len_without_dollar_before_quotes(char *s);
+char	*dollar_after_heredoc(char *s, t_data *da);
+void	heredoc_double_quotes(char *s, t_data *da);
+int		if_not_heredoc(t_data *da, char **temp_args, int i);
+char	*cpy_in_res_without_dollar_quotes(char *res, char *s, int i, int j);
+char	*sup_dollar_before_quotes(char *s);
+char	*args_before(t_data *da, char **words, char *args);
+char	*else_args_before_quotes(t_data *da, char **words, char *args, int i);
+char	*else_args_before(t_data *da, char **words, char *args);
+char	*if_args_before_ok(t_data *da, char **words, char *args, int i);
+char	*if_args_after_ok(t_data *da, char **words, char *args);
+int		if_args_after(char **words, int *j);
+int		if_args_before(char **words, int *j);
+int 	ft_nb_args(t_data *da, char **words);
+char	*args_after(t_data *da, char **words, char *args);
+char	*else_args_after(t_data *da, char **words, char *args);
+char	*cpy_in_res_without_d_quotes(char *res, char *s);
+char	*cpy_res_with_s_quotes(char *tmp, char *s, int i, int j);
+char	*add_s_quote(char *s);
+int		if_nb_dollar(char **temp_args, int i);
+int		sup_append_and_delim(char **temp_args, int i);
+int		check_quote_close(char	*rl);
+int		check_rl_two(char *rl, int i);
+int		check_rl(char *rl, int i);
+int		check_error_two(char *rl);
+int		check_error(char *rl);
+void	free_words_and_temp_args(char **temp_args, char **words);
+void	free_words(char **words);
+void	free_temp_args(char **temp_args);
+int		len_without_double_space(char *s);
+char	*cpy_without_double_spaces(char *s, char *tmp, int i);
+char	*sup_double_space(char *s);
+char	*cpy_tmp_with_space(char *s, char *tmp, int in_quotes, int i);
+char	*temp_with_space(char *s);
+int		pos_args(t_data *da, char **words);
+char	*cpy_after_digit(char *s, char *res);
+int		len_after_digit(char *s);
+int		nb_after_dollar(char *s);
+int		len_after_dollar(char *s);
+int		nb_dollars(char *s);
 
 #endif

@@ -6,11 +6,22 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 15:54:40 by abolea            #+#    #+#             */
-/*   Updated: 2024/05/15 17:30:08 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/29 13:27:29 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+void	if_in_s_quotes(char *s, int *i)
+{
+	(*i)++;
+	while (s[*i] && s[*i] != 39)
+	{
+		if (s[*i] == ' ' || s[*i] == '|')
+			s[*i] *= -1;
+		(*i)++;
+	}
+}
 
 char	*negative_in_quotes(char *s)
 {
@@ -30,15 +41,7 @@ char	*negative_in_quotes(char *s)
 			}
 		}
 		else if (s[i] == 39)
-		{
-			i++;
-			while (s[i] && s[i] != 39)
-			{
-				if (s[i] == ' ' || s[i] == '|')
-					s[i] *= -1;
-				i++;
-			}
-		}
+			if_in_s_quotes(s, &i);
 		i++;
 	}
 	return (s);

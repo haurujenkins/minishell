@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 13:57:49 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/03/26 15:22:18 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/30 14:06:48 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ char	*ft_free(char **str);
 int		ft_toupper(int c);
 int		ft_tolower(int c);
 size_t	ft_strlen(char *s);
-int		ft_atoi(const char *nptr);
+long	ft_atoi(const char *nptr);
 void	ft_bzero(void *s, size_t n);
 int		ft_isalnum(int c);
 int		ft_isalpha(int c);

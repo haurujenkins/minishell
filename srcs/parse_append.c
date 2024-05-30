@@ -6,13 +6,13 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 14:28:18 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/27 16:37:06 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/29 13:58:50 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	len_without_append(char *s)
+char	*cpy_without_append(char *s, char *tmp)
 {
 	int		i;
 	int		j;
@@ -21,36 +21,6 @@ int	len_without_append(char *s)
 	i = 0;
 	j = 0;
 	in_quotes = 1;
-	while (s[i])
-	{
-		if (s[i] == 34 || s[i] == 39)
-			in_quotes *= -1;
-		if ((s[i] == '>' && s[i + 1] == '>') && in_quotes > 0)
-			i++;
-		else if (s[i])
-		{
-			i++;
-			j++;
-		}
-	}
-	return (j);
-}
-
-char	*sup_append(char *s)
-{
-	int		i;
-	int		j;
-	int		len;
-	char	*tmp;
-	int		in_quotes;
-
-	i = 0;
-	j = 0;
-	in_quotes = 1;
-	len = len_without_append(s);
-	tmp = malloc((len + 1) * sizeof(char));
-	if (!tmp)
-		return (NULL);
 	while (s[i])
 	{
 		if (s[i] == 34 || s[i] == 39)
@@ -65,7 +35,20 @@ char	*sup_append(char *s)
 		}
 	}
 	tmp[j] = '\0';
-	free (s);
+	free(s);
+	return (tmp);
+}
+
+char	*sup_append(char *s)
+{
+	int		len;
+	char	*tmp;
+
+	len = len_without_append(s);
+	tmp = malloc((len + 1) * sizeof(char));
+	if (!tmp)
+		return (NULL);
+	tmp = cpy_without_append(s, tmp);
 	return (tmp);
 }
 
@@ -96,28 +79,6 @@ char	*fill_append(char *temp_args, t_data *da)
 		da->o_append++;
 	}
 	return (NULL);
-}
-
-int	ft_nb_append(char *s)
-{
-	int		i;
-	int		j;
-
-	i = 0;
-	j = 0;
-	while (s[i])
-	{
-		if (s[i] == 34)
-		{
-			i++;
-			while (s[i] != 34 && s[i])
-				i++;
-		}
-		if (s[i] == '>' && s[i + 1] == '>')
-			j++;
-		i++;
-	}
-	return (j);
 }
 
 int	fill_append_tab(t_data *da, char **temp_args)

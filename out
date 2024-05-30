@@ -101,4 +101,21 @@ fclean			:	clean
 
 re				:	fclean all
 
-.PHONY			:	all clean fclean re FORCE
+.PHONY			:	all clean fclean re FORCEloic
+lpb
+
+
+
+salut
+test
+loic
+le
+
+
+
+
+fou
+loic
+est
+vraiment
+bg
