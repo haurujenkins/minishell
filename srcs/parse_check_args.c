@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 15:28:04 by abolea            #+#    #+#             */
-/*   Updated: 2024/05/29 15:29:00 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/30 15:11:47 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ char	*cpy_args_without_s_quotes(char *s)
 	int		i;
 	int		j;
 	char	*tmp;
-	
+
 	i = 0;
 	j = 0;
 	tmp = malloc((ft_strlen(s) - nb_quotes(s) + 1) * sizeof(char));
@@ -64,7 +64,8 @@ int	len_for_args(char *s, int start)
 
 	j = 0;
 	len = ft_strlen(s);
-	while ((s[start] != '<' && s[start] != '>' && s[start] != ' ') && start < len)
+	while ((s[start] != '<' && s[start] != '>' \
+	&& s[start] != ' ') && start < len)
 	{
 		j++;
 		start++;
@@ -83,7 +84,8 @@ char	*cpy_for_args(char *s, int start)
 	tmp = malloc((len - start + 1) * sizeof(char));
 	if (!tmp)
 		return (write(2, "Malloc failed\n", 14), NULL);
-	while ((s[start] != '<' && s[start] != '>' && s[start] != ' ') && start < len)
+	while ((s[start] != '<' && s[start] != '>' \
+	&& s[start] != ' ') && start < len)
 	{
 		tmp[j] = s[start];
 		start++;

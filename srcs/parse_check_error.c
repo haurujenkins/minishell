@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 15:21:13 by abolea            #+#    #+#             */
-/*   Updated: 2024/05/29 15:22:45 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/30 15:24:58 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ int	check_rl(char *rl, int i)
 int	check_error_two(char *rl)
 {
 	int	i;
-	
+
 	i = 0;
 	if ((rl[i] == '>' || rl[i] == '<') && !rl[i + 1])
 		return (-1);

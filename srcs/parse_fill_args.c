@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 15:37:45 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/29 16:34:28 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/30 15:23:10 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	if_dollar_ok(t_data *da, char **temp_args, int i)
 int	new_temp_args(t_data *da, char **temp_args)
 {
 	int	i;
-	
+
 	i = 0;
 	da->if_heredoc = 0;
 	while (i < da->pnum)

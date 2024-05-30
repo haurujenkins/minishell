@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 15:27:28 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/29 17:13:29 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/30 15:08:42 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	char_error_export(t_data *da, int k, int i)
 	== '?' || da->cmd1[k][i] == ',' || da->cmd1[k][i] == '.' || \
 	da->cmd1[k][i] == '/' || da->cmd1[k][i] == '\\' || da->cmd1[k][i] \
 	== '|' || da->cmd1[k][i] == '`' || da->cmd1[k][i] == '~' || \
-	da->cmd1[k][i] == '}' || da->cmd1[k][i] == '{' || 
+	da->cmd1[k][i] == '}' || da->cmd1[k][i] == '{' ||
 	da->cmd1[k][i] == '*')
 	{
 		write(2, "export: `", 9);

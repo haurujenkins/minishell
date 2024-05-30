@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 15:25:21 by abolea            #+#    #+#             */
-/*   Updated: 2024/05/29 15:26:05 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/30 15:12:56 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ char	*sup_double_space(char *s)
 	int		i;
 	int		len;
 	char	*tmp;
-	
+
 	i = 0;
 	len = len_without_double_space(s);
 	tmp = malloc((len + 1) * sizeof(char));
@@ -98,14 +98,14 @@ char	*cpy_tmp_with_space(char *s, char *tmp, int in_quotes, int i)
 			tmp[j++] = ' ';
 			tmp[j++] = '<';
 			tmp[j++] = ' ';
-		} 
+		}
 		else if (s[i] == '>' && in_quotes == 1)
 		{
 			tmp[j++] = ' ';
 			tmp[j++] = '>';
 			tmp[j++] = ' ';
 		}
-		else 
+		else
 			tmp[j++] = s[i];
 		i++;
 	}
@@ -119,10 +119,10 @@ char	*temp_with_space(char *s)
 	char	*tmp;
 	int		in_quotes;
 	int		i;
-	
-	len  = ft_strlen(s);
+
+	len = ft_strlen(s);
 	tmp = (char *)malloc((2 * len + 1) * sizeof(char));
-	if (tmp == NULL) 
+	if (tmp == NULL)
 		return (NULL);
 	i = 0;
 	in_quotes = 1;

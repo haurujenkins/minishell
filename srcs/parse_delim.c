@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 14:38:28 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/29 13:59:14 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/30 15:53:19 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,10 +81,37 @@ char	*fill_delim(char *temp_args, t_data *da)
 	return (NULL);
 }
 
+int	use_fill_delim(t_data *da, char **temp_args, int *i)
+{
+	int	j;
+
+	j = 0;
+	da->in_delim = *i;
+	da->nb_delim = ft_nb_delim(temp_args[*i]);
+	da->delim_tab[*i] = malloc((ft_nb_redir(temp_args[*i], '<') \
+	- da->nb_delim + 1) * sizeof(char *));
+	if (da->delim_tab[*i] == NULL)
+		return (write(2, "Error: malloc failed\n", 21), 1);
+	if (da->nb_delim == 0)
+		da->delim_tab[*i][j] = NULL;
+	else
+	{
+		while (j < ft_nb_redir(temp_args[*i], '<') - da->nb_delim)
+		{
+			da->delim_tab[*i][j] = fill_delim(temp_args[*i], da);
+			if (da->delim_tab[*i][j] == NULL)
+				return (1);
+			j++;
+		}
+		da->delim_tab[*i][j] = NULL;
+	}
+	(*i)++;
+	return (0);
+}
+
 int	fill_delim_tab(t_data *da, char **temp_args)
 {
 	int	i;
-	int	j;
 
 	i = 0;
 	da->delim_tab = malloc((da->pnum + 1) * sizeof(char **));
@@ -92,26 +119,8 @@ int	fill_delim_tab(t_data *da, char **temp_args)
 		return (write(2, "Error: malloc failed\n", 21), 1);
 	while (i < da->pnum)
 	{
-		j = 0;
-		da->in_delim = i;
-		da->nb_delim = ft_nb_delim(temp_args[i]);
-		da->delim_tab[i] = malloc((ft_nb_redir(temp_args[i], '<') - da->nb_delim + 1) * sizeof(char *));
-		if (da->delim_tab[i] == NULL)
-			return (write(2, "Error: malloc failed\n", 21), 1);
-		if (da->nb_delim == 0)
-			da->delim_tab[i][j] = NULL;
-		else
-		{
-			while (j < ft_nb_redir(temp_args[i], '<') - da->nb_delim)
-			{
-				da->delim_tab[i][j] = fill_delim(temp_args[i], da);
-				if (da->delim_tab[i][j] == NULL)
-					return (1);
-				j++;
-			}
-			da->delim_tab[i][j] = NULL;
-		}
-		i++;
+		if (use_fill_delim(da, temp_args, &i) == 1)
+			return (1);
 	}
 	return (0);
 }

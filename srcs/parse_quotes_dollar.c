@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 15:07:09 by abolea            #+#    #+#             */
-/*   Updated: 2024/05/29 15:08:57 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/30 15:22:50 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ int	len_without_dollar_before_quotes(char *s)
 
 	i = 0;
 	j = 0;
-	while(s[i])
+	while (s[i])
 	{
 		if (i > 1 && (int)ft_strlen(s) > i)
 		{

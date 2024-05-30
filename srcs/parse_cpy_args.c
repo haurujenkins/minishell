@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 15:14:05 by abolea            #+#    #+#             */
-/*   Updated: 2024/05/29 17:16:01 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/30 15:21:36 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,11 @@
 
 char	*args_before(t_data *da, char **words, char *args)
 {
-	if ((words[da->i_args][0] == '<' || words[da->i_args][0] == '>') || (words[da->i_args - 1][0] == '<' || words[da->i_args - 1][0] == '>'))
+	if ((words[da->i_args][0] == '<' || words[da->i_args][0] == '>') \
+	|| (words[da->i_args - 1][0] == '<' || words[da->i_args - 1][0] == '>'))
 		da->i_args++;
-	else if ((words[da->i_args][0] != '<' && words[da->i_args][0] != '>') && (words[da->i_args - 1][0] != '<' && words[da->i_args - 1][0] != '>'))
+	else if ((words[da->i_args][0] != '<' && words[da->i_args][0] != '>') \
+	&& (words[da->i_args - 1][0] != '<' && words[da->i_args - 1][0] != '>'))
 	{
 		args = ft_strjoin_ori(args, words[da->i_args]);
 		if (!args)
@@ -33,12 +35,14 @@ char	*args_before(t_data *da, char **words, char *args)
 
 char	*else_args_before_quotes(t_data *da, char **words, char *args, int i)
 {
-	while ((words[da->i_args] && (words[da->i_args][0] != '<' && words[da->i_args][0] != '>')))
-	{	
+	while ((words[da->i_args] && (words[da->i_args][0] != '<' \
+	&& words[da->i_args][0] != '>')))
+	{
 		args = ft_strjoin_ori(args, words[da->i_args]);
 		if (!args)
 			return (NULL);
-		if (words[da->i_args + 1] && (words[da->i_args + 1][0] != '<' && words[da->i_args + 1][0] != '>'))
+		if (words[da->i_args + 1] && (words[da->i_args + 1][0] != '<' \
+		&& words[da->i_args + 1][0] != '>'))
 		{
 			args = ft_strjoin_ori(args, " ");
 			if (!args)

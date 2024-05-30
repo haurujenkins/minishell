@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 14:58:08 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/29 15:28:25 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/30 15:14:52 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,14 +33,14 @@ char	*cpy_tmp_without_quotes(char *s, char *tmp, int s_quotes, int d_quotes)
 	int		i;
 	int		j;
 	int		len;
-	
+
 	i = 0;
 	j = 0;
 	len = (int)ft_strlen(s);
-
 	while (i < len)
 	{
-		while ((s[i] == 34 && s_quotes % 2 == 0) || (s[i] == 39 && d_quotes % 2 == 0))
+		while ((s[i] == 34 && s_quotes % 2 == 0) \
+		|| (s[i] == 39 && d_quotes % 2 == 0))
 		{
 			if (s[i] == 34 && s_quotes % 2 == 0)
 				d_quotes++;
@@ -61,10 +61,11 @@ char	*cpy_args_without_quotes(char *s)
 	char	*tmp;
 	int		d_quotes;
 	int		s_quotes;
-	
+
 	d_quotes = 0;
 	s_quotes = 0;
-	tmp = malloc(1 + ((int)ft_strlen(s) - nb_quotes_in_quotes(s)) * sizeof(char));
+	tmp = malloc(1 + ((int)ft_strlen(s) - \
+	nb_quotes_in_quotes(s)) * sizeof(char));
 	if (!tmp)
 		return (NULL);
 	tmp = cpy_tmp_without_quotes(s, tmp, s_quotes, d_quotes);
@@ -85,7 +86,7 @@ int	if_quotes(char *s, int start)
 
 int	if_io_before_last_quotes(char *s, char c, int start)
 {
-	while(s[start])
+	while (s[start])
 	{
 		if (s[start] == 34)
 		{

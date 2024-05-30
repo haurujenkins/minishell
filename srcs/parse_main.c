@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 11:10:09 by abolea            #+#    #+#             */
-/*   Updated: 2024/05/29 16:50:33 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/30 15:09:10 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,6 @@ int	parsing(char *rl, t_data *da)
 		i++;
 	}
 	free_temp_args(temp_args);
-	// print_args(i, da->pnum, da);
 	return (0);
 }
 
@@ -93,8 +92,6 @@ void	if_rl(char *rl, t_data *da, char **envp)
 	{
 		if (!(heredoc_replace(da, 0, 0) == -1))
 		{
-			//signal(SIGINT, sigint_handler_main);
-			//print_args(0, da.pnum, &da);
 			if (da->pnum > 0)
 			{
 				if (main_exec(da, envp) == -1)

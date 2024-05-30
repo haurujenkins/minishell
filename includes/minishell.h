@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 14:48:53 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/29 17:15:37 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/30 15:54:58 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -269,5 +269,6 @@ int		len_after_digit(char *s);
 int		nb_after_dollar(char *s);
 int		len_after_dollar(char *s);
 int		nb_dollars(char *s);
+void	free_all(char *new_args, char *temp_args, char *before_args);
 
 #endif

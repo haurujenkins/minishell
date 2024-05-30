@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 15:03:06 by abolea            #+#    #+#             */
-/*   Updated: 2024/05/29 16:09:41 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/30 15:11:10 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void	copy_until_dollar(char *res, char *temp_args, int *i, int *j)
 
 void	copy_new_args(char *res, char *new_args, int *j)
 {
-	int k;
+	int	k;
 
 	k = 0;
 	while (new_args[k])
@@ -72,7 +72,8 @@ void	cpy_interrogation(char *res, char *temp_args, int *i, int *j)
 	if (temp_args[*i] == '?')
 	{
 		(*i)++;
-		while (temp_args[*i]) {
+		while (temp_args[*i])
+		{
 			res[*j] = temp_args[*i];
 			(*i)++;
 			(*j)++;

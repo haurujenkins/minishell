@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 14:28:18 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/29 16:36:35 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/30 15:56:39 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,10 +81,25 @@ char	*fill_append(char *temp_args, t_data *da)
 	return (NULL);
 }
 
+int	use_fill_append(t_data *da, char **temp_args, int i)
+{
+	int	j;
+
+	j = 0;
+	while (j < ft_nb_redir(temp_args[i], '>') - da->nb_append)
+	{
+		da->append_tab[i][j] = fill_append(temp_args[i], da);
+		if (da->append_tab[i][j] == NULL)
+			return (1);
+		j++;
+	}
+	da->append_tab[i][j] = NULL;
+	return (0);
+}
+
 int	fill_append_tab(t_data *da, char **temp_args)
 {
 	int	i;
-	int	j;
 
 	i = 0;
 	da->append_tab = malloc((da->pnum + 1) * sizeof(char **));
@@ -92,20 +107,14 @@ int	fill_append_tab(t_data *da, char **temp_args)
 		return (write(2, "Error: malloc failed\n", 21), 1);
 	while (i < da->pnum)
 	{
-		j = 0;
 		da->o_append = i;
 		da->nb_append = ft_nb_append(temp_args[i]);
-		da->append_tab[i] = malloc((ft_nb_redir(temp_args[i], '>') - da->nb_append + 1) * sizeof(char *));
+		da->append_tab[i] = malloc((ft_nb_redir(temp_args[i], '>') \
+		- da->nb_append + 1) * sizeof(char *));
 		if (da->append_tab[i] == NULL)
 			return (write(2, "Error: malloc failed\n", 21), 1);
-		while (j < ft_nb_redir(temp_args[i], '>') - da->nb_append)
-		{
-			da->append_tab[i][j] = fill_append(temp_args[i], da);
-			if (da->append_tab[i][j] == NULL)
-				return (1);
-			j++;
-		}
-		da->append_tab[i][j] = NULL;
+		if (use_fill_append(da, temp_args, i) == 1)
+			return (1);
 		i++;
 	}
 	return (0);

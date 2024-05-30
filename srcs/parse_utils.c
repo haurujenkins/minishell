@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 14:31:09 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/29 16:16:33 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/30 15:54:50 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,4 +87,11 @@ void	set_parse(t_data *da)
 	da->words = NULL;
 	da->nb_d = 0;
 	da->q_heredoc = 0;
+}
+
+void	free_all(char *new_args, char *temp_args, char *before_args)
+{
+	free(before_args);
+	free(temp_args);
+	free(new_args);
 }
