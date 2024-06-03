@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_check_args.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 15:28:04 by abolea            #+#    #+#             */
-/*   Updated: 2024/05/30 15:11:47 by abolea           ###   ########.fr       */
+/*   Updated: 2024/06/03 14:20:11 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ char	*cpy_args_without_s_quotes(char *s)
 	int		i;
 	int		j;
 	char	*tmp;
-
 	i = 0;
 	j = 0;
 	tmp = malloc((ft_strlen(s) - nb_quotes(s) + 1) * sizeof(char));

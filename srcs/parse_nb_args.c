@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 15:16:36 by abolea            #+#    #+#             */
-/*   Updated: 2024/06/03 16:40:47 by abolea           ###   ########.fr       */
+/*   Updated: 2024/06/03 19:00:35 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,18 +22,15 @@ void	if_io_args(char **words, int *j, int *res)
 	while (words[*j] && (words[*j][0] != '<' && words[*j][0] != '>'))
 	{
 		(*j)++;
-		res++;
+		(*res)++;
 	}
 }
 
-int	if_args_after(char **words, int *j)
+void	if_args_after(char **words, int *j, int *res)
 {
-	int	res;
-
-	res = 0;
 	if ((words[*j - 2][0] == '<' || words[*j - 2][0] == '>') \
 	&& (words[*j][0] != '<' && words[*j][0] != '>'))
-		if_io_args(words, j, &res);
+		if_io_args(words, j, res);
 	else if ((words[*j][0] == '<' || words[*j][0] == '>') \
 	|| (words[*j - 1][0] == '<' || words[*j - 1][0] == '>'))
 		(*j)++;
@@ -41,16 +38,12 @@ int	if_args_after(char **words, int *j)
 	&& (words[*j - 1][0] != '<' && words[*j - 1][0] != '>'))
 	{
 		(*j)++;
-		res++;
+		(*res)++;
 	}
-	return (res);
 }
 
-int	if_args_before(char **words, int *j)
+void	if_args_before(char **words, int *j, int *res)
 {
-	int	res;
-
-	res = 0;
 	if ((words[*j][0] == '<' || words[*j][0] == '>') \
 	|| (words[*j - 1][0] == '<' || words[*j - 1][0] == '>'))
 		(*j)++;
@@ -59,16 +52,15 @@ int	if_args_before(char **words, int *j)
 	{
 		if (words[*j][0] == 34 || words[*j][0] == 39)
 		{
-			res++;
+			(*res)++;
 			(*j)++;
 		}
 		else
 		{
 			(*j)++;
-			res++;
+			(*res)++;
 		}
 	}
-	return (res);
 }
 
 int	ft_nb_args(t_data *da, char **words)
@@ -83,9 +75,9 @@ int	ft_nb_args(t_data *da, char **words)
 	while (words[j])
 	{
 		if (j > 2)
-			res = res + if_args_after(words, &j);
+			if_args_after(words, &j, &res);
 		else
-			res = res + if_args_before(words, &j);
+			if_args_before(words, &j, &res);
 	}
 	return (res);
 }
@@ -113,5 +105,6 @@ char	*args_after(t_data *da, char **words, char *args)
 			return (args);
 		}
 	}
+	free(args);
 	return (NULL);
 }

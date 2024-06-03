@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 15:37:45 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/30 15:23:10 by abolea           ###   ########.fr       */
+/*   Updated: 2024/06/03 18:58:48 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ int	new_temp_args(t_data *da, char **temp_args)
 	return (0);
 }
 
-char	*fill_args(t_data *da, char **words, int i)
+char	*fill_args(t_data *da, char **words)
 {
 	char	*args;
 
@@ -79,19 +79,11 @@ char	*fill_args(t_data *da, char **words, int i)
 		return (NULL);
 	while (words[da->i_args])
 	{
-		if (da->i_args > 2)
-		{
-			args = if_args_after_ok(da, words, args);
-			if (args)
-				return (args);
-		}
-		else
-		{
-			args = if_args_before_ok(da, words, args, i);
-			if (args)
-				return (args);
-		}
-	}
+		args = if_args_after_ok(da, words, args);
+		if (args)
+			return (args);
+    }
+	free(args);
 	return (NULL);
 }
 
@@ -111,7 +103,7 @@ int	fill_args_tab(t_data *da, char **words, int i)
 	{
 		while (j < da->nb_args)
 		{
-			da->args_tab[i][j] = fill_args(da, words, i);
+			da->args_tab[i][j] = fill_args(da, words);
 			if (!da->args_tab[i][j])
 				return (1);
 			if (da->args_tab[i][j])

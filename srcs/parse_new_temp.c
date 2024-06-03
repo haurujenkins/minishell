@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 15:34:31 by abolea            #+#    #+#             */
-/*   Updated: 2024/06/03 16:40:51 by abolea           ###   ########.fr       */
+/*   Updated: 2024/06/03 19:04:10 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,5 +86,6 @@ char	*else_args_after(t_data *da, char **words, char *args)
 		da->i_args++;
 		return (args);
 	}
+	free(args);
 	return (NULL);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_main.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 11:49:04 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/06/03 16:13:42 by abolea           ###   ########.fr       */
+/*   Updated: 2024/06/03 17:09:39 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ void	exec_cmd(t_data *da, char **envp, int index)
 		exit(EXIT_SUCCESS);
 	}
 	else
-		check_cmd(da, 0, envp);
+		check_cmd(da, 0, envp, index);
 	write(2, da->cmd1[0], ft_strlen(da->cmd1[0]));
 	write(2, ": command not found\n", 20);
 	free_cmd_notfound(da);

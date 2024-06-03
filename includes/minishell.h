@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 14:48:53 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/06/03 16:42:45 by abolea           ###   ########.fr       */
+/*   Updated: 2024/06/03 18:57:51 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,8 +100,8 @@ void	set_pipe(t_data *da);
 int		main_exec(t_data *da, char **envp);
 int		check_files(t_data *da, int index);
 void	exec_cmd(t_data *da, char **envp, int index);
-void	check_cmd(t_data *da, int i, char **envp);
-void	check_cmd_stat(t_data *da);
+void	check_cmd(t_data *da, int i, char **envp, int index);
+void	check_cmd_stat(t_data *da, int index);
 void	check_exec_exit(int index, t_data *da, int child_status);
 void	set_all(t_data *da, char **envp, int i);
 void	free_data(t_data *da, char **envp);
@@ -181,7 +181,7 @@ void	if_quotes_not_close(char **temp_args, int i);
 int		if_io_before_last_quotes(char *s, char c, int start);
 int		if_quotes(char *s, int start);
 char	*cpy_args_without_quotes(char *s);
-char	*fill_args(t_data *da, char **words, int i);
+char	*fill_args(t_data *da, char **words);
 char	*fill_cmd(char **words, t_data *da);
 int		new_temp_args(t_data *da, char **temp_args);
 int		nb_pipe(char *rl);
@@ -247,8 +247,8 @@ char	*else_args_before_quotes(t_data *da, char **words, char *args, int i);
 char	*else_args_before(t_data *da, char **words, char *args);
 char	*if_args_before_ok(t_data *da, char **words, char *args, int i);
 char	*if_args_after_ok(t_data *da, char **words, char *args);
-int		if_args_after(char **words, int *j);
-int		if_args_before(char **words, int *j);
+void	if_args_after(char **words, int *j, int *res);
+void	if_args_before(char **words, int *j, int *res);
 int 	ft_nb_args(t_data *da, char **words);
 char	*args_after(t_data *da, char **words, char *args);
 char	*else_args_after(t_data *da, char **words, char *args);
