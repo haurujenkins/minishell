@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 15:16:36 by abolea            #+#    #+#             */
-/*   Updated: 2024/06/03 14:24:49 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/06/03 17:09:00 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ char	*args_after(t_data *da, char **words, char *args)
 			args = ft_strjoin_ori(args, words[da->i_args]);
 			if (!args)
 				return (NULL);
-			if (da->s_args != 1)
+			if (da->s_args != 1 && da->if_expand != 1)
 				args = cpy_args_without_quotes(args);
 			if (!args)
 				return (NULL);

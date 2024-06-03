@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 14:00:55 by abolea            #+#    #+#             */
-/*   Updated: 2024/06/03 14:22:47 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/06/03 17:09:19 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,10 @@ char	*temp_without_dollar(t_data *da, char *temp_args)
 	if (new_args[0] == 39 && new_args[1] != '$' && new_args)
 		da->s_args = 1;
 	else if (new_args)
+	{
 		res = cpy_args_without_quotes(res);
+		da->if_expand = 1;
+	}
 	free_all(new_args, temp_args, before_args);
 	return (res);
 }

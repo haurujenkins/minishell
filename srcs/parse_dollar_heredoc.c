@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 15:10:25 by abolea            #+#    #+#             */
-/*   Updated: 2024/06/03 14:22:03 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/06/03 17:09:21 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,9 +63,6 @@ int	if_not_heredoc(t_data *da, char **temp_args, int i)
 		if (!temp_args)
 			return (1);
 		temp_args[i] = temp_without_dollar(da, temp_args[i]);
-		if (!temp_args)
-			return (1);
-		temp_args[i] = add_s_quote(temp_args[i]);
 		if (!temp_args)
 			return (1);
 		da->nb_d--;

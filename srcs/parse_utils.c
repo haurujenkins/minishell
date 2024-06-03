@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 14:31:09 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/06/03 14:25:31 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/06/03 17:08:37 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ int	if_finish_quotes(char *s)
 
 void	set_parse(t_data *da)
 {
+	da->if_expand = 0;
 	da->parse_error = 0;
 	da->i_args = 0;
 	da->s_args = 0;

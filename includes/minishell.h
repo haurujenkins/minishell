@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 14:48:53 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/06/03 16:58:16 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/06/03 17:10:00 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,7 @@ typedef struct data_s
 	int			nb_d;
 	int			q_heredoc;
 	int			if_heredoc;
+	int			if_expand;
 }				t_data;
 
 void	get_args(t_data *da, char **envp, int index);
@@ -181,7 +182,7 @@ int		if_io_before_last_quotes(char *s, char c, int start);
 int		if_quotes(char *s, int start);
 char	*cpy_args_without_quotes(char *s);
 char	*fill_args(t_data *da, char **words, int i);
-char	*fill_cmd(char **words);
+char	*fill_cmd(char **words, t_data *da);
 int		new_temp_args(t_data *da, char **temp_args);
 int		nb_pipe(char *rl);
 int		nb_io(char *s);

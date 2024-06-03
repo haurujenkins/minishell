@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 16:03:17 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/06/03 14:24:55 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/06/03 17:08:57 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int	nb_io(char *s)
 	return (j);
 }
 
-int		ft_nb_redir(char *temp_args, char c)
+int	ft_nb_redir(char *temp_args, char c)
 {
 	int	i;
 	int	nb;
@@ -75,14 +75,14 @@ int		ft_nb_redir(char *temp_args, char c)
 
 int	nb_quotes_in_quotes(char *s)
 {
-    int count;
-    int in_squote;
-    int in_dquote;
-	
+	int	count;
+	int	in_squote;
+	int	in_dquote;
+
 	count = 0;
 	in_squote = 0;
 	in_dquote = 0;
-	while (*s) 
+	while (*s)
 	{
 		if (*s == 39 && !in_dquote)
 			in_squote = !in_squote;

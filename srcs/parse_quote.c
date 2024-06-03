@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 14:58:08 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/06/03 14:25:10 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/06/03 17:08:48 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,8 @@ char	*cpy_args_without_quotes(char *s)
 
 	d_quotes = 0;
 	s_quotes = 0;
-	tmp = malloc(1 + ((int)ft_strlen(s) - \
-	nb_quotes_in_quotes(s)) * sizeof(char));
+	tmp = malloc(((int)ft_strlen(s) - \
+	nb_quotes_in_quotes(s)) * sizeof(char) + 1);
 	if (!tmp)
 		return (NULL);
 	tmp = cpy_tmp_without_quotes(s, tmp, s_quotes, d_quotes);
