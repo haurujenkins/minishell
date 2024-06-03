@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 13:10:19 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/06/03 15:53:24 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/06/03 16:54:17 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,8 @@ void	exit_child(t_data *da, int index)
 	if (da->args[index][0] != NULL)
 		free_cmd(da);
 	free_struct(da);
+	if (da->exit_status > 0)
+		exit(da->exit_status);
 	exit(EXIT_FAILURE);
 }
 

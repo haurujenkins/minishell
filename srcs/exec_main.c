@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 11:49:04 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/06/03 15:11:03 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/06/03 16:57:37 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ void	exec_child(t_data *da, int index, char **envp)
 		}
 	}
 	close_fd(da, index);
-	free_pipe(da);
 	get_args(da, envp, index);
 	check_files(da, index);
 	exec_cmd(da, envp, index);
@@ -74,6 +73,7 @@ void	exec_cmd(t_data *da, char **envp, int index)
 {
 	int	j;
 
+	free_pipe(da);
 	if (check_builtins(da, index) == 1)
 	{
 		j = -1;
@@ -84,7 +84,7 @@ void	exec_cmd(t_data *da, char **envp, int index)
 		exit(EXIT_SUCCESS);
 	}
 	else
-		check_cmd(da, 0, envp);
+		check_cmd(da, 0, envp, index);
 	write(2, da->cmd1[0], ft_strlen(da->cmd1[0]));
 	write(2, ": command not found\n", 20);
 	free_cmd_notfound(da);

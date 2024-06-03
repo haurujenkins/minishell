@@ -87,6 +87,7 @@ all				:	${NAME}
 					--show-reachable=yes \
 					--track-fds=yes \
 					--errors-for-leak-kinds=all \
+					--trace-children=yes \
 					--show-leak-kinds=all ./${NAME}
 
 clean			:

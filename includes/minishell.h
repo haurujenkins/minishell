@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 14:48:53 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/06/03 15:51:39 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/06/03 16:58:16 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,8 +99,8 @@ void	set_pipe(t_data *da);
 int		main_exec(t_data *da, char **envp);
 int		check_files(t_data *da, int index);
 void	exec_cmd(t_data *da, char **envp, int index);
-void	check_cmd(t_data *da, int i, char **envp);
-void	check_cmd_stat(t_data *da);
+void	check_cmd(t_data *da, int i, char **envp, int index);
+void	check_cmd_stat(t_data *da, int index);
 void	check_exec_exit(int index, t_data *da, int child_status);
 void	set_all(t_data *da, char **envp, int i);
 void	free_data(t_data *da, char **envp);

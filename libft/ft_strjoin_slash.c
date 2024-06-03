@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 11:06:14 by abolea            #+#    #+#             */
-/*   Updated: 2024/06/03 15:32:14 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/06/03 16:45:56 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,5 @@ char	*ft_strjoin_slash(char *s1, char *s2)
 	while (s2[++c])
 		str[i + c] = s2[c];
 	str[i + c] = '\0';
-	//free(s1);
 	return (str);
 }
