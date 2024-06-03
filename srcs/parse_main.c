@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 11:10:09 by abolea            #+#    #+#             */
-/*   Updated: 2024/05/30 16:56:52 by abolea           ###   ########.fr       */
+/*   Updated: 2024/06/03 14:55:58 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	main(int argc, char **argv, char **envp)
 	while (1)
 	{
 		if_sig(&da);
-		rl = readline("\033[1;36m<3 \033[0;37m");
+		rl = readline("\001\033[1;36m\002<3 \001\033[0;37m\002");
 		if (g_stop_execution == 1)
 			stop_g_exec(&da);
 		if (!rl)
