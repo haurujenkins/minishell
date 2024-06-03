@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 13:01:33 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/06/03 14:19:33 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/06/03 15:10:02 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void	alloc_cmd1(t_data *da, char **envp, int index)
 {
 	int	i;
 	int	j;
-	int len;
+	int	len;
 
 	i = -1;
 	j = 1;
@@ -91,8 +91,6 @@ int	get_args_builtins(t_data *da, int index, char **envp)
 
 	i = -1;
 	j = 1;
-	// if (da->cmd1 != NULL && da->cmd1[0] != NULL)
-	// 	free_cmd(da);
 	if (da->args_tab[0] == NULL)
 	{
 		da->cmd1 = malloc(sizeof(char *) * 2);
@@ -108,8 +106,6 @@ int	get_args_builtins(t_data *da, int index, char **envp)
 
 void	get_args(t_data *da, char **envp, int index)
 {
-	// if (da->cmd1 != NULL)
-	// 	free(da->cmd1);
 	if (da->args_tab[index][0] == NULL)
 	{
 		da->cmd1 = malloc(sizeof(char *) * 2);
@@ -117,7 +113,7 @@ void	get_args(t_data *da, char **envp, int index)
 		{
 			free_data(da, envp);
 			perror("malloc");
-			exit_child(da);
+			exit_child(da, index);
 		}
 		da->cmd1[0] = ft_strdup(da->args[index][0]);
 		da->cmd1[1] = NULL;

@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 13:10:19 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/30 17:14:26 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/06/03 15:53:24 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,4 +66,42 @@ void	set_all(t_data *da, char **envp, int i)
 		i++;
 	}
 	da->my_env[i] = NULL;
+}
+
+void	exit_child(t_data *da, int index)
+{
+	int	i;
+
+	i = 0;
+	while (da->my_env[i] != NULL)
+	{
+		free(da->my_env[i]);
+		i++;
+	}
+	free(da->my_env);
+	free_pipe(da);
+	if (da->args[index][0] != NULL)
+		free_cmd(da);
+	free_struct(da);
+	exit(EXIT_FAILURE);
+}
+
+void	free_cmd_exit(t_data *da)
+{
+	if (da->pnum > 0 && da->exit_status != 130)
+		free_pipe(da);
+	if (da->children != NULL)
+		free(da->children);
+	if (da->args != NULL)
+		free_double_tab(da->args, da);
+	if (da->args_tab != NULL)
+		free_double_tab(da->args_tab, da);
+	if (da->in_tab != NULL)
+		free_double_tab(da->in_tab, da);
+	if (da->out_tab != NULL)
+		free_double_tab(da->out_tab, da);
+	if (da->append_tab != NULL)
+		free_double_tab(da->append_tab, da);
+	if (da->delim_tab != NULL)
+		free_double_tab(da->delim_tab, da);
 }

@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 10:20:38 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/06/03 14:18:59 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/06/03 15:50:53 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ void	exit_number(t_data *da, long long i, long long j)
 		}
 		else
 			write(2, "exit\n", 5);
-		free_cmd_notfound(da);
+		free_cmd_exit(da);
 		exit(2);
 	}
 }

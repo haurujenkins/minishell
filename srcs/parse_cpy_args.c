@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 15:14:05 by abolea            #+#    #+#             */
-/*   Updated: 2024/06/03 14:20:53 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/06/03 14:28:49 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,8 @@ char	*args_before(t_data *da, char **words, char *args)
 
 char	*else_args_before_quotes(t_data *da, char **words, char *args, int i)
 {
-	while ((words[da->i_args] && (words[da->i_args][0] != '<' && words[da->i_args][0] != '>')))
+	while ((words[da->i_args] && (words[da->i_args][0] != '<' \
+	&& words[da->i_args][0] != '>')))
 	{
 		args = ft_strjoin_ori(args, words[da->i_args]);
 		if (!args)
@@ -46,6 +47,7 @@ char	*else_args_before_quotes(t_data *da, char **words, char *args, int i)
 		{
 			args = ft_strjoin_ori(args, " ");
 			if (!args)
+				return (NULL);
 		}
 		da->i_args++;
 	}

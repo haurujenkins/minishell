@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 11:49:04 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/06/03 14:19:41 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/06/03 15:11:03 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	exec_child(t_data *da, int index, char **envp)
 	if (da->args[index][0] == NULL)
 	{
 		check_files(da, index);
-		exit_child(da);
+		exit_child(da, index);
 	}
 	if (index != 0)
 	{
@@ -36,6 +36,7 @@ void	exec_child(t_data *da, int index, char **envp)
 		}
 	}
 	close_fd(da, index);
+	free_pipe(da);
 	get_args(da, envp, index);
 	check_files(da, index);
 	exec_cmd(da, envp, index);
@@ -82,16 +83,6 @@ void	exec_cmd(t_data *da, char **envp, int index)
 		free_struct(da);
 		exit(EXIT_SUCCESS);
 	}
-	// if (ft_strchr(da->cmd1[0], "$?") == 1)
-	// {
-	// 	da->cmd = ft_strdup(ft_itoa(da->exit_status));
-	// 	if (ft_strlen(da->args[0][0]) > 2)
-	// 		da->cmd = ft_strjoin_ori(da->cmd, da->args[0][0] + 2);
-	// 	write(2, da->cmd, ft_strlen(da->cmd));
-	// 	write(2, ": command not found\n", 20);
-	// 	free_cmd_notfound(da);
-	// 	exit(127);
-	// }
 	else
 		check_cmd(da, 0, envp);
 	write(2, da->cmd1[0], ft_strlen(da->cmd1[0]));

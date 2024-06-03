@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 11:30:54 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/06/03 14:19:16 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/06/03 15:48:23 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 
 void	free_data(t_data *da, char **envp)
 {
-	// close(da->pipefd[0]);
-	// close(da->pipefd[1]);
 	close(da->fd_input);
 	close(da->fd_output);
 	da->i = -1;
@@ -95,33 +93,25 @@ void	free_struct(t_data *da)
 		free_pipe(da);
 	if (da->my_path != NULL)
 		free_tab(da->my_path);
-	//if (da->cmd1 != NULL)
-	//	free_tab(da->cmd1);
+	if (da->cmd1 != NULL)
+		free_tab(da->cmd1);
 	if (da->children != NULL)
 		free(da->children);
 	da->freed = 1;
 }
 
-void	exit_child(t_data *da)
-{
-	int	i;
-
-	i = 0;
-	while (da->my_env[i] != NULL)
-	{
-		free(da->my_env[i]);
-		i++;
-	}
-	free(da->my_env);
-	free_pipe(da);
-	free_cmd(da);
-	free_struct(da);
-	exit(EXIT_FAILURE);
-}
-
 void	free_cmd_notfound(t_data *da)
 {
-	if (da->args != NULL)
+	if (da->pnum > 0 && da->exit_status != 130)
+		free_pipe(da);
+	if (da->children != NULL)
+		free(da->children);
+	if (ft_strncmp(da->args[0][0], "exit", 5) == 0)
+	{
+		free_double_tab(da->args, da);
+		return ;
+	}
+	else if (da->args != NULL)
 		free_double_tab(da->args, da);
 	if (da->args_tab != NULL)
 		free_double_tab(da->args_tab, da);
@@ -133,8 +123,10 @@ void	free_cmd_notfound(t_data *da)
 		free_double_tab(da->append_tab, da);
 	if (da->delim_tab != NULL)
 		free_double_tab(da->delim_tab, da);
-	if (da->pnum > 0 && da->exit_status != 130)
-		free_pipe(da);
-	if (da->children != NULL)
-		free(da->children);
+	if (da->my_env != NULL)
+		free_tab(da->my_env);
+	if (da->my_path != NULL)
+		free_tab(da->my_path);
+	if (da->cmd1 != NULL)
+		free_tab(da->cmd1);
 }

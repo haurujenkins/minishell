@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 14:48:53 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/06/03 14:26:06 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/06/03 15:51:39 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,7 +161,9 @@ void	del_tmpfiles(t_data *da, int index);
 int		check_unset(t_data *da, int k);
 void	free_cmd(t_data *da);
 int		nb_quotes_in_quotes(char *s);
-void	exit_child(t_data *da);
+void	exit_child(t_data *da, int index);
+void	free_double_tab(char ***tab, t_data *da);
+void	free_cmd_exit(t_data *da);
 
 int		ft_nb_redir(char *temp_args, char c);
 int		fill_append_tab(t_data *da, char **temp_args);
