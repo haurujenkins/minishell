@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_dollar_heredoc.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 15:10:25 by abolea            #+#    #+#             */
-/*   Updated: 2024/05/29 15:12:27 by abolea           ###   ########.fr       */
+/*   Updated: 2024/06/03 14:22:03 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ char	*dollar_after_heredoc(char *s, t_data *da)
 	while (i > 1)
 	{
 		if (s[i] == '$')
-		{			
+		{
 			j = i;
 			while (j > 1 && !(s[j - 1] == '<' && s[j - 2] == '<'))
 				j--;
@@ -31,18 +31,17 @@ char	*dollar_after_heredoc(char *s, t_data *da)
 			{
 				da->if_heredoc = 1;
 				s[i] *= -1;
- 				break ;
+				break ;
 			}
 		}
 		i--;
 	}
-    return (s);
+	return (s);
 }
 
 void	heredoc_double_quotes(char *s, t_data *da)
 {
 	int	i;
-	
 	i = 1;
 	da->q_heredoc = 1;
 	while (s[i])
@@ -73,9 +72,10 @@ int	if_not_heredoc(t_data *da, char **temp_args, int i)
 	}
 	return (0);
 }
+
 char	*cpy_in_res_without_dollar_quotes(char *res, char *s, int i, int j)
 {
-	while(s[i])
+	while (s[i])
 	{
 		if (i > 1 && (int)ft_strlen(s) > i)
 		{

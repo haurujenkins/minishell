@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_init.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 16:50:45 by abolea            #+#    #+#             */
-/*   Updated: 2024/05/28 12:34:36 by abolea           ###   ########.fr       */
+/*   Updated: 2024/06/03 14:24:09 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ char	**init_words(char **temp_args, int i)
 {
 	int		j;
 	char	**words;
-	
+
 	temp_args[i] = new_temp(temp_args[i]);
 	if (!temp_args[i])
 		return (NULL);
@@ -65,7 +65,7 @@ int	init_malloc(char **temp_args, t_data *da)
 		return (1);
 	if (new_temp_args(da, temp_args) == 1)
 		return (1);
-	da->args_tab = malloc((da->pnum + 1)* sizeof(char **));
+	da->args_tab = malloc((da->pnum + 1) * sizeof(char **));
 	if (!da->args_tab)
 		return (1);
 	da->in_tab = malloc((da->pnum + 1) * sizeof(char **));

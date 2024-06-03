@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 14:31:09 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/29 15:28:43 by abolea           ###   ########.fr       */
+/*   Updated: 2024/06/03 14:25:31 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,9 @@ int	if_finish_quotes(char *s)
 
 void	set_parse(t_data *da)
 {
+	da->parse_error = 0;
+	da->i_args = 0;
+	da->s_args = 0;
 	da->delim_tab = NULL;
 	da->append_tab = NULL;
 	da->nb_redir_in = 0;
@@ -86,4 +89,11 @@ void	set_parse(t_data *da)
 	da->words = NULL;
 	da->nb_d = 0;
 	da->q_heredoc = 0;
+}
+
+void	free_all(char *new_args, char *temp_args, char *before_args)
+{
+	free(before_args);
+	free(temp_args);
+	free(new_args);
 }

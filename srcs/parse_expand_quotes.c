@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_expand_quotes.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 15:05:12 by abolea            #+#    #+#             */
-/*   Updated: 2024/05/29 15:05:55 by abolea           ###   ########.fr       */
+/*   Updated: 2024/06/03 14:22:28 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,8 @@ char	*recup_after_dollar(char *s, char *tmp)
 	j = 0;
 	while (s[i] != '$')
 		i++;
-	if (ft_isalnum(s[i + 1]) != 1 && s[i + 1] != '?' && s[i + 1] != 34 && s[i + 1] != 39)
+	if (ft_isalnum(s[i + 1]) != 1 && s[i + 1] != '?' \
+	&& s[i + 1] != 34 && s[i + 1] != 39)
 		return (NULL);
 	i++;
 	while (ft_isalnum(s[i]) == 1 || s[i] == '?')

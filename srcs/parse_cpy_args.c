@@ -3,25 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   parse_cpy_args.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 15:14:05 by abolea            #+#    #+#             */
-/*   Updated: 2024/05/29 15:15:22 by abolea           ###   ########.fr       */
+/*   Updated: 2024/06/03 14:20:53 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "../includes/minishell.h"
 
 char	*args_before(t_data *da, char **words, char *args)
 {
-	if ((words[da->i_args][0] == '<' || words[da->i_args][0] == '>') || (words[da->i_args - 1][0] == '<' || words[da->i_args - 1][0] == '>'))
+	if ((words[da->i_args][0] == '<' || words[da->i_args][0] == '>') \
+	|| (words[da->i_args - 1][0] == '<' || words[da->i_args - 1][0] == '>'))
 		da->i_args++;
-	else if ((words[da->i_args][0] != '<' && words[da->i_args][0] != '>') && (words[da->i_args - 1][0] != '<' && words[da->i_args - 1][0] != '>'))
+	else if ((words[da->i_args][0] != '<' && words[da->i_args][0] != '>') \
+	&& (words[da->i_args - 1][0] != '<' && words[da->i_args - 1][0] != '>'))
 	{
 		args = ft_strjoin_ori(args, words[da->i_args]);
 		if (!args)
 			return (NULL);
-		args = cpy_args_without_quotes(args);
+		if (da->s_args != 1)
+			args = cpy_args_without_quotes(args);
 		if (!args)
 			return (NULL);
 		da->i_args++;
@@ -33,15 +37,15 @@ char	*args_before(t_data *da, char **words, char *args)
 char	*else_args_before_quotes(t_data *da, char **words, char *args, int i)
 {
 	while ((words[da->i_args] && (words[da->i_args][0] != '<' && words[da->i_args][0] != '>')))
-	{	
+	{
 		args = ft_strjoin_ori(args, words[da->i_args]);
 		if (!args)
 			return (NULL);
-		if (words[da->i_args + 1] && (words[da->i_args + 1][0] != '<' && words[da->i_args + 1][0] != '>'))
+		if (words[da->i_args + 1] && (words[da->i_args + 1][0] != '<' \
+		&& words[da->i_args + 1][0] != '>'))
 		{
 			args = ft_strjoin_ori(args, " ");
 			if (!args)
-				return (NULL);
 		}
 		da->i_args++;
 	}
@@ -60,7 +64,8 @@ char	*else_args_before(t_data *da, char **words, char *args)
 	args = ft_strjoin_ori(args, words[da->i_args]);
 	if (!args)
 		return (NULL);
-	args = cpy_args_without_quotes(args);
+	if (da->s_args != 1)
+		args = cpy_args_without_quotes(args);
 	if (!args)
 		return (NULL);
 	da->i_args++;

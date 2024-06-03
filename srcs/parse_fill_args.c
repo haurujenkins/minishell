@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_fill_args.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 15:37:45 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/29 15:19:36 by abolea           ###   ########.fr       */
+/*   Updated: 2024/06/03 14:23:28 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	if_dollar_ok(t_data *da, char **temp_args, int i)
 int	new_temp_args(t_data *da, char **temp_args)
 {
 	int	i;
-	
+
 	i = 0;
 	da->if_heredoc = 0;
 	while (i < da->pnum)
@@ -74,10 +74,12 @@ char	*fill_args(t_data *da, char **words, int i)
 {
 	char	*args;
 
-	if (da->nb_args == 0)
+	args = ft_strdup("");
+	if (!args)
 		return (NULL);
-	else
+	while (words[da->i_args])
 	{
+<<<<<<< HEAD
 		args = ft_strdup("");
 		if (!args)
 			return (NULL);
@@ -95,6 +97,19 @@ char	*fill_args(t_data *da, char **words, int i)
 				if (args)
 					return (args);
 			}
+=======
+		if (da->i_args > 2)
+		{
+			args = if_args_after_ok(da, words, args);
+			if (args)
+				return (args);
+		}
+		else
+		{
+			args = if_args_before_ok(da, words, args, i);
+			if (args)
+				return (args);
+>>>>>>> origin/parse
 		}
 	}
 	return (NULL);

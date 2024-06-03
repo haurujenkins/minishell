@@ -20,7 +20,6 @@ SRCS			=	parse_main.c \
 					exec_heredoc_read.c \
 					exec_check_cmd.c \
 					exec_free.c \
-					parse_print.c \
 					parse_append.c \
 					parse_utils.c \
 					parse_delim.c \
@@ -47,7 +46,9 @@ SRCS			=	parse_main.c \
 					parse_cpy_args.c \
 					parse_check_error.c \
 					parse_check_args.c \
-					parse_args_quotes.c
+					parse_args_quotes.c \
+					parse_check_rl.c \
+					parse_fill_all_tab.c
 
 
 OBJS			=	$(addprefix .build/, $(SRCS:.c=.o))

@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 14:48:53 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/30 16:59:14 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/06/03 14:26:06 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ typedef struct data_s
 	int			fd_output;
 	int			fail_pipe;
 	bool		freed;
+	bool		free_cd;
 	int			**pipefd;
 	pid_t		pid1;
 	pid_t		pid2;
@@ -83,7 +84,8 @@ typedef struct data_s
 	int			nb_args;
 	int			i_args;
 	int			pos_cmd;
-
+	int			s_args;
+	int			parse_error;
 	char		**words;
 	pid_t		*children;
 	t_signals	mysignal;
@@ -161,10 +163,6 @@ void	free_cmd(t_data *da);
 int		nb_quotes_in_quotes(char *s);
 void	exit_child(t_data *da);
 
-void	print_args(int i, int pnum, t_data *da);
-void	loading(int p);
-void	print_title();
-void	print_all();
 int		ft_nb_redir(char *temp_args, char c);
 int		fill_append_tab(t_data *da, char **temp_args);
 char	*sup_append(char *s);
@@ -275,5 +273,15 @@ int		len_after_digit(char *s);
 int		nb_after_dollar(char *s);
 int		len_after_dollar(char *s);
 int		nb_dollars(char *s);
+void	free_all(char *new_args, char *temp_args, char *before_args);
+int		fill_all_tab(t_data *da, char **words, char **temp_args, int i);
+int		parse_is_ok(t_data *da, char **temp_args, char **words);
+int		parsing(char *rl, t_data *da);
+void	if_rl(char *rl, t_data *da, char **envp);
+void	if_not_rl(t_data *da);
+void	if_error(t_data *da);
+void	stop_g_exec(t_data *da);
+void	rl_ok(char *rl, t_data *da, char **envp);
+void	if_sig(t_data *da);
 
 #endif

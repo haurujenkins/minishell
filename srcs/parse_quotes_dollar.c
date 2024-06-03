@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_quotes_dollar.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 15:07:09 by abolea            #+#    #+#             */
-/*   Updated: 2024/05/29 15:08:57 by abolea           ###   ########.fr       */
+/*   Updated: 2024/06/03 14:25:19 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ int	len_without_dollar_before_quotes(char *s)
 
 	i = 0;
 	j = 0;
-	while(s[i])
+	while (s[i])
 	{
 		if (i > 1 && (int)ft_strlen(s) > i)
 		{

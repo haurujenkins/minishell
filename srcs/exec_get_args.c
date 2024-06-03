@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 13:01:33 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/30 17:19:17 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/06/03 14:19:33 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ int	get_args_builtins(t_data *da, int index, char **envp)
 void	get_args(t_data *da, char **envp, int index)
 {
 	// if (da->cmd1 != NULL)
-	// 	free_cmd(da);
+	// 	free(da->cmd1);
 	if (da->args_tab[index][0] == NULL)
 	{
 		da->cmd1 = malloc(sizeof(char *) * 2);

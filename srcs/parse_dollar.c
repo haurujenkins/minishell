@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_dollar.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 16:20:22 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/29 15:05:45 by abolea           ###   ########.fr       */
+/*   Updated: 2024/06/03 14:22:16 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ int	nb_dollars(char *s)
 	d = 0;
 	while (s[i])
 	{
-		if (s[i] == '$' && (ft_isalnum(s[i + 1]) == 1 || s[i + 1] == '?' || s[i + 1] == 39 || s[i + 1] == 34))
+		if (s[i] == '$' && (ft_isalnum(s[i + 1]) == 1 \
+		|| s[i + 1] == '?' || s[i + 1] == 39 || s[i + 1] == 34))
 			d++;
 		i++;
 	}
@@ -82,7 +83,7 @@ int	len_after_digit(char *s)
 			j++;
 			i++;
 		}
-		return (j);	
+		return (j);
 	}
 	while (s[i] != 39)
 		i++;
@@ -98,7 +99,6 @@ char	*cpy_after_digit(char *s, char *res)
 {
 	int	i;
 	int	j;
-	
 	i = 0;
 	j = 0;
 	i++;
@@ -109,5 +109,5 @@ char	*cpy_after_digit(char *s, char *res)
 		i++;
 	}
 	res[j] = '\0';
-	return (res);	
+	return (res);
 }
