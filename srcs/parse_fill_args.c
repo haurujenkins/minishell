@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 15:37:45 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/06/03 14:23:28 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/06/03 14:27:07 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,25 +79,6 @@ char	*fill_args(t_data *da, char **words, int i)
 		return (NULL);
 	while (words[da->i_args])
 	{
-<<<<<<< HEAD
-		args = ft_strdup("");
-		if (!args)
-			return (NULL);
-		while (words[da->i_args])
-		{
-			if (da->i_args > 2)
-			{
-				args = if_args_after_ok(da, words, args);
-				if (args)
-					return (args);
-			}
-			else
-			{
-				args = if_args_before_ok(da, words, args, i);
-				if (args)
-					return (args);
-			}
-=======
 		if (da->i_args > 2)
 		{
 			args = if_args_after_ok(da, words, args);
@@ -109,7 +90,6 @@ char	*fill_args(t_data *da, char **words, int i)
 			args = if_args_before_ok(da, words, args, i);
 			if (args)
 				return (args);
->>>>>>> origin/parse
 		}
 	}
 	return (NULL);
