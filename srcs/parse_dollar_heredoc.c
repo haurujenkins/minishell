@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 15:10:25 by abolea            #+#    #+#             */
-/*   Updated: 2024/05/30 15:18:45 by abolea           ###   ########.fr       */
+/*   Updated: 2024/06/03 17:03:47 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,9 +64,6 @@ int	if_not_heredoc(t_data *da, char **temp_args, int i)
 		if (!temp_args)
 			return (1);
 		temp_args[i] = temp_without_dollar(da, temp_args[i]);
-		if (!temp_args)
-			return (1);
-		temp_args[i] = add_s_quote(temp_args[i]);
 		if (!temp_args)
 			return (1);
 		da->nb_d--;

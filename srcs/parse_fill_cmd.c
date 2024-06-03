@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 15:03:54 by abolea            #+#    #+#             */
-/*   Updated: 2024/06/03 14:27:55 by abolea           ###   ########.fr       */
+/*   Updated: 2024/06/03 16:43:50 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ char	*get_cmd(char *words)
 	return (args);
 }
 
-char	*fill_cmd(char **words)
+char	*fill_cmd(char **words, t_data *da)
 {
 	char	*args;
 	int		i;
@@ -80,9 +80,13 @@ char	*fill_cmd(char **words)
 	}
 	if (args)
 	{
-		args = cpy_args_without_quotes(args);
-		if (!args)
-			return (NULL);
+		if (((args[0] != '"' && args[1] != '"' && args[2] != '\0') || 
+		(args[0] != '\'' && args[1] != '\'' && args[2] != '\0')) && da->if_expand != 1)
+		{
+			args = cpy_args_without_quotes(args);
+			if (!args)
+				return (NULL);
+		}
 	}
 	return (args);
 }

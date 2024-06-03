@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 14:00:55 by abolea            #+#    #+#             */
-/*   Updated: 2024/05/30 15:54:41 by abolea           ###   ########.fr       */
+/*   Updated: 2024/06/03 16:55:23 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,10 @@ char	*temp_without_dollar(t_data *da, char *temp_args)
 	if (new_args[0] == 39 && new_args[1] != '$' && new_args)
 		da->s_args = 1;
 	else if (new_args)
+	{
 		res = cpy_args_without_quotes(res);
+		da->if_expand = 1;
+	}
 	free_all(new_args, temp_args, before_args);
 	return (res);
 }

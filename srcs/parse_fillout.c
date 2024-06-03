@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 14:53:14 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/30 15:16:13 by abolea           ###   ########.fr       */
+/*   Updated: 2024/06/03 16:40:40 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@ char	*if_quotes_args_out(char *temp_args, t_data *da, char *args)
 		da->io_nb++;
 	if (if_quotes(args, 0) == 1)
 		da->q_heredoc = -1;
-	args = cpy_args_without_quotes(args);
+	if (da->s_args != 1 && da->if_expand != 1)
+		args = cpy_args_without_quotes(args);
 	if (!args)
 		return (NULL);
 	return (args);
@@ -37,7 +38,8 @@ char	*if_not_quotes_args_out(char *temp_args, t_data *da, char *args)
 		da->io_nb++;
 	if (if_quotes(args, 0) == 1)
 		da->q_heredoc = -1;
-	args = cpy_args_without_quotes(args);
+	if (da->s_args != 1 && da->if_expand != 1)
+		args = cpy_args_without_quotes(args);
 	if (!args)
 		return (NULL);
 	return (args);

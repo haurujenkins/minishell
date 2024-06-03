@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 16:32:42 by abolea            #+#    #+#             */
-/*   Updated: 2024/05/30 16:35:48 by abolea           ###   ########.fr       */
+/*   Updated: 2024/06/03 16:42:51 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	fill_all_tab(t_data *da, char **words, char **temp_args, int i)
 	da->args[i] = malloc((num_w + 1) * sizeof(char *));
 	if (da->args[i] == NULL)
 		return (1);
-	da->args[i][0] = fill_cmd(words);
+	da->args[i][0] = fill_cmd(words, da);
 	if (da->args[i][0])
 		da->args[i][1] = NULL;
 	da->pos_cmd = pos_cmd(words);
