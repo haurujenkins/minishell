@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_free.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 11:30:54 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/30 15:42:39 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/31 14:49:01 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ void	free_data(t_data *da, char **envp)
 		while (da->cmd1[++da->i])
 			free(da->cmd1[da->i]);
 		free (da->cmd1);
+		da->cmd1 = NULL;
 	}
 	da->i = -1;
 	if (!(envp[0] == NULL))
@@ -32,8 +33,10 @@ void	free_data(t_data *da, char **envp)
 			free(da->my_path[da->i]);
 		free(da->my_path);
 	}
+	da->my_path = NULL;
 	if (da->cmd != NULL)
 		free(da->cmd);
+	da->cmd = NULL;
 }
 
 void	free_tab(char **tab)
@@ -92,8 +95,8 @@ void	free_struct(t_data *da)
 		free_pipe(da);
 	if (da->my_path != NULL)
 		free_tab(da->my_path);
-	if (da->cmd1 != NULL)
-		free_tab(da->cmd1);
+	//if (da->cmd1 != NULL)
+	//	free_tab(da->cmd1);
 	if (da->children != NULL)
 		free(da->children);
 	da->freed = 1;
@@ -111,6 +114,7 @@ void	exit_child(t_data *da)
 	}
 	free(da->my_env);
 	free_pipe(da);
+	free_cmd(da);
 	free_struct(da);
 	exit(EXIT_FAILURE);
 }

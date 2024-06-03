@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_check_cmd.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 13:24:11 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/30 13:54:41 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/31 13:59:11 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,6 @@
 
 void	free_cmd(t_data *da)
 {
-	int	i;
-
-	i = 0;
-	while (da->cmd1[i] != NULL)
-	{
-		free(da->cmd1[i]);
-		i++;
-	}
 	free(da->cmd1);
 	da->cmd1 = NULL;
 }

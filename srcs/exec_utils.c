@@ -6,7 +6,7 @@
 /*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 13:10:19 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/30 15:56:46 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/30 17:14:26 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,6 @@ void	set_all(t_data *da, char **envp, int i)
 	da->exit_status = 0;
 	da->pnum = 0;
 	da->p_in = 0;
-	da->free_cd = 0;
 	da->children = 0;
 	da->my_env = malloc(sizeof(char *) * (ft_tablen(envp) + 1));
 	while (envp[i] != NULL)

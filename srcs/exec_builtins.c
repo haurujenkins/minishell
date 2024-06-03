@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_builtins.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 11:12:16 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/30 15:51:03 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/05/31 14:48:22 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,7 @@ int	my_cd(char **cmd, char **envp, t_data *da)
 	else
 		return (free(path), write(2, "cd: not a directory \n", 21), \
 		da->exit_status = 1, 1);
+	free_cmd(da);
 	return (free(path), da->exit_status = 0, 0);
 }
 

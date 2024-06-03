@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 14:48:53 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/30 17:12:22 by abolea           ###   ########.fr       */
+/*   Updated: 2024/05/31 11:32:42 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,15 +107,15 @@ void	free_data(t_data *da, char **envp);
 int		check_builtins(t_data *da, int index);
 int		check_extern_builtins(t_data *da, char **envp, int index);
 int		cd_case(t_data *da, int index, char **envp);
-int		export_case(t_data *da, int index);
-int		exit_case(t_data *da, int index);
+int		export_case(t_data *da, int index, char **envp);
+int		exit_case(t_data *da, int index, char **envp);
 void	exit_number(t_data *da, long long i, long long j);
-int		unset_case(t_data *da, int index, int i);
+int		unset_case(t_data *da, int index, int i, char **envp);
 char	*get_home(char **envp);
 void	close_fd(t_data *da, int index);
 int		ft_tablen(char **tab);
 char	**ft_realloc(char **tab, int size);
-int		get_args_builtins(t_data *da, int index);
+int		get_args_builtins(t_data *da, int index, char **envp);
 int		my_cd(char **cmd, char **envp, t_data *da);
 int		cd_error(char *path, t_data *da);
 void	my_pwd(void);
