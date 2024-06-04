@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 14:48:53 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/06/03 18:57:51 by abolea           ###   ########.fr       */
+/*   Updated: 2024/06/04 14:36:52 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ typedef struct data_s
 	int			q_heredoc;
 	int			if_heredoc;
 	int			if_expand;
+	int			if_export;
 }				t_data;
 
 void	get_args(t_data *da, char **envp, int index);
@@ -286,5 +287,6 @@ void	if_error(t_data *da);
 void	stop_g_exec(t_data *da);
 void	rl_ok(char *rl, t_data *da, char **envp);
 void	if_sig(t_data *da);
+void	if_export(char *s, t_data *da);
 
 #endif

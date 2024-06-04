@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_expand.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 14:00:55 by abolea            #+#    #+#             */
-/*   Updated: 2024/06/03 17:09:19 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/06/04 14:32:02 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,32 @@ char	*if_res_is_null(char *before_args, char *temp_args, char *new_args)
 	return (NULL);
 }
 
+void	if_export(char *s, t_data *da)
+{
+	int	i;
+
+	i = 0;
+	if (s[i] == 'e')
+		i++;
+	if (s[i] == 'x')
+		i++;
+	if (s[i] == 'p')
+		i++;
+	if (s[i] == 'o')
+		i++;
+	if (s[i] == 'r')
+		i++;
+	if (s[i] == 't')
+		i++;
+	if (s[i] == ' ')
+		i++;
+	if (i == 7)
+		da->if_export = 1;
+	else
+		da->if_export = 0;
+	return ;
+}
+
 char	*temp_without_dollar(t_data *da, char *temp_args)
 {
 	int		len;
@@ -62,6 +88,7 @@ char	*temp_without_dollar(t_data *da, char *temp_args)
 	char	*res;
 
 	new_args = NULL;
+	if_export(temp_args, da);
 	before_args = after_dollar(temp_args);
 	if (before_args == NULL)
 		return (temp_args);
@@ -74,9 +101,9 @@ char	*temp_without_dollar(t_data *da, char *temp_args)
 	if (res == NULL)
 		if_res_is_null(before_args, temp_args, new_args);
 	res = cpy_in_res(res, temp_args, new_args);
-	if (new_args[0] == 39 && new_args[1] != '$' && new_args)
+	if (new_args[0] == 39 && new_args[1] != '$' && new_args )
 		da->s_args = 1;
-	else if (new_args)
+	else if (new_args && da->if_export == 0)
 	{
 		res = cpy_args_without_quotes(res);
 		da->if_expand = 1;

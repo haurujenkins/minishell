@@ -3,41 +3,41 @@
 /*                                                        :::      ::::::::   */
 /*   exec_get_args.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 13:01:33 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/06/03 15:10:02 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/06/04 14:43:09 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	get_path(t_data *da, char **envp)
+int	get_path(t_data *da, char **envp)
 {
-	if (!(envp[0] == NULL))
+	while (!(envp[da->i] == NULL))
 	{
-		while (!(ft_strchr(envp[da->i], "PATH=")))
-			da->i++;
-		da->point_path = envp[da->i] + 5;
-		da->my_path = ft_split(da->point_path, ':');
-		if (da->my_path == NULL)
+		if (ft_strchr(envp[da->i++], "PATH="))
 		{
-			free_data(da, envp);
-			exit(EXIT_FAILURE);
+			da->point_path = envp[da->i] + 5;
+			da->my_path = ft_split(da->point_path, ':');
+			if (da->my_path == NULL)
+				return (free_data(da, envp), 1);
+			return (0);
+		}
+		else if (envp[da->i] == NULL)
+		{
+			da->my_path = malloc(sizeof(char *) * 2);
+			if (da->my_path == NULL)
+			{
+				free_data(da, envp);
+				perror("malloc");
+				exit(EXIT_FAILURE);
+			}
+			da->my_path[0] = ft_strdup("/usr/bin");
+			da->my_path[1] = NULL;
 		}
 	}
-	else
-	{
-		da->my_path = malloc(sizeof(char *) * 2);
-		if (da->my_path == NULL)
-		{
-			free_data(da, envp);
-			perror("malloc");
-			exit(EXIT_FAILURE);
-		}
-		da->my_path[0] = ft_strdup("/usr/bin");
-		da->my_path[1] = NULL;
-	}
+	return (0);
 }
 
 char	*get_home(char **envp)
