@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_fill_cmd.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 15:03:54 by abolea            #+#    #+#             */
-/*   Updated: 2024/06/03 16:43:50 by abolea           ###   ########.fr       */
+/*   Updated: 2024/06/03 17:18:05 by lle-pier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,10 +78,11 @@ char	*fill_cmd(char **words, t_data *da)
 		if (!args)
 			return (NULL);
 	}
-	if (args)
+	if (args && (int)ft_strlen(args) > 2)
 	{
-		if (((args[0] != '"' && args[1] != '"' && args[2] != '\0') || 
-		(args[0] != '\'' && args[1] != '\'' && args[2] != '\0')) && da->if_expand != 1)
+		if (((args[0] != '"' && args[1] != '"' && args[2] != '\0') || \
+		(args[0] != '\'' && args[1] != '\'' && args[2] != '\0')) \
+		&& da->if_expand != 1)
 		{
 			args = cpy_args_without_quotes(args);
 			if (!args)
