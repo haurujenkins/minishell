@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 13:01:33 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/06/04 14:43:09 by abolea           ###   ########.fr       */
+/*   Updated: 2024/06/04 16:02:37 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,10 @@
 
 int	get_path(t_data *da, char **envp)
 {
-	while (!(envp[da->i] == NULL))
+	da->i = 0;
+	while (!(envp[da->i++] == NULL))
 	{
-		if (ft_strchr(envp[da->i++], "PATH="))
+		if (ft_strchr(envp[da->i], "PATH="))
 		{
 			da->point_path = envp[da->i] + 5;
 			da->my_path = ft_split(da->point_path, ':');

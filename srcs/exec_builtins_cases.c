@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 10:20:38 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/06/04 15:00:00 by abolea           ###   ########.fr       */
+/*   Updated: 2024/06/04 17:14:59 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ int	exit_case(t_data *da, int index, char **envp)
 	{
 		da->exit_status = 1;
 		write(2, "exit \nminishell: exit: too many arguments\n", 42);
+		free_cmd(da);
 		return (1);
 	}
 	exit_free(da);

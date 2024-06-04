@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 14:48:53 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/06/04 14:36:52 by abolea           ###   ########.fr       */
+/*   Updated: 2024/06/04 16:23:33 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,6 +166,7 @@ int		nb_quotes_in_quotes(char *s);
 void	exit_child(t_data *da, int index);
 void	free_double_tab(char ***tab, t_data *da);
 void	free_cmd_exit(t_data *da);
+void	close_fds(t_data *da);
 
 int		ft_nb_redir(char *temp_args, char c);
 int		fill_append_tab(t_data *da, char **temp_args);

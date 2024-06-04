@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_free.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 11:30:54 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/06/03 15:48:23 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/06/04 16:45:47 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,7 @@ void	free_struct(t_data *da)
 		free_tab(da->cmd1);
 	if (da->children != NULL)
 		free(da->children);
+	close_fds(da);
 	da->freed = 1;
 }
 

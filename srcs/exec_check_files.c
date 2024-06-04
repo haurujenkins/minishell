@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_check_files.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 11:53:36 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/29 11:22:59 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/06/04 16:27:34 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ void	infile_error(t_data *da, int index, int i)
 		{
 			infile_stat(da, index, i);
 		}
+		if (da->in_tab[index][i + 1])
+			close(da->fd_input);
 		i++;
 	}
 }
@@ -39,6 +41,8 @@ int	outfile_extern_error(t_data *da, int index, int i)
 		if (da->fd_output < 0)
 			if (extern_outfile_stat(da, index, i) == 1)
 				return (1);
+		if (da->out_tab[index][i + 1])
+			close(da->fd_output);
 		i++;
 	}
 	return (0);
@@ -57,6 +61,8 @@ void	outfile_error(t_data *da, int index, int i)
 			O_WRONLY | O_CREAT | O_APPEND, 0644);
 		if (da->fd_output < 0)
 			outfile_stat(da, index, i);
+		if (da->out_tab[index][i + 1])
+			close(da->fd_output);
 		i++;
 	}
 }
@@ -73,6 +79,8 @@ void	check_infile(t_data *da, int index)
 		{
 			infile_error(da, index, i);
 		}
+		if (da->in_tab[index][i + 1])
+			close(da->fd_input);
 		i++;
 	}
 }
@@ -95,6 +103,8 @@ void	check_outfile(t_data *da, int index)
 		{
 			outfile_error(da, index, i);
 		}
+		if (da->out_tab[index][i + 1])
+			close(da->fd_output);
 		i++;
 	}
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_env.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 16:20:49 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/06/03 14:22:20 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/06/04 17:38:06 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	len_before_equal(char *s)
 	int	i;
 
 	i = 0;
-	while (s[i] != '=')
+	while (s[i] != '=' && s[i])
 		i++;
 	return (i);
 }

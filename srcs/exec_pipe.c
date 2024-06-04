@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_pipe.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 14:52:20 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/30 15:34:42 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/06/04 16:23:24 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,4 +71,12 @@ void	free_pipe(t_data *da)
 	}
 	free(da->pipefd);
 	da->pipefd = NULL;
+}
+
+void	close_fds(t_data *da)
+{
+	if (is_fd_open(da->fd_input))
+		close(da->fd_input);
+	if (is_fd_open(da->fd_output))
+		close(da->fd_output);
 }

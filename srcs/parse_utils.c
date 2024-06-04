@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 14:31:09 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/06/03 17:08:37 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/06/04 17:51:41 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ int	if_finish_quotes(char *s)
 
 void	set_parse(t_data *da)
 {
+	da->if_export = 0;
 	da->if_expand = 0;
 	da->parse_error = 0;
 	da->i_args = 0;

@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 13:33:51 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/06/04 14:59:18 by abolea           ###   ########.fr       */
+/*   Updated: 2024/06/04 16:37:37 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,7 @@ int	check_more_builtins(t_data *da, int index, size_t size)
 
 int	check_builtins(t_data *da, int index)
 {
+	int		i;
 	size_t	size;
 
 	size = ft_strlen(da->cmd1[0]);
@@ -128,11 +129,15 @@ int	check_builtins(t_data *da, int index)
 		if (da->cmd1[1] && da->cmd1[2] != NULL)
 		{
 			write(2, "minishell: exit: too many arguments\n", 36);
+			free_struct(da);
 			exit (1);
 		}
 		if (da->cmd1[1] != NULL)
-			exit(ft_atoi(da->cmd1[1]));
-		exit(da->exit_status);
+			i = ft_atoi(da->cmd1[1]);
+		else
+			i = da->exit_status;
+		free_struct(da);
+		exit(i);
 	}
 	if (check_unset_echo_export(da, index, size) == 1)
 		return (1);
