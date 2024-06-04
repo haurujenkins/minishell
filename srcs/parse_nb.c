@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_nb.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 16:03:17 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/06/03 17:08:57 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/06/04 14:57:44 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	nb_pipe(char *rl)
 
 	i = 0;
 	pnum = 1;
-	while (rl[i])
+	while (i < (int)ft_strlen(rl))
 	{
 		if (rl[i] == 34 || rl[i] == 39)
 		{
@@ -27,8 +27,11 @@ int	nb_pipe(char *rl)
 			while ((rl[i] != 34 && rl[i] != 39) && rl[i])
 				i++;
 		}
-		if (rl[i] == '|')
-			pnum++;
+		if (i < (int)ft_strlen(rl))
+		{
+			if (rl[i] == '|')
+				pnum++;
+		}
 		i++;
 	}
 	return (pnum);
@@ -58,7 +61,7 @@ int	ft_nb_redir(char *temp_args, char c)
 
 	i = 0;
 	nb = 0;
-	while (temp_args[i])
+	while (i < (int)ft_strlen(temp_args))
 	{
 		if (temp_args[i] == 34 || temp_args[i] == 39)
 		{
@@ -66,8 +69,11 @@ int	ft_nb_redir(char *temp_args, char c)
 			while ((temp_args[i] != 34 && temp_args[i] != 39) && temp_args[i])
 				i++;
 		}
-		if (temp_args[i] == c && temp_args[i + 2])
-			nb++;
+		if (i < (int)ft_strlen(temp_args))
+		{
+			if (temp_args[i] == c && temp_args[i + 2])
+				nb++;
+		}
 		i++;
 	}
 	return (nb);

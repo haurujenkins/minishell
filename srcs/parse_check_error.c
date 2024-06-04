@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_check_error.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 15:21:13 by abolea            #+#    #+#             */
-/*   Updated: 2024/06/03 14:20:15 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/06/04 14:58:35 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ int	check_error(char *rl)
 		return (-1);
 	if (check_error_two(rl) == -1)
 		return (-1);
-	while (rl[i])
+	while (i < (int)ft_strlen(rl))
 	{
 		if (rl[i] == 34 || rl[i] == 39)
 		{
@@ -107,8 +107,11 @@ int	check_error(char *rl)
 			while (rl[i] != 34 && rl[i] && rl[i] != 39)
 				i++;
 		}
-		if (check_rl(rl, i) == -1)
-			return (-1);
+		if (i < (int)ft_strlen(rl))
+		{
+			if (check_rl(rl, i) == -1)
+				return (-1);
+		}
 		i++;
 	}
 	return (0);

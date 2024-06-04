@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_builtins_cases.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 10:20:38 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/06/03 15:50:53 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/06/04 15:00:00 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,10 +79,10 @@ void	exit_number(t_data *da, long long i, long long j)
 		i = ft_atoi(da->cmd1[1]);
 		if (i > INT_MAX || i < INT_MIN || (j > 2 && i == 0))
 		{
-			write (2, "bash: exit: ", 12);
-			write (2, "numeric argument required\n", 27);
+			write (2, "bash: exit: numeric argument required\n", 39);
 			i = 2;
 		}
+		free_cmd(da);
 		free_struct(da);
 		write(2, "exit\n", 5);
 		exit(i);

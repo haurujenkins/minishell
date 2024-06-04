@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 13:58:23 by abolea            #+#    #+#             */
-/*   Updated: 2024/05/29 13:59:20 by abolea           ###   ########.fr       */
+/*   Updated: 2024/06/04 14:58:16 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	ft_nb_append(char *s)
 
 	i = 0;
 	j = 0;
-	while (s[i])
+	while (i < (int)ft_strlen(s))
 	{
 		if (s[i] == 34)
 		{
@@ -89,7 +89,7 @@ int	ft_nb_delim(char *s)
 
 	i = 0;
 	j = 0;
-	while (s[i])
+	while (i < (int)ft_strlen(s))
 	{
 		if (s[i] == 34)
 		{
@@ -97,8 +97,11 @@ int	ft_nb_delim(char *s)
 			while (s[i] != 34 && s[i])
 				i++;
 		}
-		if (s[i] == '<' && s[i + 1] == '<')
-			j++;
+		if (i < (int)ft_strlen(s))
+		{
+			if (s[i] == '<' && s[i + 1] == '<')
+				j++;
+		}
 		i++;
 	}
 	return (j);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_check_builtins.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 13:33:51 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/06/03 14:19:06 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/06/04 14:59:18 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ void	exit_free(t_data *da)
 			i++;
 		}
 	}
-	free_cmd(da);
 	exit_number(da, i, j);
 }
 
