@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 11:12:16 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/06/05 14:40:47 by abolea           ###   ########.fr       */
+/*   Updated: 2024/06/05 16:21:24 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,10 +110,10 @@ int	my_cd(char **cmd, char **envp, t_data *da)
 			return (1);
 	}
 	else
-		return (free(path), write(2, "cd: not a directory \n", 21), \
-		da->exit_status = 1, 1);
+		return (free(path), free_cmd(da), \
+        write(2, "cd: not a directory \n", 21), da->exit_status = 7, 1);
 	free_cmd(da);
-	return (free(path), da->exit_status = 0, 0);
+	return (da->exit_status = 0, 0);
 }
 
 int	my_unset(t_data *da, int k)

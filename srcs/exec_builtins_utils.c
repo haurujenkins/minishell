@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_builtins_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 16:52:12 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/29 11:26:10 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/06/05 16:21:19 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	cd_error(char *path, t_data *da)
 		else
 			return (perror("getcwd"), free(path), da->exit_status = 1, 1);
 	}
-	return (0);
+	return (free(path), 0);
 }
 
 int	check_unset(t_data *da, int k)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_export_oldpwd.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 16:16:55 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/29 11:29:55 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/06/05 15:16:43 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ void	export_pwd(t_data *da, char *temp_value)
 	char	*temp;
 	char	*cmd;
 
+	temp = NULL;
 	i = 0;
 	while (da->my_env[i])
 	{
@@ -47,5 +48,7 @@ void	export_pwd(t_data *da, char *temp_value)
 		}
 		i++;
 	}
+	if (temp == NULL)
+		temp = ft_strdup("");
 	old_pwd(da, 0, temp, cmd);
 }

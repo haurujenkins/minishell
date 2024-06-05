@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 15:34:31 by abolea            #+#    #+#             */
-/*   Updated: 2024/06/04 14:17:44 by abolea           ###   ########.fr       */
+/*   Updated: 2024/06/05 15:15:20 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	nb_tab(char *s)
 
 	i = 0;
 	j = 0;
-	while (s[i])
+	while (i < (int)ft_strlen(s))
 	{
 		while (s[i] == '\t')
 		{
@@ -40,17 +40,20 @@ char	*sup_tab(char *s)
 
 	i = 0;
 	j = 0;
-	len = ft_strlen(s) - nb_tab(s) + 1;
+	len = (int)ft_strlen(s) - nb_tab(s) + 1;
 	res = malloc(len * sizeof(char));
 	if (!res)
 		return (NULL);
-	while (s[i])
+	while (i < (int)ft_strlen(s))
 	{
 		while (s[i] == '\t')
 			i++;
-		res[j] = s[i];
-		i++;
-		j++;
+		if (s[i])
+		{
+			res[j] = s[i];
+			i++;
+			j++;
+		}
 	}
 	res[j] = '\0';
 	free (s);
