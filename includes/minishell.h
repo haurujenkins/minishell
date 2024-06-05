@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 14:48:53 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/06/04 16:23:33 by abolea           ###   ########.fr       */
+/*   Updated: 2024/06/05 15:02:00 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,10 +94,11 @@ typedef struct data_s
 	int			if_heredoc;
 	int			if_expand;
 	int			if_export;
+	int			delim_fail;
 }				t_data;
 
 void	get_args(t_data *da, char **envp, int index);
-void	set_pipe(t_data *da);
+int		set_pipe(t_data *da);
 int		main_exec(t_data *da, char **envp);
 int		check_files(t_data *da, int index);
 void	exec_cmd(t_data *da, char **envp, int index);
@@ -120,7 +121,7 @@ char	**ft_realloc(char **tab, int size);
 int		get_args_builtins(t_data *da, int index, char **envp);
 int		my_cd(char **cmd, char **envp, t_data *da);
 int		cd_error(char *path, t_data *da);
-void	my_pwd(void);
+void	my_pwd(t_data *da);
 int		my_echo(char **cmd, int i, int j, int flag);
 void	echo_option(bool *newline, char **cmd, int i, int *flag);
 void	my_env(char **env, int num);

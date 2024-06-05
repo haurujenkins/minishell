@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 13:58:23 by abolea            #+#    #+#             */
-/*   Updated: 2024/06/04 14:58:16 by abolea           ###   ########.fr       */
+/*   Updated: 2024/06/05 14:56:58 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,12 @@ int	ft_nb_append(char *s)
 			while (s[i] != 34 && s[i])
 				i++;
 		}
+		if (s[i] == 39)
+		{
+			i++;
+			while (s[i] != 39 && s[i])
+				i++;
+		}
 		if (s[i] == '>' && s[i + 1] == '>')
 			j++;
 		i++;
@@ -82,6 +88,22 @@ int	len_without_delim(char *s)
 	return (j);
 }
 
+void	if_delim_in_quotes(char *s, int *i)
+{
+	if (s[*i] == 34)
+	{
+		(*i)++;
+		while (s[*i] != 34 && s[*i])
+			(*i)++;
+	}
+	if (s[*i] == 39)
+	{
+		(*i)++;
+		while (s[*i] != 39 && s[*i])
+			(*i)++;
+	}
+}
+
 int	ft_nb_delim(char *s)
 {
 	int		i;
@@ -91,12 +113,7 @@ int	ft_nb_delim(char *s)
 	j = 0;
 	while (i < (int)ft_strlen(s))
 	{
-		if (s[i] == 34)
-		{
-			i++;
-			while (s[i] != 34 && s[i])
-				i++;
-		}
+		if_delim_in_quotes(s, &i);
 		if (i < (int)ft_strlen(s))
 		{
 			if (s[i] == '<' && s[i + 1] == '<')

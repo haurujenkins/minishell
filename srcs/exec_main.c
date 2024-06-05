@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 11:49:04 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/06/04 16:47:38 by abolea           ###   ########.fr       */
+/*   Updated: 2024/06/05 15:00:15 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	exec_child(t_data *da, int index, char **envp)
 		if (dup2(da->pipefd[index - 1][0], STDIN_FILENO) == -1)
 		{
 			perror("dup2");
-			exit(EXIT_FAILURE);
+			exit_child(da, index);
 		}
 	}
 	if (index != da->pnum - 1)
@@ -32,7 +32,7 @@ void	exec_child(t_data *da, int index, char **envp)
 		if (dup2(da->pipefd[index][1], STDOUT_FILENO) == -1)
 		{
 			perror("dup2");
-			exit(EXIT_FAILURE);
+			exit_child(da, index);
 		}
 	}
 	close_fd(da, index);
@@ -118,7 +118,8 @@ int	main_exec(t_data *da, char **envp)
 	da->children = malloc(da->pnum * sizeof(pid_t));
 	if (da->children == NULL)
 		return (perror("malloc"), -1);
-	set_pipe(da);
+	if (set_pipe(da) == -1)
+		return (-1);
 	if (check_extern_builtins(da, envp, 0) == 0)
 	{
 		while (++i < da->pnum)

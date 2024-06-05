@@ -6,19 +6,19 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 14:52:20 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/06/04 16:23:24 by abolea           ###   ########.fr       */
+/*   Updated: 2024/06/05 15:01:54 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	set_pipe(t_data *da)
+int	set_pipe(t_data *da)
 {
 	da->pipefd = (int **)malloc((da->pnum + 1) * sizeof(int *));
 	if (da->pipefd == NULL)
 	{
 		perror ("malloc");
-		exit(EXIT_FAILURE);
+		return (-1);
 	}
 	da->i = 0;
 	while (da->i < da->pnum)
@@ -27,16 +27,17 @@ void	set_pipe(t_data *da)
 		if (da->pipefd[da->i] == NULL)
 		{
 			perror("malloc");
-			exit(EXIT_FAILURE);
+			return (-1);
 		}
 		if (pipe(da->pipefd[da->i]) == -1)
 		{
 			perror("pipe");
-			exit(EXIT_FAILURE);
+			return (-1);
 		}
 		da->i++;
 	}
 	da->pipefd[da->i] = NULL;
+	return (0);
 }
 
 int	is_fd_open(int fd)

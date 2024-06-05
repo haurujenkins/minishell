@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_check_stat.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 10:43:49 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/06/03 16:49:45 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/06/05 14:33:04 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,21 +49,21 @@ void	outfile_stat(t_data *da, int index, int i)
 		write(2, "bash: ", 6);
 		write(2, da->out_tab[index][i], ft_strlen(da->out_tab[index][i]));
 		write(2, ": No such file or directory\n", 28);
-		exit(1);
+		exit_child(da, index);
 	}
 	if (S_ISDIR(filestat.st_mode))
 	{
 		write(2, "bash: ", 6);
 		write(2, da->out_tab[index][i], ft_strlen(da->out_tab[index][i]));
 		write(2, ": Is a directory\n", 17);
-		exit(1);
+		exit_child(da, index);
 	}
 	if (!(filestat.st_mode & S_IXUSR))
 	{
 		write(2, "bash: ", 6);
 		write(2, da->out_tab[index][i], ft_strlen(da->out_tab[index][i]));
 		write(2, ": Permission denied\n", 21);
-		exit(1);
+		exit_child(da, index);
 	}
 }
 
@@ -76,20 +76,20 @@ void	infile_stat(t_data *da, int index, int i)
 		write(2, "bash: ", 6);
 		write(2, da->in_tab[index][i], ft_strlen(da->in_tab[index][i]));
 		write(2, ": No such file or directory\n", 28);
-		exit(1);
+		exit_child(da, index);
 	}
 	if (S_ISDIR(filestat.st_mode))
 	{
 		write(2, "bash: ", 6);
 		write(2, da->in_tab[index][i], ft_strlen(da->in_tab[index][i]));
 		write(2, ": Is a directory\n", 17);
-		exit(1);
+		exit_child(da, index);
 	}
 	if (!(filestat.st_mode & S_IXUSR))
 	{
 		write(2, "bash: ", 6);
 		write(2, da->in_tab[index][i], ft_strlen(da->in_tab[index][i]));
 		write(2, ": Permission denied\n", 21);
-		exit(1);
+		exit_child(da, index);
 	}
 }

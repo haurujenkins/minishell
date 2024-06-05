@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 13:33:51 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/06/04 16:37:37 by abolea           ###   ########.fr       */
+/*   Updated: 2024/06/05 14:41:11 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ int	check_more_builtins(t_data *da, int index, size_t size)
 		if (da->cmd1[1] && da->cmd1[1][0] == '-')
 			write(2, "pwd: invalid option\n", 20);
 		else
-			return (my_pwd(), free_cmd(da), 1);
+			return (my_pwd(da), free_cmd(da), 1);
 		return (1);
 	}
 	if (size == 3 && ft_strchr(da->cmd1[0], "env"))

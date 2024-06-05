@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 14:31:09 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/06/04 17:51:41 by abolea           ###   ########.fr       */
+/*   Updated: 2024/06/05 14:35:51 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ int	if_finish_quotes(char *s)
 
 void	set_parse(t_data *da)
 {
+	da->delim_fail = 0;
 	da->if_export = 0;
 	da->if_expand = 0;
 	da->parse_error = 0;

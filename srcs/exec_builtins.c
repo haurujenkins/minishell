@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_builtins.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 11:12:16 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/06/03 14:19:02 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/06/05 14:40:47 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ int	my_echo(char **cmd, int i, int j, int flag)
 	return (0);
 }
 
-void	my_pwd(void)
+void	my_pwd(t_data *da)
 {
 	char	*pwd;
 
@@ -75,7 +75,8 @@ void	my_pwd(void)
 	if (!pwd)
 	{
 		write(2, "Error: pwd failed\n", 19);
-		exit(1);
+		free_cmd_notfound(da);
+		exit(127);
 	}
 	if (pwd)
 	{

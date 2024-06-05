@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_export.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 13:37:46 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/06/03 14:19:13 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/06/05 14:46:08 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ void	sort_env(t_data *da)
 	if (dup_env == NULL)
 	{
 		perror("malloc");
+		free_cmd_notfound(da);
 		exit(127);
 	}
 	while (da->my_env[i] != NULL)
@@ -92,7 +93,7 @@ void	export_temp_cmd(t_data *da, int i, int k)
 	if (temp_cmd == NULL)
 	{
 		perror("malloc");
-		exit(127);
+		return ;
 	}
 	ft_strlcpy(temp_cmd, da->cmd1[k], i + 1);
 	temp_value = malloc(sizeof(char) * \
@@ -100,7 +101,7 @@ void	export_temp_cmd(t_data *da, int i, int k)
 	if (temp_value == NULL)
 	{
 		perror("malloc");
-		exit(127);
+		return ;
 	}
 	if (da->cmd1[k][i] == '\0' || da->cmd1[k][i] == ' ')
 		ft_strlcpy(temp_value, "", 1);
