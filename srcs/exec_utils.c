@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 13:10:19 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/06/03 17:09:37 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/06/05 17:17:29 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ void	exit_child(t_data *da, int index)
 		free(da->my_env[i]);
 		i++;
 	}
+	rl_clear_history();
 	free(da->my_env);
 	free_pipe(da);
 	if (da->args[index][0] != NULL)

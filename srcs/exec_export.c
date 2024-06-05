@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 13:37:46 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/06/05 14:46:08 by abolea           ###   ########.fr       */
+/*   Updated: 2024/06/05 17:38:21 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,8 @@ void	my_export(t_data *da, int i, int k, int return_value)
 		export = 1;
 		if (export_errors(da, k) == 0)
 			export = 0;
-		while (da->cmd1[k][i] != '=')
+		i = -1;
+		while (da->cmd1[k][++i] && da->cmd1[k][i] != '=')
 		{
 			return_value = while_not_equal(da, k, i);
 			if (return_value != 2)
@@ -129,7 +130,6 @@ void	my_export(t_data *da, int i, int k, int return_value)
 					export = 0;
 				break ;
 			}
-			i++;
 		}
 		if (export == 1)
 			export_temp_cmd(da, i, k);

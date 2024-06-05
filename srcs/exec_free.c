@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 11:30:54 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/06/04 16:45:47 by abolea           ###   ########.fr       */
+/*   Updated: 2024/06/05 17:19:10 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,7 @@ void	free_struct(t_data *da)
 
 void	free_cmd_notfound(t_data *da)
 {
+	rl_clear_history();
 	if (da->pnum > 0 && da->exit_status != 130)
 		free_pipe(da);
 	if (da->children != NULL)

@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 11:10:09 by abolea            #+#    #+#             */
-/*   Updated: 2024/06/05 13:18:39 by abolea           ###   ########.fr       */
+/*   Updated: 2024/06/05 17:18:32 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,5 +36,6 @@ int	main(int argc, char **argv, char **envp)
 		rl_ok(rl, &da, envp);
 		free(rl);
 	}
+	rl_clear_history();
 	return (0);
 }
