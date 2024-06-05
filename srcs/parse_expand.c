@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 14:00:55 by abolea            #+#    #+#             */
-/*   Updated: 2024/06/04 17:22:15 by abolea           ###   ########.fr       */
+/*   Updated: 2024/06/05 10:54:04 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ char	*temp_without_dollar(t_data *da, char *temp_args)
 	if (res == NULL)
 		if_res_is_null(before_args, temp_args, new_args);
 	res = cpy_in_res(res, temp_args, new_args);
-	if (new_args[0] == 39 && new_args[1] != '$' && new_args )
+	if ((new_args[0] == 39 || new_args[0] == 34) && new_args[1] != '$' && new_args)
 		da->s_args = 1;
 	else if (new_args && da->if_export == 0)
 		res = if_not_export(res, da);

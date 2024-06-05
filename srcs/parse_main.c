@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 11:10:09 by abolea            #+#    #+#             */
-/*   Updated: 2024/06/04 14:38:58 by abolea           ###   ########.fr       */
+/*   Updated: 2024/06/05 13:18:39 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,11 @@ int	main(int argc, char **argv, char **envp)
 	t_data	da;
 
 	if (argc != 1 || argv[0][0] == '\0')
-		printf("ERROR\n");
+		return (write(2, "ERROR : no arguments required\n", 31));
 	set_all(&da, envp, 0);
-	set_parse(&da);
 	while (1)
 	{
+		set_parse(&da);
 		da.freed = 0;
 		if_sig(&da);
 		rl = readline("\001\033[1;36m\002<3 \001\033[0;37m\002");

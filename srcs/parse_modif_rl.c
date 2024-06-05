@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 15:54:40 by abolea            #+#    #+#             */
-/*   Updated: 2024/05/29 13:27:29 by abolea           ###   ########.fr       */
+/*   Updated: 2024/06/05 10:59:36 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ char	*negative_in_quotes(char *s)
 	int	i;
 
 	i = 0;
+	if (check_quote_close(s) == -1)
+		return (s);
 	while (s[i])
 	{
 		if (s[i] == 34)

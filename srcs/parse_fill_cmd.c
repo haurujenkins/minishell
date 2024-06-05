@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 15:03:54 by abolea            #+#    #+#             */
-/*   Updated: 2024/06/04 16:18:49 by abolea           ###   ########.fr       */
+/*   Updated: 2024/06/05 13:35:39 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ char	*fill_cmd(char **words, t_data *da)
 				args = cpy_args_without_quotes(args);
 				if (!args)
 					return (NULL);
+				return (args);
 			}
 	}
 	if (args)
