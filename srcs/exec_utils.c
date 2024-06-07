@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 13:10:19 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/06/05 17:17:29 by abolea           ###   ########.fr       */
+/*   Updated: 2024/06/07 12:57:25 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,4 +107,6 @@ void	free_cmd_exit(t_data *da)
 		free_double_tab(da->append_tab, da);
 	if (da->delim_tab != NULL)
 		free_double_tab(da->delim_tab, da);
+	if (da->cmd1 != NULL)
+		free_cmd(da);
 }

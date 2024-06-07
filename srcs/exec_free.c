@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 11:30:54 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/06/05 17:19:10 by abolea           ###   ########.fr       */
+/*   Updated: 2024/06/07 12:58:03 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,16 +115,7 @@ void	free_cmd_notfound(t_data *da)
 	}
 	else if (da->args != NULL)
 		free_double_tab(da->args, da);
-	if (da->args_tab != NULL)
-		free_double_tab(da->args_tab, da);
-	if (da->in_tab != NULL)
-		free_double_tab(da->in_tab, da);
-	if (da->out_tab != NULL)
-		free_double_tab(da->out_tab, da);
-	if (da->append_tab != NULL)
-		free_double_tab(da->append_tab, da);
-	if (da->delim_tab != NULL)
-		free_double_tab(da->delim_tab, da);
+	free_double_tab_cmdnotfound(da);
 	if (da->my_env != NULL)
 		free_tab(da->my_env);
 	if (da->my_path != NULL)

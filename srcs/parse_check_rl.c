@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 16:34:31 by abolea            #+#    #+#             */
-/*   Updated: 2024/06/07 12:33:09 by abolea           ###   ########.fr       */
+/*   Updated: 2024/06/07 12:43:53 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	rl_ok(char *rl, t_data *da, char **envp)
 	{
 		if_error(da);
 		add_history(rl);
-		return;
+		return ;
 	}
 	if (rl[0])
 		add_history(rl);

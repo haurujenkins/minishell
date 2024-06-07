@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 14:00:55 by abolea            #+#    #+#             */
-/*   Updated: 2024/06/05 10:54:04 by abolea           ###   ########.fr       */
+/*   Updated: 2024/06/07 12:48:33 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,41 +54,6 @@ char	*if_res_is_null(char *before_args, char *temp_args, char *new_args)
 	return (NULL);
 }
 
-void	if_export(char *s, t_data *da)
-{
-	int	i;
-
-	i = 0;
-	if (s[i] == 'e')
-		i++;
-	if (s[i] == 'x')
-		i++;
-	if (s[i] == 'p')
-		i++;
-	if (s[i] == 'o')
-		i++;
-	if (s[i] == 'r')
-		i++;
-	if (s[i] == 't')
-		i++;
-	if (s[i] == ' ')
-		i++;
-	if (i == 7)
-		da->if_export = 1;
-	else
-		da->if_export = 0;
-	return ;
-}
-
-char	*if_not_export(char *res, t_data *da)
-{
-	res = cpy_args_without_quotes(res);
-	if (!res)
-		return (NULL);
-	da->if_expand = 1;
-	return (res);
-}
-
 char	*temp_without_dollar(t_data *da, char *temp_args)
 {
 	int		len;
@@ -110,10 +75,7 @@ char	*temp_without_dollar(t_data *da, char *temp_args)
 	if (res == NULL)
 		if_res_is_null(before_args, temp_args, new_args);
 	res = cpy_in_res(res, temp_args, new_args);
-	if ((new_args[0] == 39 || new_args[0] == 34) && new_args[1] != '$' && new_args)
-		da->s_args = 1;
-	else if (new_args && da->if_export == 0)
-		res = if_not_export(res, da);
+	res = if_export_or_not(res, new_args, da);
 	free_all(new_args, temp_args, before_args);
 	return (res);
 }

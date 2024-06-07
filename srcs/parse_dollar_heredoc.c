@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_dollar_heredoc.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 15:10:25 by abolea            #+#    #+#             */
-/*   Updated: 2024/06/03 17:09:21 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/06/07 12:50:41 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ char	*dollar_after_heredoc(char *s, t_data *da)
 void	heredoc_double_quotes(char *s, t_data *da)
 {
 	int	i;
+
 	i = 1;
 	da->q_heredoc = 1;
 	while (s[i])

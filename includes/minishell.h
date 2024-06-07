@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 14:48:53 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/06/05 15:02:00 by abolea           ###   ########.fr       */
+/*   Updated: 2024/06/07 13:00:19 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@
 # define TMPFILE_NAME ".heredoc/minishell_heredoc_tmpfile"
 # define MAX_RANDOM_BYTES 8
 
-extern	volatile sig_atomic_t	g_stop_execution;
+extern volatile sig_atomic_t	g_stop_execution;
 
 typedef struct s_signals
 {
@@ -252,7 +252,7 @@ char	*if_args_before_ok(t_data *da, char **words, char *args, int i);
 char	*if_args_after_ok(t_data *da, char **words, char *args);
 void	if_args_after(char **words, int *j, int *res);
 void	if_args_before(char **words, int *j, int *res);
-int 	ft_nb_args(t_data *da, char **words);
+int		ft_nb_args(t_data *da, char **words);
 char	*args_after(t_data *da, char **words, char *args);
 char	*else_args_after(t_data *da, char **words, char *args);
 char	*cpy_in_res_without_d_quotes(char *res, char *s);
@@ -290,5 +290,8 @@ void	stop_g_exec(t_data *da);
 void	rl_ok(char *rl, t_data *da, char **envp);
 void	if_sig(t_data *da);
 void	if_export(char *s, t_data *da);
+char	*if_not_export(char *res, t_data *da);
+char	*if_export_or_not(char *res, char *new_args, t_data *da);
+void	free_double_tab_cmdnotfound(t_data *da);
 
 #endif

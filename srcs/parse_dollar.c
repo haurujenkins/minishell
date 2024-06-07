@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_dollar.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 16:20:22 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/06/03 14:22:16 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/06/07 12:54:09 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,10 +95,12 @@ int	len_after_digit(char *s)
 	}
 	return (j);
 }
+
 char	*cpy_after_digit(char *s, char *res)
 {
 	int	i;
 	int	j;
+
 	i = 0;
 	j = 0;
 	i++;

@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 15:03:54 by abolea            #+#    #+#             */
-/*   Updated: 2024/06/05 13:35:39 by abolea           ###   ########.fr       */
+/*   Updated: 2024/06/07 12:53:10 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,15 +76,15 @@ char	*fill_cmd(char **words, t_data *da)
 		args = get_cmd(words[i]);
 	if (args && (int)ft_strlen(args) > 2)
 	{
-			if (((args[0] != '"' && args[1] != '"' && args[2] != '\0') || 
-			(args[0] != '\'' && args[1] != '\'' && args[2] != '\0')) \
-			&& da->if_expand != 1)
-			{
-				args = cpy_args_without_quotes(args);
-				if (!args)
-					return (NULL);
-				return (args);
-			}
+		if (((args[0] != '"' && args[1] != '"' && args[2] != '\0') || \
+		(args[0] != '\'' && args[1] != '\'' && args[2] != '\0')) \
+		&& da->if_expand != 1)
+		{
+			args = cpy_args_without_quotes(args);
+			if (!args)
+				return (NULL);
+			return (args);
+		}
 	}
 	if (args)
 		args = cpy_args_without_quotes(args);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_heredoc_read.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lle-pier <lle-pier@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 14:44:30 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/05/29 11:26:58 by lle-pier         ###   ########.fr       */
+/*   Updated: 2024/06/07 12:58:11 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,4 +63,18 @@ int	handler_callback(t_data *da, int fd, char *line)
 		return (1);
 	}
 	return (0);
+}
+
+void	free_double_tab_cmdnotfound(t_data *da)
+{
+	if (da->args_tab != NULL)
+		free_double_tab(da->args_tab, da);
+	if (da->in_tab != NULL)
+		free_double_tab(da->in_tab, da);
+	if (da->out_tab != NULL)
+		free_double_tab(da->out_tab, da);
+	if (da->append_tab != NULL)
+		free_double_tab(da->append_tab, da);
+	if (da->delim_tab != NULL)
+		free_double_tab(da->delim_tab, da);
 }
