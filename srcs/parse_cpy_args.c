@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/29 15:14:05 by abolea            #+#    #+#             */
-/*   Updated: 2024/06/07 12:49:14 by abolea           ###   ########.fr       */
+/*   Updated: 2024/06/07 14:33:57 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,25 @@ char	*if_export_or_not(char *res, char *new_args, t_data *da)
 	else if (new_args && da->if_export == 0)
 		res = if_not_export(res, da);
 	return (res);
+}
+
+int	len_in_env(t_data *da, char *s)
+{
+	int	i;
+	int	len;
+
+	i = 0;
+	len = 0;
+	while (da->my_env[i] != NULL)
+	{
+		if (ft_strncmp(da->my_env[i], s, len_before_equal(da->my_env[i])) == 0)
+		{
+			len = if_find_len(da, i);
+			break ;
+		}
+		i++;
+	}
+	return (len);
 }
 
 void	if_export(char *s, t_data *da)

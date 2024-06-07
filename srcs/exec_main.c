@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 11:49:04 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/06/05 15:00:15 by abolea           ###   ########.fr       */
+/*   Updated: 2024/06/07 13:58:37 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ void	exec_cmd(t_data *da, char **envp, int index)
 	int	j;
 
 	free_pipe(da);
+	rl_clear_history();
 	if (check_builtins(da, index) == 1)
 	{
 		j = -1;

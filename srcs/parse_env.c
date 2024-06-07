@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 16:20:49 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/06/04 17:38:06 by abolea           ###   ########.fr       */
+/*   Updated: 2024/06/07 14:31:33 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,28 @@ int	len_before_equal(char *s)
 	return (i);
 }
 
+int	if_find_len(t_data *da, int i)
+{
+	int	l;
+	int	j;
+
+	l = 0;
+	j = 0;
+	while (da->my_env[i][j] != '=')
+	{
+		if (da->my_env[i][j] == '\0')
+			return (0);
+		j++;
+	}
+	j++;
+	while (da->my_env[i][j])
+	{
+		j++;
+		l++;
+	}
+	return (l);
+}
+
 char	*if_find(t_data *da, int i, char *res)
 {
 	int	l;
@@ -86,7 +108,13 @@ char	*find_in_env(t_data *da, char *s)
 	char	*res;
 
 	i = 0;
-	len = ft_tablen(da->my_env);
+	len = len_in_env(da, s);
+	if (len == 0)
+	{
+		res = malloc(1 * sizeof(char));
+		res[0] = '\0';
+		return (res);
+	}
 	res = malloc((len + 1) * sizeof(char));
 	if (!res)
 		return (NULL);

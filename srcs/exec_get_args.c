@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 13:01:33 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/06/04 16:02:37 by abolea           ###   ########.fr       */
+/*   Updated: 2024/06/07 14:39:07 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 int	get_path(t_data *da, char **envp)
 {
 	da->i = 0;
-	while (!(envp[da->i++] == NULL))
+	while (!(da->my_env[da->i++] == NULL))
 	{
-		if (ft_strchr(envp[da->i], "PATH="))
+		if (ft_strchr(da->my_env[da->i], "PATH="))
 		{
 			da->point_path = envp[da->i] + 5;
 			da->my_path = ft_split(da->point_path, ':');
@@ -25,19 +25,16 @@ int	get_path(t_data *da, char **envp)
 				return (free_data(da, envp), 1);
 			return (0);
 		}
-		else if (envp[da->i] == NULL)
-		{
-			da->my_path = malloc(sizeof(char *) * 2);
-			if (da->my_path == NULL)
-			{
-				free_data(da, envp);
-				perror("malloc");
-				exit(EXIT_FAILURE);
-			}
-			da->my_path[0] = ft_strdup("/usr/bin");
-			da->my_path[1] = NULL;
-		}
 	}
+	da->my_path = malloc(sizeof(char *) * 2);
+	if (da->my_path == NULL)
+	{
+		free_data(da, envp);
+		perror("malloc");
+		exit(EXIT_FAILURE);
+	}
+	da->my_path[0] = ft_strdup("null\0");
+	da->my_path[1] = NULL;
 	return (0);
 }
 

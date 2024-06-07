@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 14:48:53 by lle-pier          #+#    #+#             */
-/*   Updated: 2024/06/07 13:00:19 by abolea           ###   ########.fr       */
+/*   Updated: 2024/06/07 14:32:53 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -293,5 +293,8 @@ void	if_export(char *s, t_data *da);
 char	*if_not_export(char *res, t_data *da);
 char	*if_export_or_not(char *res, char *new_args, t_data *da);
 void	free_double_tab_cmdnotfound(t_data *da);
+int		len_in_env(t_data *da, char *s);
+int		len_before_equal(char *s);
+int		if_find_len(t_data *da, int i);
 
 #endif
