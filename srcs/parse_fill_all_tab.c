@@ -6,7 +6,7 @@
 /*   By: abolea <abolea@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 16:32:42 by abolea            #+#    #+#             */
-/*   Updated: 2024/06/05 14:48:13 by abolea           ###   ########.fr       */
+/*   Updated: 2024/06/10 12:56:56 by abolea           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,10 +94,13 @@ void	if_rl(char *rl, t_data *da, char **envp)
 			if (da->pnum > 0)
 			{
 				if (main_exec(da, envp) == -1)
-					da->exit_status = 134;
+					da->exit_status = 172;
 			}
 		}
 	}
-	free_pipe(da);
-	free_struct(da);
+	if (da->exit_status != 172)
+	{
+		free_pipe(da);
+		free_struct(da);
+	}
 }
